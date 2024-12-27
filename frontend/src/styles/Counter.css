@@ -1,0 +1,11 @@
+.counter-container {
+    text-align: center;
+    margin-top: 20px;
+    color: #2e3b55;
+}
+
+.counter-container h3 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-top: 10px;
+}

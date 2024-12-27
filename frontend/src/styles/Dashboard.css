@@ -1,0 +1,128 @@
+/* General Styling */
+.dashboard {
+  background-color: #f4f6f8;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Container Styling */
+.dashboard .MuiContainer-root {
+  flex: 1;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+/* Typography */
+.dashboard h4 {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  color: #333;
+  margin-bottom: 2rem;
+}
+
+/* Grid Cards */
+.MuiGrid-item .MuiCard-root {
+  border-radius: 10px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.MuiGrid-item .MuiCard-root:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.MuiCardContent-root {
+  text-align: center;
+}
+
+.MuiCardContent-root .MuiTypography-h5 {
+  font-weight: bold;
+  color: #1976d2;
+}
+
+.MuiCardContent-root .MuiTypography-body2 {
+  margin-top: 0.5rem;
+  color: #666;
+}
+
+/* Achievements */
+.achievement-card {
+  border-radius: 10px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.achievement-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.achievement-card .MuiAvatar-root {
+  font-size: 1.5rem;
+  background-color: #1976d2;
+  color: #fff;
+}
+
+.achievement-card .MuiTypography-h6 {
+  font-weight: bold;
+  margin-top: 1rem;
+  color: #333;
+}
+
+/* Action Buttons */
+.dashboard .MuiBox-root button {
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  text-transform: capitalize;
+  margin: 0.5rem;
+}
+
+.dashboard .MuiBox-root .MuiButton-contained {
+  background-color: #1976d2;
+  color: #fff;
+}
+
+.dashboard .MuiBox-root .MuiButton-contained:hover {
+  background-color: #155a9c;
+}
+
+.dashboard .MuiBox-root .MuiButton-outlined {
+  border-color: #1976d2;
+  color: #1976d2;
+}
+
+.dashboard .MuiBox-root .MuiButton-outlined:hover {
+  background-color: rgba(25, 118, 210, 0.1);
+}
+
+/* Circular Progress */
+.MuiCircularProgress-root {
+  color: #1976d2;
+  margin-top: 2rem;
+}
+
+/* Error Message */
+.MuiTypography-root.Mui-error {
+  color: #d32f2f;
+  margin-top: 2rem;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dashboard h4 {
+    font-size: 1.5rem;
+  }
+
+  .dashboard .MuiGrid-item {
+    text-align: center;
+  }
+
+  .dashboard .MuiBox-root button {
+    width: 100%;
+    margin: 0.5rem 0;
+  }
+}

@@ -1,0 +1,96 @@
+/* Base Header Styling */
+.header {
+  background: linear-gradient(90deg, #0052cc, #003399); /* Sleek gradient */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.header.scrolled {
+  background: #003366; /* Solid dark color on scroll */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Logo Container */
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 45px;
+  margin-right: 12px;
+  border-radius: 8px; /* Rounded logo for a modern look */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.logo-text {
+  text-decoration: none;
+  color: white;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  font-family: 'Roboto', sans-serif; /* Professional font */
+}
+
+/* Navigation Links */
+.nav-links {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  gap: 25px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  font-family: 'Roboto', sans-serif;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: color 0.3s ease, background 0.3s ease;
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffcc33; /* Eye-catching hover color */
+}
+
+/* Mobile Menu Icon */
+.mobile-menu {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+      display: none; /* Hide desktop links */
+  }
+
+  .mobile-menu {
+      display: block;
+  }
+}
+
+/* Menu Dropdown */
+.MuiMenu-paper {
+  background: #0052cc; /* Matching header theme */
+  color: white;
+  font-family: 'Roboto', sans-serif;
+  border-radius: 8px;
+}
+
+.MuiMenuItem-root {
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.MuiMenuItem-root:hover {
+  background: #003399;
+  color: #ffcc33;
+}
+
+/* Scroll and Elevation */
+@media (prefers-reduced-motion: no-preference) {
+  * {
+      scroll-behavior: smooth;
+  }
+}

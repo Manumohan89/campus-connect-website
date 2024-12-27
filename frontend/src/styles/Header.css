@@ -1,0 +1,85 @@
+/* General Styling */
+.custom-header {
+  background-color: #1976d2;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.custom-header.scrolled {
+  background-color: #155a9c;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Toolbar Styling */
+.header-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+}
+
+/* Logo Section */
+.header-logo {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.header-logo-avatar {
+  width: 40px;
+  height: 40px;
+  margin-right: 8px;
+}
+
+.header-logo-text {
+  font-weight: bold;
+  color: #fff;
+}
+
+/* Desktop Navigation */
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-nav button {
+  color: #fff;
+  font-weight: 500;
+  text-transform: capitalize;
+  padding: 6px 12px;
+  transition: background-color 0.3s ease;
+}
+
+.header-nav button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Mobile Navigation */
+.header-mobile-menu {
+  display: none;
+}
+
+.menu-toggle-icon {
+  color: #fff;
+}
+
+.header-mobile-dropdown {
+  margin-top: 50px;
+}
+
+.menu-icon {
+  margin-right: 8px;
+  color: #555;
+}
+
+/* Mobile Specific Styling */
+@media (max-width: 768px) {
+  .header-nav {
+    display: none;
+  }
+
+  .header-mobile-menu {
+    display: block;
+  }
+}

@@ -1,0 +1,140 @@
+/* Global Reset & Base Styles */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+  overscroll-behavior: none; /* Disable overscroll bounce on all devices */
+  font-family: 'Roboto', Arial, sans-serif;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensure the app takes full viewport height */
+}
+
+/* ---------------------------------- */
+/* App General Styles */
+/* ---------------------------------- */
+
+.App {
+  text-align: center;
+}
+
+/* Logo Animation */
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* App Header */
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+/* App Links */
+.App-link {
+  color: #61dafb;
+}
+
+/* ---------------------------------- */
+/* Main Content Area */
+/* ---------------------------------- */
+.main-content {
+  flex: 1; /* Fill remaining space */
+  padding: 20px;
+  padding-bottom: 60px; /* Prevent overlap with footer */
+}
+
+/* ---------------------------------- */
+/* Footer Styles */
+/* ---------------------------------- */
+.footer {
+  width: 100%;
+  background-color: #2e3b55;
+  color: white;
+  padding: 20px 0;
+  text-align: center;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: auto; /* Push to bottom */
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+@media (max-width: 768px) {
+  .footer-container {
+    padding: 20px 10px;
+  }
+}
+
+/* ---------------------------------- */
+/* Public Footer (Alternate Footer) */
+/* ---------------------------------- */
+.public-footer {
+  width: 100%;
+  background-color: #2e3b55;
+  color: #ffffff;
+  text-align: center;
+}
+
+/* Footer Content Alignment */
+.auth-footer {
+  background-color: #283593;
+  color: #fff;
+  padding: 20px 0;
+  text-align: center;
+  margin-top: auto;
+  width: 100%;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* ---------------------------------- */
+/* Scroll Behavior */
+/* ---------------------------------- */
+html {
+  overflow-y: scroll;
+}
+
+/* ---------------------------------- */
+/* Responsive Adjustments */
+/* ---------------------------------- */
+@media (max-width: 768px) {
+  .main-content {
+    padding: 15px;
+  }
+
+  .footer-container {
+    padding: 10px;
+  }
+
+  .App-header {
+    font-size: calc(8px + 2vmin);
+  }
+}
