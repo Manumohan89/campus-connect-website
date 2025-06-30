@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import PublicHeader from './PublicHeader';
 import PublicFooter from './PublicFooter';
 import '../styles/Register.css';
+import API from '../api';
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -24,7 +24,7 @@ function Register() {
     setError(null);
 
     try {
-      await axios.post('/api/users/register', formData);
+      await API.post('/api/users/register', formData);
       alert('Registration successful!');
       navigate('/login');
     } catch (error) {

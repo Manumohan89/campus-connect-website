@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import Footer from './Footer';
-import axios from 'axios';
-import '../styles/JobOpportunities.css';
 
+import '../styles/JobOpportunities.css';
+import API from '../api';
 function JobOpportunities() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,7 +12,7 @@ function JobOpportunities() {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const response = await axios.get('/api/users/job-opportunities');
+        const response = await API.get('/api/users/job-opportunities');
         setJobs(response.data);
         setLoading(false);
       } catch (error) {

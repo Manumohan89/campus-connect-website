@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+
 import Header from './Header';
 import Footer from './Footer';
 import '../styles/UpdateProfile.css';
+import API from '../api';
 
 function UpdateProfile() {
   const [profile, setProfile] = useState({
@@ -20,7 +21,7 @@ function UpdateProfile() {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('/api/users/profile', {
+        const response = await API.get('/api/users/profile', {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (response.status === 200) {
@@ -46,7 +47,7 @@ function UpdateProfile() {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      await axios.put('/api/users/profile', profile, {
+      await API.put('/api/users/profile', profile, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert('Profile updated successfully!');

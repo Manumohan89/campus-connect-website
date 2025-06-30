@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+
 import Header from './Header';
 import Footer from './Footer';
 import '../styles/UploadMarks.css';
+import API from '../api';
 
 function UploadMarks() {
   const [file, setFile] = useState(null);
@@ -23,7 +24,7 @@ function UploadMarks() {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.post('/api/users/upload-marks', formData, {
+      await API.post('/api/users/upload-marks', formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../api';
 
 function ViewProfile() {
   const [profile, setProfile] = useState(null);
@@ -8,7 +8,7 @@ function ViewProfile() {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('/api/users/profile', {
+        const response = await API.get('/api/users/profile', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setProfile(response.data);

@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { Container, Grid, Card, CardContent, Typography, Box, Button, CircularProgress, Avatar } from '@mui/material';
 import Header from './Header';
 import Footer from './Footer';
 import '../styles/Dashboard.css';
-
+import API from '../api';
 const Dashboard = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -22,7 +21,7 @@ const Dashboard = () => {
           return;
         }
 
-        const response = await axios.get('/api/users/dashboard-data', {
+        const response = await API.get('/api/users/dashboard-data', {
           headers: { Authorization: `Bearer ${token}` },
         });
 

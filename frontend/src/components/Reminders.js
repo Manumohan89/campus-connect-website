@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Header from './Header';
 import Footer from './Footer';
-import axios from 'axios';
 import '../styles/Reminders.css';
+import API from '../api';
 
 function Reminders() {
   const [reminder, setReminder] = useState({ time: '', message: '' });
@@ -15,7 +15,7 @@ function Reminders() {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      await axios.post('/api/users/reminders', reminder, {
+      await API.post('/api/users/reminders', reminder, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert('Reminder set successfully!');

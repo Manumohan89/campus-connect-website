@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import Header from './Header';
 import Footer from './Footer';
 import '../styles/SharedDocuments.css';
+import API from '../api';
 
 function SharedDocuments() {
   const [documents, setDocuments] = useState([]);
@@ -12,7 +12,7 @@ function SharedDocuments() {
     const fetchDocuments = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('/api/users/shared-documents', {
+        const response = await API.get('/api/users/shared-documents', {
           headers: {
             Authorization: `Bearer ${token}`,
           },

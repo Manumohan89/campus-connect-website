@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import PublicHeader from './PublicHeader';
 import PublicFooter from './PublicFooter';
 import '../styles/Login.css';
+import API from '../api';
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -16,7 +16,7 @@ function Login() {
     setError(null);
 
     try {
-      const response = await axios.post('/api/users/login', { username, password });
+      const response = await API.post('/api/users/login', { username, password });
       localStorage.setItem('token', response.data.token);
       alert('Login successful!');
       navigate('/dashboard');
