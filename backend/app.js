@@ -20,11 +20,32 @@ app.use(express.json());
 
 // ✅ Enable CORS from your frontend domain
 app.use(cors({
-  origin: 'https://campus-connect-website-1.onrender.com', // or '*' for dev only
+  origin: [
+    'https://campus-connect-website-1.onrender.com',
+    'https://campus-connect.online',
+    'https://www.campus-connect.online' // if you're using www version too
+  ],
   credentials: true,
 }));
 
-app.use(helmet());
+
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "https:"],
+        styleSrc: ["'self'", "https:", "'unsafe-inline'"],
+        imgSrc: ["'self'", "data:", "https://randomuser.me"],
+        connectSrc: ["'self'", "https:"],
+        fontSrc: ["'self'", "https:", "data:"],
+        objectSrc: ["'none'"],
+        upgradeInsecureRequests: [],
+      },
+    },
+  })
+);
+
 
 // ✅ Rate limiting
 const limiter = rateLimit({
