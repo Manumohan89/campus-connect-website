@@ -254,5 +254,50 @@ router.get('/cgpa', authMiddleware, async (req, res) => {
   }
 });
 
+const publicStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const uploadsPath = path.join(__dirname, '../uploads');
+    cb(null, uploadsPath);
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    cb(null, `public_${Date.now()}${ext}`);
+  },
+});
+
+const publicUpload = multer({ storage: publicStorage });
+
+router.post('/public-upload', publicUpload.single('marksCard'), async (req, res) => {
+  try {
+    const filePath = req.file.path;
+    const outputExcel = filePath.replace('.pdf', '.xlsx');
+    const pythonScript = path.join(__dirname, '../scripts/pdf_to_excel.py');
+
+    exec(`python "${pythonScript}" "${filePath}" "${outputExcel}"`, async (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Error executing Python script: ${error.message}`);
+        return res.status(500).json({ error: 'Failed to process marks card. Make sure it is a valid PDF.' });
+      }
+      if (stderr) {
+        console.error(`Python script error: ${stderr}`);
+        return res.status(500).json({ error: 'Python conversion error.' });
+      }
+
+      try {
+        // Pass null as userId so it doesn't save anything to DB
+        const sgpa = await calculateSgpa(outputExcel, null);
+        return res.status(200).json({ sgpa });
+      } catch (err) {
+        console.error('SGPA calculation error:', err);
+        res.status(500).json({ error: 'Failed to calculate SGPA.' });
+      }
+    });
+  } catch (error) {
+    console.error('Public upload error:', error);
+    res.status(500).json({ error: 'Internal server error during public SGPA calculation.' });
+  }
+});
+
+
   
 module.exports = router;
