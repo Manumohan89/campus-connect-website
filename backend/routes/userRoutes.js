@@ -37,11 +37,15 @@ router.post('/register', [
   check('fullName').notEmpty(),
   check('college').notEmpty(),
   check('semester').isInt({ min: 1, max: 8 }),
+  check('mobile').isMobilePhone().withMessage('Invalid mobile number'),
+  check('branch').notEmpty(),
+  check('yearScheme').notEmpty().isLength({ min: 4, max: 4 }).withMessage('Enter valid year scheme'),
 ], async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
   return registerUser(req, res);
 });
+
 
 // ===== Login =====
 router.post('/login', loginUser);
