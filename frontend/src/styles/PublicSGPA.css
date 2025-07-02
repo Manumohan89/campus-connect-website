@@ -1,0 +1,33 @@
+.public-sgpa-page {
+  margin-top: 80px;
+  text-align: center;
+}
+
+.upload-box {
+  padding: 30px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.file-input {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.upload-btn {
+  margin-bottom: 20px;
+}
+
+.message {
+  margin-top: 10px;
+  color: #333;
+}
+
+.result-box {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f1faff;
+  border: 1px solid #90caf9;
+  border-radius: 10px;
+}

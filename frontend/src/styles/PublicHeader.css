@@ -1,16 +1,14 @@
-/* Base Header Styling */
-.header {
-  background: linear-gradient(90deg, #0052cc, #003399); /* Sleek gradient */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.modern-header {
+  background-color: transparent;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
-.header.scrolled {
-  background: #003366; /* Solid dark color on scroll */
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+.modern-header.scrolled {
+  background-color: rgba(0, 0, 50, 0.9);
 }
 
-/* Logo Container */
 .logo-container {
   display: flex;
   align-items: center;
@@ -18,79 +16,69 @@
 
 .logo {
   height: 45px;
-  margin-right: 12px;
-  border-radius: 8px; /* Rounded logo for a modern look */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin-right: 10px;
+  border-radius: 6px;
 }
 
 .logo-text {
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
   text-decoration: none;
-  color: white;
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  font-family: 'Roboto', sans-serif; /* Professional font */
+  font-family: 'Poppins', sans-serif;
 }
 
-/* Navigation Links */
 .nav-links {
   display: flex;
+  gap: 20px;
   flex: 1;
   justify-content: center;
-  gap: 25px;
 }
 
 .nav-link {
+  color: #fff;
   text-decoration: none;
-  color: white;
-  font-size: 16px;
+  display: flex;
+  align-items: center;
   font-weight: 500;
-  font-family: 'Roboto', sans-serif;
-  padding: 8px 12px;
-  border-radius: 6px;
+  font-size: 15px;
   transition: color 0.3s ease, background 0.3s ease;
+  padding: 6px 10px;
+  border-radius: 6px;
 }
 
 .nav-link:hover {
-  background: rgba(255, 255, 255, 0.2);
-  color: #ffcc33; /* Eye-catching hover color */
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffcc00;
 }
 
-/* Mobile Menu Icon */
+.nav-icon {
+  margin-right: 6px;
+  font-size: 20px;
+}
+
 .mobile-menu {
   display: none;
 }
 
 @media (max-width: 768px) {
   .nav-links {
-      display: none; /* Hide desktop links */
+    display: none;
   }
-
   .mobile-menu {
-      display: block;
+    display: block;
   }
 }
 
-/* Menu Dropdown */
 .MuiMenu-paper {
-  background: #0052cc; /* Matching header theme */
+  background-color: #002244;
   color: white;
-  font-family: 'Roboto', sans-serif;
-  border-radius: 8px;
 }
-
 .MuiMenuItem-root {
-  transition: background 0.3s ease, color 0.3s ease;
+  display: flex;
+  gap: 10px;
 }
-
 .MuiMenuItem-root:hover {
-  background: #003399;
-  color: #ffcc33;
-}
-
-/* Scroll and Elevation */
-@media (prefers-reduced-motion: no-preference) {
-  * {
-      scroll-behavior: smooth;
-  }
+  background-color: #001122;
+  color: #ffcc00;
 }

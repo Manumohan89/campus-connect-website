@@ -6,14 +6,12 @@ import TestimonialsGrid from '../components/TestimonialsGrid';
 import Counter from '../components/Counter';
 import NewsletterPopup from '../components/NewsletterPopup';
 import LiveChat from '../components/LiveChat';
-import PublicHeader from './PublicHeader';
-import PublicFooter from './PublicFooter'; 
-import FAQ from './FAQ';
+import PublicHeader from '../components/PublicHeader';
+import PublicFooter from '../components/PublicFooter'; 
+import FAQ from '../components/FAQ';
 import '../styles/Home.css';
 
 const Home = () => {
-    
-    // Custom cursor effect
     useEffect(() => {
         const cursor = document.querySelector('.custom-cursor');
         const onMouseMove = (e) => {
@@ -21,9 +19,7 @@ const Home = () => {
             cursor.style.top = `${e.pageY}px`;  
         };
         document.addEventListener('mousemove', onMouseMove);
-        return () => {
-            document.removeEventListener('mousemove', onMouseMove);
-        };
+        return () => document.removeEventListener('mousemove', onMouseMove);
     }, []);
 
     return (
@@ -50,7 +46,41 @@ const Home = () => {
                     </div>
                 </Box>
 
-                {/* Our Services */}
+                {/* Quick Navigation Section */}
+                <Container className="quick-links">
+                    <Grid container spacing={4} justifyContent="center">
+                        <Grid item>
+                            <Button variant="outlined" color="primary" component={Link} to="/public-sgpa">
+                                Try SGPA Calculator
+                            </Button>
+                        </Grid>
+                        <Grid item>
+                            <Button variant="outlined" color="secondary" component={Link} to="/resources">
+                                Visit Resources Page
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </Container>
+
+                {/* Promotional Video */}
+                <Container maxWidth="md" className="video-section">
+                    <Typography variant="h4" gutterBottom className="section-title">
+                        How Campus Connect Works
+                    </Typography>
+                    <Box className="video-container">
+                        <iframe
+                            width="100%"
+                            height="400"
+                            src="https://www.youtube.com/embed/YOUR_VIDEO_ID" // Replace with your real video link
+                            title="Promotional Video"
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                        ></iframe>
+                    </Box>
+                </Container>
+
+                {/* Services */}
                 <Container maxWidth="lg" className="featured-services">
                     <Typography variant="h4" gutterBottom className="section-title">
                         Our Services
@@ -58,27 +88,21 @@ const Home = () => {
                     <Grid container spacing={4}>
                         <Grid item xs={12} sm={6} md={4}>
                             <Paper elevation={3} className="service-card">
-                                <div className="service-icon">
-                                    <i className="fas fa-calculator"></i>
-                                </div>
+                                <div className="service-icon"><i className="fas fa-calculator"></i></div>
                                 <Typography variant="h5">SGPA & CGPA Calculation</Typography>
                                 <Typography>Track and calculate your academic performance with ease.</Typography>
                             </Paper>
                         </Grid>
                         <Grid item xs={12} sm={6} md={4}>
                             <Paper elevation={3} className="service-card">
-                                <div className="service-icon">
-                                    <i className="fas fa-folder-open"></i>
-                                </div>
+                                <div className="service-icon"><i className="fas fa-folder-open"></i></div>
                                 <Typography variant="h5">Document Sharing</Typography>
                                 <Typography>Share important study materials and projects securely.</Typography>
                             </Paper>
                         </Grid>
                         <Grid item xs={12} sm={6} md={4}>
                             <Paper elevation={3} className="service-card">
-                                <div className="service-icon">
-                                    <i className="fas fa-briefcase"></i>
-                                </div>
+                                <div className="service-icon"><i className="fas fa-briefcase"></i></div>
                                 <Typography variant="h5">Job Opportunities</Typography>
                                 <Typography>Explore relevant internships and job opportunities in your field.</Typography>
                             </Paper>
@@ -105,13 +129,13 @@ const Home = () => {
                     </Grid>
                 </Container>
 
-                {/* Testimonials Section */}
+                {/* Testimonials */}
                 <TestimonialsGrid />
 
-                {/* FAQ Section */}
+                {/* FAQ */}
                 <FAQ />
 
-                {/* Live Chat and Newsletter */}
+                {/* Add-ons */}
                 <LiveChat />
                 <NewsletterPopup />
             </div>

@@ -14,7 +14,7 @@ import SharedDocuments from './components/SharedDocuments';
 import ProfileCustomization from './components/ProfileCustomization';
 import Contact from './components/Contact';
 import About from './components/About';
-
+import PublicSGPA from './components/PublicSGPA';
 
 function App() {
   return (
@@ -34,6 +34,7 @@ function App() {
         <Route path="/profilecustomization" element = {<ProfileCustomization/>} />
         <Route path="/about-us" element = {<About/>} />
         <Route path="/contact" element = {<Contact/>} />
+        <Route path="/public-sgpa" element={<PublicSGPA />} /> {/* Public SGPA calculator route */}
       
       </Routes>
     </Router>
