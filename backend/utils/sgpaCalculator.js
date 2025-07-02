@@ -70,7 +70,6 @@ async function calculateSgpa(excelPath, userId) {
 }
 
 async function saveMarksToDb(userId, subjectCode, subjectName, internalMarks, externalMarks, gradePoints, credits) {
-  if (!userId) return; // Prevent saving if public
   await pool.query(
     'INSERT INTO marks (user_id, subject_code, subject_name, internal_marks, external_marks, total, sgpa, credits) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
     [userId, subjectCode, subjectName, internalMarks, externalMarks, internalMarks + externalMarks, gradePoints, credits]
@@ -95,8 +94,8 @@ async function calculateCgpa(userId) {
   const cgpa = totalCredits > 0 ? totalSgpaPoints / totalCredits : 0;
   return cgpa.toFixed(2); // Ensure only two decimal points
 }
+
 async function saveSgpaToDb(userId, sgpa) {
-  if (!userId) return; // Skip DB update if public
   await pool.query('UPDATE users SET sgpa = $1 WHERE user_id = $2', [sgpa, userId]);
 }
 
