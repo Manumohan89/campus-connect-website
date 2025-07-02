@@ -54,15 +54,15 @@ router.post('/login', loginUser);
 router.get('/profile', authMiddleware, async (req, res) => {
   try {
     const userId = req.user.userId;
-    const sgpa = await calculateSgpa(userId);
-    const cgpa = await calculateCgpa(userId);
-
-    await pool.query('UPDATE users SET sgpa = $1, cgpa = $2 WHERE user_id = $3', [sgpa, cgpa, userId]);
 
     const result = await pool.query(
       'SELECT full_name, semester, college, branch, sgpa, cgpa FROM users WHERE user_id = $1',
       [userId]
     );
+
+    if (!result.rows.length) {
+      return res.status(404).json({ error: 'User not found' });
+    }
 
     res.status(200).json(result.rows[0]);
   } catch (error) {
@@ -70,7 +70,6 @@ router.get('/profile', authMiddleware, async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch profile.' });
   }
 });
-
 // ===== Update Profile =====
 router.put('/profile', authMiddleware, updateUserProfile);
 
