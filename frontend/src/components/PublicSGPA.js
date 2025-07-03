@@ -29,7 +29,7 @@ const PublicSGPA = () => {
 
     try {
       setLoading(true);
-      const response = await API.post('/public-upload', formData, {
+      const response = await API.post('/api/users/public-upload', formData, {
 
         headers: {
           'Content-Type': 'multipart/form-data',
