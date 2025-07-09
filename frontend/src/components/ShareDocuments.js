@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import Header from './Header';
 import Footer from './Footer';
 import '../styles/ShareDocuments.css';
@@ -41,14 +40,12 @@ function ShareDocuments() {
     <>
     <Header />
     <div className="share-documents-page">
-      
       <div className="share-documents-content">
         <h2>Share Document</h2>
         <input type="file" onChange={handleFileChange} />
         <button onClick={handleUpload}>Upload</button>
         {message && <p>{message}</p>}
       </div>
-     
     </div>
     <Footer />
     </>

@@ -1,128 +1,248 @@
 /* General Styling */
 .dashboard {
-  background-color: #f4f6f8;
+  background: linear-gradient(135deg, #e6f0fa 0%, #f4f6f8 100%);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  font-family: 'Open Sans', sans-serif;
 }
 
 /* Container Styling */
 .dashboard .MuiContainer-root {
   flex: 1;
-  padding-top: 2rem;
-  padding-bottom: 2rem;
+  padding: 3rem 1rem;
+  max-width: 1200px;
 }
 
 /* Typography */
-.dashboard h4 {
-  font-size: 2rem;
-  font-weight: bold;
+.dashboard .MuiTypography-h4 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #1976d2, #60a5fa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   text-align: center;
-  color: #333;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
+  animation: fadeIn 1s ease-out;
+}
+
+.dashboard .MuiTypography-h5 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.dashboard .MuiTypography-body2 {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1rem;
+  color: #4b5563;
+  line-height: 1.6;
 }
 
 /* Grid Cards */
-.MuiGrid-item .MuiCard-root {
-  border-radius: 10px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+.dashboard .MuiGrid-item .MuiCard-root {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  overflow: visible;
+  animation: scaleUp 0.5s ease-out forwards;
 }
 
-.MuiGrid-item .MuiCard-root:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+.dashboard .MuiGrid-item .MuiCard-root:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.25);
 }
 
-.MuiCardContent-root {
+.dashboard .MuiCardContent-root {
   text-align: center;
+  padding: 1.5rem !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
-.MuiCardContent-root .MuiTypography-h5 {
-  font-weight: bold;
-  color: #1976d2;
+/* Achievements Section */
+.dashboard .achievement-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: scaleUp 0.5s ease-out forwards;
 }
 
-.MuiCardContent-root .MuiTypography-body2 {
-  margin-top: 0.5rem;
-  color: #666;
-}
-
-/* Achievements */
-.achievement-card {
-  border-radius: 10px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.achievement-card:hover {
+.dashboard .achievement-card:hover {
   transform: scale(1.05);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
-.achievement-card .MuiAvatar-root {
-  font-size: 1.5rem;
-  background-color: #1976d2;
-  color: #fff;
+.dashboard .achievement-card .MuiAvatar-root {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(45deg, #1976d2, #60a5fa);
+  font-size: 2rem;
+  margin-bottom: 1rem;
 }
 
-.achievement-card .MuiTypography-h6 {
-  font-weight: bold;
-  margin-top: 1rem;
-  color: #333;
+.dashboard .achievement-card .MuiTypography-h6 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.dashboard .achievement-card .MuiTypography-body2 {
+  color: #4b5563;
+  font-size: 0.9rem;
 }
 
 /* Action Buttons */
-.dashboard .MuiBox-root button {
-  padding: 0.75rem 2rem;
-  font-size: 1rem;
-  border-radius: 8px;
-  text-transform: capitalize;
-  margin: 0.5rem;
+.dashboard .MuiBox-root {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 3rem;
 }
 
 .dashboard .MuiBox-root .MuiButton-contained {
-  background-color: #1976d2;
+  background: linear-gradient(45deg, #1976d2, #60a5fa);
   color: #fff;
+  padding: 0.75rem 2rem;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  text-transform: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeIn 0.5s ease-out;
 }
 
 .dashboard .MuiBox-root .MuiButton-contained:hover {
-  background-color: #155a9c;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(45deg, #155a9c, #4b8ce2);
 }
 
 .dashboard .MuiBox-root .MuiButton-outlined {
-  border-color: #1976d2;
+  border: 2px solid #1976d2;
   color: #1976d2;
+  padding: 0.75rem 2rem;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  text-transform: none;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  animation: fadeIn 0.5s ease-out;
 }
 
 .dashboard .MuiBox-root .MuiButton-outlined:hover {
+  transform: scale(1.05);
   background-color: rgba(25, 118, 210, 0.1);
+  border-color: #155a9c;
 }
 
 /* Circular Progress */
-.MuiCircularProgress-root {
+.dashboard .MuiCircularProgress-root {
   color: #1976d2;
-  margin-top: 2rem;
+  margin: 4rem auto;
+  display: block;
 }
 
 /* Error Message */
-.MuiTypography-root.Mui-error {
+.dashboard .MuiTypography-root.Mui-error {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
   color: #d32f2f;
-  margin-top: 2rem;
   text-align: center;
-  font-weight: bold;
+  margin: 4rem auto;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .dashboard h4 {
+  .dashboard .MuiTypography-h4 {
+    font-size: 2rem;
+  }
+
+  .dashboard .MuiTypography-h5 {
+    font-size: 1.25rem;
+  }
+
+  .dashboard .MuiTypography-body2 {
+    font-size: 0.9rem;
+  }
+
+  .dashboard .MuiBox-root {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .dashboard .MuiBox-root .MuiButton-root {
+    width: 100%;
+    max-width: 300px;
+    margin: 0.5rem 0;
+  }
+
+  .dashboard .achievement-card .MuiAvatar-root {
+    width: 48px;
+    height: 48px;
     font-size: 1.5rem;
   }
+}
 
-  .dashboard .MuiGrid-item {
-    text-align: center;
+@media (max-width: 480px) {
+  .dashboard .MuiTypography-h4 {
+    font-size: 1.75rem;
   }
 
-  .dashboard .MuiBox-root button {
-    width: 100%;
-    margin: 0.5rem 0;
+  .dashboard .MuiTypography-h5 {
+    font-size: 1.1rem;
+  }
+
+  .dashboard .MuiTypography-body2 {
+    font-size: 0.85rem;
+  }
+
+  .dashboard .MuiContainer-root {
+    padding: 1.5rem 0.5rem;
+  }
+
+  .dashboard .MuiBox-root .MuiButton-root {
+    padding: 0.5rem 1.5rem;
   }
 }

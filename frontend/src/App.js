@@ -15,6 +15,9 @@ import ProfileCustomization from './components/ProfileCustomization';
 import Contact from './components/Contact';
 import About from './components/About';
 import PublicSGPA from './components/PublicSGPA';
+import Resources from './components/Resources'; // Import the Resources component
+import VTUCircularsPreview from './components/VTUCircularsPreview'; // Import the VTUCircularsPreview component 
+
 
 function App() {
   return (
@@ -35,6 +38,11 @@ function App() {
         <Route path="/about-us" element = {<About/>} />
         <Route path="/contact" element = {<Contact/>} />
         <Route path="/public-sgpa" element={<PublicSGPA />} /> {/* Public SGPA calculator route */}
+        
+        <Route path="/resources" element={<Resources />} />
+       <Route path="/resources/circulars" element={<VTUCircularsPreview />} />
+
+
       
       </Routes>
     </Router>

@@ -1,97 +1,157 @@
-/* ShareDocuments.css */
-
-/* General Page Styling */
+/* General Styling */
 .share-documents-page {
+  background: linear-gradient(135deg, #e6f0fa 0%, #f4f6f8 100%);
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 80vh;
-  background-color: #f8f9fa; /* Light background for contrast */
-  font-family: 'Roboto', sans-serif;
+  justify-content: space-between;
+  font-family: 'Open Sans', sans-serif;
 }
 
 /* Content Container */
 .share-documents-content {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  max-width: 600px;
+  margin: 3rem auto;
+  padding: 2rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
   text-align: center;
-  background: white;
-  padding: 20px 30px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  max-width: 500px;
-  width: 100%;
+  z-index: 1;
+  animation: fadeIn 0.5s ease-out;
 }
 
-/* Title Styling */
+/* Typography */
 .share-documents-content h2 {
+  font-family: 'Montserrat', sans-serif;
   font-size: 2rem;
-  margin-bottom: 20px;
-  color: #333;
-  font-weight: bold;
+  font-weight: 700;
+  background: linear-gradient(90deg, #1976d2, #60a5fa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1.5rem;
 }
 
 /* File Input */
 .share-documents-content input[type="file"] {
   display: block;
-  margin: 20px auto;
-  padding: 10px;
+  margin: 1rem auto;
+  padding: 0.5rem;
+  font-family: 'Open Sans', sans-serif;
   font-size: 1rem;
-  cursor: pointer;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  transition: border-color 0.3s ease;
+  color: #111827;
+  background: rgba(255, 255, 255, 0.8);
+  border: 2px solid #1976d2;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 400px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.share-documents-content input[type="file"]:hover {
-  border-color: #007bff;
+.share-documents-content input[type="file"]:focus {
+  outline: none;
+  border-color: #60a5fa;
+  box-shadow: 0 0 8px rgba(25, 118, 210, 0.3);
 }
 
 /* Upload Button */
 .share-documents-content button {
-  display: inline-block;
-  background-color: #007bff;
-  color: white;
+  background: linear-gradient(45deg, #1976d2, #60a5fa);
+  color: #fff;
+  padding: 0.75rem 2rem;
+  font-family: 'Montserrat', sans-serif;
   font-size: 1rem;
-  font-weight: bold;
-  padding: 10px 20px;
+  font-weight: 600;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin: 1rem 0;
 }
 
 .share-documents-content button:hover {
-  background-color: #0056b3;
   transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(45deg, #155a9c, #4b8ce2);
 }
 
-.share-documents-content button:active {
-  transform: scale(1);
+.share-documents-content button:focus {
+  outline: none;
+  box-shadow: 0 0 8px rgba(25, 118, 210, 0.5);
 }
 
-/* Message Feedback */
+/* Message */
 .share-documents-content p {
-  margin-top: 20px;
+  font-family: 'Open Sans', sans-serif;
   font-size: 1rem;
-  color: #28a745; /* Green for success */
+  color: #111827;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+  display: inline-block;
 }
 
-.share-documents-content p.error {
-  color: #dc3545; /* Red for error */
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
   .share-documents-content {
-    padding: 15px 20px;
+    margin: 2rem 1rem;
+    padding: 1.5rem;
   }
 
   .share-documents-content h2 {
     font-size: 1.75rem;
   }
 
+  .share-documents-content input[type="file"] {
+    max-width: 100%;
+  }
+
   .share-documents-content button {
-    padding: 8px 16px;
+    padding: 0.5rem 1.5rem;
     font-size: 0.9rem;
+  }
+
+  .share-documents-content p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .share-documents-content {
+    margin: 1.5rem 0.5rem;
+    padding: 1rem;
+  }
+
+  .share-documents-content h2 {
+    font-size: 1.5rem;
+  }
+
+  .share-documents-content input[type="file"] {
+    font-size: 0.85rem;
+  }
+
+  .share-documents-content button {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .share-documents-content p {
+    font-size: 0.85rem;
   }
 }

@@ -5,6 +5,7 @@ import Header from './Header';
 import Footer from './Footer';
 import '../styles/Dashboard.css';
 import API from '../api';
+
 const Dashboard = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);

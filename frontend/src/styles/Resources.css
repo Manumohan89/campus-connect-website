@@ -1,0 +1,28 @@
+.resources-page {
+  padding: 50px 0;
+  text-align: center;
+}
+
+.resources-title {
+  margin-bottom: 30px;
+  font-weight: 600;
+  color: #2e3b55;
+}
+
+.resource-card {
+  padding: 20px;
+  min-height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.3s ease;
+}
+
+.resource-card:hover {
+  transform: translateY(-10px);
+}
+
+.resource-icon {
+  color: #2e3b55;
+  margin-bottom: 10px;
+}
