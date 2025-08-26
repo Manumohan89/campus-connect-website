@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, Grid, Card, CardContent, Typography, Box, Button, CircularProgress, Avatar } from '@mui/material';
+import {
+  Container,
+  Grid,
+  Card,
+  CardContent,
+  Typography,
+  Box,
+  Button,
+  CircularProgress,
+  Avatar
+} from '@mui/material';
 import Header from './Header';
 import Footer from './Footer';
 import '../styles/Dashboard.css';
@@ -55,50 +65,68 @@ const Dashboard = () => {
   return (
     <div className="dashboard">
       <Header />
-      <Container maxWidth="lg" sx={{ padding: '2rem 0' }}>
-        <Typography variant="h4" sx={{ mb: 4 }}>Welcome, {data.username}!</Typography>
 
-        {/* Main Features Section */}
+      {/* Hero Section */}
+      <Box className="dashboard-hero">
+        <Typography variant="h3" className="hero-title">
+          Welcome back, {data.username}! 🎉
+        </Typography>
+        <Typography variant="subtitle1" className="hero-subtitle">
+          Here’s your personalized hub for academics, achievements, and more.
+        </Typography>
+      </Box>
+
+      <Container maxWidth="lg" sx={{ padding: '2rem 0' }}>
+        {/* Main Features */}
         <Grid container spacing={4}>
           <Grid item xs={12} sm={6} md={4}>
-            <Card elevation={3} onClick={() => navigate('/profile')} sx={{ cursor: 'pointer', height: '100%' }}>
+            <Card className="feature-card" onClick={() => navigate('/profile')}>
               <CardContent>
-                <Typography variant="h5">Profile</Typography>
-                <Typography>View and update your profile information.</Typography>
+                <Avatar className="feature-icon">👤</Avatar>
+                <Typography variant="h5" className="feature-title">Profile</Typography>
+                <Typography className="feature-text">
+                  View and update your profile information.
+                </Typography>
               </CardContent>
             </Card>
           </Grid>
 
           <Grid item xs={12} sm={6} md={4}>
-            <Card elevation={3} onClick={() => navigate('/upload-marks')} sx={{ cursor: 'pointer', height: '100%' }}>
+            <Card className="feature-card" onClick={() => navigate('/upload-marks')}>
               <CardContent>
-                <Typography variant="h5">Upload Marks</Typography>
-                <Typography>Track your academic progress by uploading marks.</Typography>
+                <Avatar className="feature-icon">📊</Avatar>
+                <Typography variant="h5" className="feature-title">Upload Marks</Typography>
+                <Typography className="feature-text">
+                  Track your academic progress by uploading marks.
+                </Typography>
               </CardContent>
             </Card>
           </Grid>
 
           <Grid item xs={12} sm={6} md={4}>
-            <Card elevation={3} onClick={() => navigate('/job-opportunities')} sx={{ cursor: 'pointer', height: '100%' }}>
+            <Card className="feature-card" onClick={() => navigate('/job-opportunities')}>
               <CardContent>
-                <Typography variant="h5">Job Opportunities</Typography>
-                <Typography>Explore relevant internships and job opportunities.</Typography>
+                <Avatar className="feature-icon">💼</Avatar>
+                <Typography variant="h5" className="feature-title">Job Opportunities</Typography>
+                <Typography className="feature-text">
+                  Explore relevant internships and job opportunities.
+                </Typography>
               </CardContent>
             </Card>
           </Grid>
         </Grid>
 
-        {/* Achievements Section */}
-        <Box sx={{ mt: 4 }}>
-          <Typography variant="h5" sx={{ mb: 2 }}>Your Achievements</Typography>
+        {/* Achievements */}
+        <Box sx={{ mt: 6 }}>
+          <Typography variant="h5" sx={{ mb: 3, textAlign: 'center', fontWeight: '600' }}>
+            Your Achievements 🏆
+          </Typography>
           <Grid container spacing={4}>
             {achievements.map((achievement, index) => (
               <Grid item xs={12} sm={6} md={4} key={index}>
-                <Card className="achievement-card" elevation={3}>
+                <Card className="achievement-card">
                   <CardContent sx={{ textAlign: 'center' }}>
-                    <Avatar sx={{ margin: 'auto', bgcolor: 'primary.main', width: 56, height: 56 }}>
-                      {achievement.icon}
-                    </Avatar>
+                    <Avatar className="achievement-icon">{achievement.icon}</Avatar>
                     <Typography variant="h6" sx={{ mt: 2 }}>
                       {achievement.title}
                     </Typography>
@@ -112,16 +140,17 @@ const Dashboard = () => {
           </Grid>
         </Box>
 
-        {/* Action Buttons */}
-        <Box sx={{ mt: 4, textAlign: 'center' }}>
-          <Button variant="contained" onClick={() => navigate('/reminders')} sx={{ mr: 2 }}>
+        {/* Actions */}
+        <Box sx={{ mt: 5, textAlign: 'center' }}>
+          <Button variant="contained" size="large" sx={{ mr: 2 }} onClick={() => navigate('/reminders')}>
             Set Reminders
           </Button>
-          <Button variant="outlined" color="secondary" onClick={() => navigate('/shared-documents')}>
-            View Shared Documents
+          <Button variant="outlined" size="large" color="secondary" onClick={() => navigate('/shared-documents')}>
+            View Documents
           </Button>
         </Box>
       </Container>
+
       <Footer />
     </div>
   );

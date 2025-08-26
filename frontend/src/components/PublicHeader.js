@@ -1,7 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { AppBar, Toolbar, Typography, IconButton, Menu, MenuItem } from '@mui/material';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  IconButton,
+  Drawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Divider
+} from '@mui/material';
 import { Link } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
+import CloseIcon from '@mui/icons-material/Close';
 import HomeIcon from '@mui/icons-material/Home';
 import InfoIcon from '@mui/icons-material/Info';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
@@ -13,7 +25,7 @@ import logo from '../components/images/campusconnect.jpg';
 import '../styles/PublicHeader.css';
 
 const PublicHeader = ({ isLoggedIn }) => {
-  const [mobileAnchorEl, setMobileAnchorEl] = useState(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -22,12 +34,27 @@ const PublicHeader = ({ isLoggedIn }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleMobileMenuOpen = (event) => setMobileAnchorEl(event.currentTarget);
-  const handleMobileMenuClose = () => setMobileAnchorEl(null);
+  const toggleDrawer = (open) => () => setDrawerOpen(open);
+
+  const menuItems = [
+    { text: 'Home', icon: <HomeIcon />, path: '/' },
+    { text: 'SGPA Calculator', icon: <CalculateIcon />, path: '/public-sgpa' },
+    { text: 'Resources', icon: <BookIcon />, path: '/resources' },
+    { text: 'About Us', icon: <InfoIcon />, path: '/about-us' },
+    { text: 'Contact', icon: <ContactMailIcon />, path: '/contact' },
+  ];
+
+  const authItems = !isLoggedIn
+    ? [
+        { text: 'Login', icon: <LoginIcon />, path: '/login' },
+        { text: 'Register', icon: <AppRegistrationIcon />, path: '/register' },
+      ]
+    : [];
 
   return (
     <AppBar position="sticky" className={`modern-header ${scrolled ? 'scrolled' : ''}`}>
       <Toolbar>
+        {/* Logo + Title */}
         <div className="logo-container">
           <img src={logo} alt="Campus Connect Logo" className="logo" />
           <Typography variant="h6" component={Link} to="/" className="logo-text">
@@ -35,37 +62,75 @@ const PublicHeader = ({ isLoggedIn }) => {
           </Typography>
         </div>
 
+        {/* Desktop Nav Links */}
         <div className="nav-links">
-          <Link to="/" className="nav-link"><HomeIcon className="nav-icon" />Home</Link>
-          <Link to="/public-sgpa" className="nav-link"><CalculateIcon className="nav-icon" />SGPA Calculator</Link>
-          <Link to="/resources" className="nav-link"><BookIcon className="nav-icon" />Resources</Link>
-          <Link to="/about-us" className="nav-link"><InfoIcon className="nav-icon" />About</Link>
-          <Link to="/contact" className="nav-link"><ContactMailIcon className="nav-icon" />Contact</Link>
-          {!isLoggedIn && (
-            <>
-              <Link to="/login" className="nav-link"><LoginIcon className="nav-icon" />Login</Link>
-              <Link to="/register" className="nav-link"><AppRegistrationIcon className="nav-icon" />Register</Link>
-            </>
-          )}
+          {menuItems.map((item) => (
+            <Link key={item.text} to={item.path} className="nav-link">
+              {item.icon}
+              {item.text}
+            </Link>
+          ))}
+          {authItems.map((item) => (
+            <Link key={item.text} to={item.path} className="nav-link">
+              {item.icon}
+              {item.text}
+            </Link>
+          ))}
         </div>
 
+        {/* Mobile Drawer */}
         <div className="mobile-menu">
-          <IconButton edge="end" color="inherit" onClick={handleMobileMenuOpen}>
-            <MenuIcon />
+          <IconButton edge="end" color="inherit" onClick={toggleDrawer(true)}>
+            {drawerOpen ? <CloseIcon /> : <MenuIcon />}
           </IconButton>
-          <Menu anchorEl={mobileAnchorEl} open={Boolean(mobileAnchorEl)} onClose={handleMobileMenuClose}>
-            <MenuItem component={Link} to="/" onClick={handleMobileMenuClose}><HomeIcon /> Home</MenuItem>
-            <MenuItem component={Link} to="/public-sgpa" onClick={handleMobileMenuClose}><CalculateIcon /> SGPA Calculator</MenuItem>
-            <MenuItem component={Link} to="/resources" onClick={handleMobileMenuClose}><BookIcon /> Resources</MenuItem>
-            <MenuItem component={Link} to="/about-us" onClick={handleMobileMenuClose}><InfoIcon /> About Us</MenuItem>
-            <MenuItem component={Link} to="/contact" onClick={handleMobileMenuClose}><ContactMailIcon /> Contact</MenuItem>
-            {!isLoggedIn && (
+
+          <Drawer
+            anchor="right"
+            open={drawerOpen}
+            onClose={toggleDrawer(false)}
+            PaperProps={{ className: 'mobile-drawer' }}
+          >
+            <div className="drawer-header">
+              <img src={logo} alt="logo" className="drawer-logo" />
+              <Typography variant="h6">Campus Connect</Typography>
+            </div>
+            <Divider />
+
+            <List>
+              {menuItems.map((item) => (
+                <ListItem
+                  button
+                  key={item.text}
+                  component={Link}
+                  to={item.path}
+                  onClick={toggleDrawer(false)}
+                >
+                  <ListItemIcon sx={{ color: 'inherit' }}>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.text} />
+                </ListItem>
+              ))}
+            </List>
+
+            {authItems.length > 0 && (
               <>
-                <MenuItem component={Link} to="/login" onClick={handleMobileMenuClose}><LoginIcon /> Login</MenuItem>
-                <MenuItem component={Link} to="/register" onClick={handleMobileMenuClose}><AppRegistrationIcon /> Register</MenuItem>
+                <Divider />
+                <List>
+                  {authItems.map((item) => (
+                    <ListItem
+                      button
+                      key={item.text}
+                      component={Link}
+                      to={item.path}
+                      onClick={toggleDrawer(false)}
+                    >
+                      <ListItemIcon sx={{ color: 'inherit' }}>{item.icon}</ListItemIcon>
+                      <ListItemText primary={item.text} />
+                    </ListItem>
+                  ))}
+                </List>
               </>
             )}
-          </Menu>
+          </Drawer>
         </div>
       </Toolbar>
     </AppBar>

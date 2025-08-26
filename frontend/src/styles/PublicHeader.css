@@ -82,3 +82,32 @@
   background-color: #001122;
   color: #ffcc00;
 }
+/* Drawer styling */
+.mobile-drawer {
+  width: 250px;
+  background-color: #002244;
+  color: white;
+  height: 100%;
+}
+
+.drawer-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px;
+  background: #001122;
+}
+
+.drawer-logo {
+  height: 35px;
+  border-radius: 4px;
+}
+
+.MuiListItem-root {
+  padding: 12px 20px;
+}
+
+.MuiListItem-root:hover {
+  background: #001122;
+  color: #ffcc00;
+}

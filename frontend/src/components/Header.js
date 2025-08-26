@@ -33,7 +33,7 @@ const Header = () => {
   }, []);
 
   return (
-    <AppBar position="fixed" className={`custom-header ${scrolled ? 'scrolled' : ''}`}>
+    <AppBar position="sticky" className={`custom-header ${scrolled ? 'scrolled' : ''}`}>
       <Toolbar className="header-toolbar">
         {/* Logo Section */}
         <Box className="header-logo" onClick={() => navigate('/')}>
