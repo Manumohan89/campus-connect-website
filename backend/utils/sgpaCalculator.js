@@ -21,25 +21,6 @@ function convertToGradePoints(totalMarks) {
 
 function getCreditsForSubject(subjectCode) {
   const creditsMap = {
-    '21MAT11': 3,   
-  '21CHE12': 3,  
-  '21PSP13': 3,   
-  '21ELN14': 3,   
-  '21EME15': 3,   
-  '21CHEL16': 1, 
-  '21CPL17': 1,   
-  '21EGH18': 2,   
-  '21IDT19': 1 ,
-
-  '21MAT21': 3,   
-  '21PHY22': 3,   
-  '21ELE23': 3,   
-  '21CIV24': 3,   
-  '21EVNL25': 3, 
-  '21PHYL26': 1,  cd
-  '21ELEL27': 1,  
-  '21EGH28': 2,   
-  '21IDT29': 1 , 
 
     '21CS51': 3, '21CS52': 4, '21CS53': 3, '21CS54': 3, '21CSL55': 1, '21RMI56': 2, '21CIV57': 1, '21CSL582': 1,
     '21MAT31': 3, '21CS32': 4, '21CS33': 4, '21CS34': 3, '21CSL35': 1, '21SCR36': 1, '21KBK37': 1,
