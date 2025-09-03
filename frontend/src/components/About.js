@@ -16,11 +16,11 @@ const About = () => {
     {
       name: 'K Mohan',
       role: 'Founder & CEO',
-      image: require("../components/images/ceo.jpg"),
+      image: require("../components/images/CEO-img.JPG"),
       bio: 'Mohan is a visionary leader with a passion for education and technology, driving Campus Connect to empower students and institutions.',
-      linkedIn: 'https://linkedin.com/in/kmohan',
+      linkedIn: 'https://www.linkedin.com/in/kuruba-mohan-8b4255232/',
       twitter: 'https://twitter.com/kmohan',
-      github: 'https://github.com/kmohan',
+      github: 'https://github.com/Manumohan89',
     },
     {
       name: 'Vamshi',

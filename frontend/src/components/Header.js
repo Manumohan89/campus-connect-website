@@ -37,7 +37,7 @@ const Header = () => {
       <Toolbar className="header-toolbar">
         {/* Logo Section */}
         <Box className="header-logo" onClick={() => navigate('/')}>
-          <Avatar src={require("../components/images/campusconnect.jpg")} alt="Logo" className="header-logo-avatar" />
+          <Avatar src={require("../components/images/Campus-connect-logo.png")} alt="Logo" className="header-logo-avatar" />
           <Typography variant="h6" className="header-logo-text">
             Campus Connect
           </Typography>

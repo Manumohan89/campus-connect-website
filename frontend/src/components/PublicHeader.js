@@ -21,7 +21,7 @@ import LoginIcon from '@mui/icons-material/Login';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import CalculateIcon from '@mui/icons-material/Calculate';
 import BookIcon from '@mui/icons-material/MenuBook';
-import logo from '../components/images/campusconnect.jpg';
+import logo from '../components/images/Campus-connect-logo.png';
 import '../styles/PublicHeader.css';
 
 const PublicHeader = ({ isLoggedIn }) => {

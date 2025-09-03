@@ -3,6 +3,10 @@
   backdrop-filter: blur(10px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  display: flex;
+  justify-content: space-between; /* spread logo left, nav/menu right */
+  align-items: center;
+  padding: 0.5rem 1rem;
 }
 
 .modern-header.scrolled {
@@ -65,8 +69,10 @@
   .nav-links {
     display: none;
   }
+
   .mobile-menu {
     display: block;
+    margin-left: auto; /* push it to the right corner */
   }
 }
 
@@ -74,14 +80,17 @@
   background-color: #002244;
   color: white;
 }
+
 .MuiMenuItem-root {
   display: flex;
   gap: 10px;
 }
+
 .MuiMenuItem-root:hover {
   background-color: #001122;
   color: #ffcc00;
 }
+
 /* Drawer styling */
 .mobile-drawer {
   width: 250px;
