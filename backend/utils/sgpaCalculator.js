@@ -903,6 +903,9 @@ function getCreditsForSubject(subjectCode) {
     'BCV405C': 3,
     'BCV405B': 3,
     'BCV405D': 3
+  };
+  return creditsMap[subjectCode] || 0;
+}
 
 
 async function calculateSgpa(excelPath, userId) {
