@@ -2,18 +2,31 @@ import sys
 import pdfplumber
 import openpyxl
 import warnings
-warnings.filterwarnings("ignore", category=UserWarning, module="pdfminer")  # ⛔ hide font warnings
+import os
 
-# Get file paths from command-line arguments
+# Suppress UserWarnings
+warnings.filterwarnings("ignore", category=UserWarning, module="pdfminer")
+
+# Silence stderr during pdfplumber usage
+class DummyFile(object):
+    def write(self, x): pass
+
+def silence_stderr():
+    sys.stderr = DummyFile()
+
+def restore_stderr():
+    sys.stderr = sys.__stderr__
+
+# Get file paths
 input_pdf = sys.argv[1]
 output_excel = sys.argv[2]
 
-# Create a new Excel workbook and sheet
 wb = openpyxl.Workbook()
 ws = wb.active
 ws.title = "Marks Table"
 
 try:
+    silence_stderr()
     with pdfplumber.open(input_pdf) as pdf:
         row_num = 1
         for page in pdf.pages:
@@ -21,15 +34,16 @@ try:
             if tables:
                 for table in tables:
                     for row in table:
-                        if row:  # Ensure the row is not empty
+                        if row:
                             for col_num, cell in enumerate(row, start=1):
                                 ws.cell(row=row_num, column=col_num).value = str(cell).strip() if cell else ''
                             row_num += 1
+    restore_stderr()
 except Exception as e:
+    restore_stderr()
     print(f"Error processing PDF: {e}")
     sys.exit(1)
 
-# Save Excel
 try:
     wb.save(output_excel)
     print(f"✅ Converted '{input_pdf}' → '{output_excel}' successfully.")
