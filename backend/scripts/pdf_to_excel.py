@@ -1,6 +1,8 @@
 import sys
 import pdfplumber
 import openpyxl
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning, module="pdfminer")  # ⛔ hide font warnings
 
 # Get file paths from command-line arguments
 input_pdf = sys.argv[1]
