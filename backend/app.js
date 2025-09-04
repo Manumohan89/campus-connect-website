@@ -18,6 +18,8 @@ const io = socketIo(server);
 // === Middlewares ===
 app.use(express.json());
 
+app.set('trust proxy', 1);
+
 // ✅ Enable CORS from your frontend domain
 app.use(cors({
   origin: [
