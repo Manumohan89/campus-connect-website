@@ -1,42 +1,67 @@
+/* General Header Styling */
 .modern-header {
-  background-color: transparent;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  background: linear-gradient(90deg, rgba(30, 64, 175, 0.9), rgba(59, 130, 246, 0.7));
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out, transform 0.3s ease;
   display: flex;
-  justify-content: space-between; /* spread logo left, nav/menu right */
   align-items: center;
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 2rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .modern-header.scrolled {
-  background-color: rgba(0, 0, 50, 0.9);
+  background: linear-gradient(90deg, rgba(0, 34, 68, 0.95), rgba(30, 64, 175, 0.85));
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  transform: translateY(0);
 }
 
+/* Logo Container */
 .logo-container {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
 }
 
 .logo {
-  height: 45px;
-  margin-right: 10px;
-  border-radius: 6px;
+  height: 60px;
+  margin-right: 12px;
+  border-radius: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  image-rendering: crisp-edges; /* Optimize for clarity */
+  object-fit: contain;
+}
+
+.logo:hover {
+  transform: scale(1.05); /* Subtle scale for interaction */
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
 }
 
 .logo-text {
   color: #fff;
-  font-size: 20px;
-  font-weight: 600;
+  font-size: 1.8rem;
+  font-weight: 700;
   text-decoration: none;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Montserrat', sans-serif;
+  background: linear-gradient(90deg, #ffcc00, #ffffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: transform 0.3s ease;
 }
 
+.logo-text:hover {
+  transform: translateY(-2px);
+}
+
+/* Desktop Navigation Links */
 .nav-links {
   display: flex;
-  gap: 20px;
-  flex: 1;
-  justify-content: center;
+  gap: 24px;
+  margin-left: auto;
+  justify-content: flex-end;
+  flex-wrap: wrap;
 }
 
 .nav-link {
@@ -44,79 +69,182 @@
   text-decoration: none;
   display: flex;
   align-items: center;
+  font-family: 'Poppins', sans-serif;
   font-weight: 500;
-  font-size: 15px;
-  transition: color 0.3s ease, background 0.3s ease;
-  padding: 6px 10px;
+  font-size: 1rem;
+  padding: 8px 12px;
   border-radius: 6px;
+  position: relative;
+  transition: color 0.3s ease, background 0.3s ease, transform 0.3s ease;
 }
 
-.nav-link:hover {
-  background: rgba(255, 255, 255, 0.15);
+.nav-link:hover,
+.nav-link:focus {
   color: #ffcc00;
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
 }
 
-.nav-icon {
-  margin-right: 6px;
-  font-size: 20px;
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #ffcc00, #ffffff);
+  transition: width 0.3s ease;
 }
 
+.nav-link:hover::after,
+.nav-link:focus::after {
+  width: 100%;
+}
+
+.nav-text {
+  margin-left: 8px;
+}
+
+/* Mobile Menu */
 .mobile-menu {
   display: none;
+  margin-left: auto;
 }
 
-@media (max-width: 768px) {
+/* Drawer Styling */
+.mobile-drawer {
+  width: 280px;
+  background: linear-gradient(135deg, #002244, #1e40af);
+  color: white;
+  height: 100%;
+  transition: transform 0.3s ease-in-out;
+  transform: translateX(100%);
+}
+
+.mobile-drawer.MuiDrawer-paper {
+  transform: translateX(0);
+}
+
+.drawer-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px;
+  background: linear-gradient(90deg, #001122, #0a2b5b);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.drawer-logo {
+  height: 40px;
+  border-radius: 6px;
+  transition: transform 0.3s ease;
+  image-rendering: crisp-edges; /* Optimize for clarity */
+  object-fit: contain;
+}
+
+.drawer-logo:hover {
+  transform: scale(1.05); /* Subtle scale for interaction */
+}
+
+.MuiListItem-root {
+  padding: 14px 24px;
+  min-height: 48px;
+  transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.MuiListItem-root:hover,
+.MuiListItem-root:focus {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffcc00;
+  transform: translateX(5px);
+}
+
+.MuiListItemIcon-root {
+  min-width: 40px;
+}
+
+.MuiDivider-root {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Animations */
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Responsive Adjustments for Tablets (max-width: 900px) */
+@media (max-width: 900px) {
   .nav-links {
     display: none;
   }
 
   .mobile-menu {
     display: block;
-    margin-left: auto; /* push it to the right corner */
+  }
+
+  .logo {
+    height: 50px;
+  }
+
+  .logo-text {
+    font-size: 1.5rem;
+  }
+
+  .modern-header {
+    padding: 0.5rem 1.5rem;
+  }
+
+  .mobile-drawer {
+    width: 260px;
+  }
+
+  .drawer-logo {
+    height: 35px;
+  }
+
+  .MuiListItem-root {
+    font-size: 0.95rem;
   }
 }
 
-.MuiMenu-paper {
-  background-color: #002244;
-  color: white;
-}
+/* Responsive Adjustments for Small Mobile Devices (max-width: 480px) */
+@media (max-width: 480px) {
+  .logo {
+    height: 40px;
+    margin-right: 8px;
+  }
 
-.MuiMenuItem-root {
-  display: flex;
-  gap: 10px;
-}
+  .logo-text {
+    font-size: 1.3rem;
+  }
 
-.MuiMenuItem-root:hover {
-  background-color: #001122;
-  color: #ffcc00;
-}
+  .modern-header {
+    padding: 0.5rem 1rem;
+  }
 
-/* Drawer styling */
-.mobile-drawer {
-  width: 250px;
-  background-color: #002244;
-  color: white;
-  height: 100%;
-}
+  .mobile-drawer {
+    width: 240px;
+  }
 
-.drawer-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 16px;
-  background: #001122;
-}
+  .drawer-header {
+    padding: 16px;
+  }
 
-.drawer-logo {
-  height: 35px;
-  border-radius: 4px;
-}
+  .drawer-logo {
+    height: 30px;
+  }
 
-.MuiListItem-root {
-  padding: 12px 20px;
-}
+  .MuiListItem-root {
+    padding: 12px 20px;
+    font-size: 0.9rem;
+  }
 
-.MuiListItem-root:hover {
-  background: #001122;
-  color: #ffcc00;
+  .MuiListItemIcon-root {
+    min-width: 36px;
+  }
 }

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Container, Typography, Box, Button, CircularProgress } from '@mui/material';
+import { Container, Typography, Box, Button, CircularProgress, Paper } from '@mui/material';
 import PublicHeader from '../components/PublicHeader';
 import PublicFooter from '../components/PublicFooter';
 import '../styles/PublicSGPA.css';
@@ -13,7 +13,6 @@ const PublicSGPA = () => {
   const [loading, setLoading] = useState(false);
   const fileInputRef = useRef(null);
 
-  // Focus file input on mount for accessibility
   useEffect(() => {
     fileInputRef.current.focus();
   }, []);
@@ -36,9 +35,7 @@ const PublicSGPA = () => {
     try {
       setLoading(true);
       const response = await API.post('/api/users/public-upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
 
       const { sgpa } = response.data;
@@ -46,9 +43,7 @@ const PublicSGPA = () => {
       setMessage('SGPA calculated successfully!');
     } catch (error) {
       console.error('Error:', error);
-      setMessage(
-        error.response?.data?.error || 'Failed to calculate SGPA. Please try again.'
-      );
+      setMessage(error.response?.data?.error || 'Failed to calculate SGPA. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -57,16 +52,17 @@ const PublicSGPA = () => {
   return (
     <>
       <PublicHeader />
-      <Container maxWidth="sm" className="public-sgpa-page">
-        <Box className="upload-box">
-          <Typography
-            variant="h4"
-            className="page-title"
-            aria-label="SGPA Calculator"
-            tabIndex={0}
-          >
-            Try SGPA Calculator (No Login)
-          </Typography>
+      <Container maxWidth="md" className="public-sgpa-page">
+        {/* Hero Title */}
+        <Typography variant="h3" className="page-title" aria-label="SGPA Calculator">
+          SGPA Calculator (No Login Required)
+        </Typography>
+        <Typography variant="subtitle1" className="page-subtitle">
+          Upload your VTU marks card in PDF format and get your SGPA instantly!
+        </Typography>
+
+        {/* Upload Section */}
+        <Paper elevation={4} className="upload-box">
           <Box className="input-group">
             <input
               type="file"
@@ -74,7 +70,7 @@ const PublicSGPA = () => {
               className="file-input"
               ref={fileInputRef}
               aria-label="Upload marks card file"
-              accept=".pdf,.jpg,.jpeg,.png"
+              accept=".pdf"
             />
           </Box>
           <Button
@@ -87,6 +83,7 @@ const PublicSGPA = () => {
           >
             {loading ? <CircularProgress size={24} color="inherit" /> : 'Calculate SGPA'}
           </Button>
+
           {message && (
             <Typography
               className={`message ${message.includes('successfully') ? 'success' : 'error'}`}
@@ -95,6 +92,7 @@ const PublicSGPA = () => {
               {message}
             </Typography>
           )}
+
           {sgpa && (
             <Box className="result-box">
               <Typography variant="h6" className="result-title">
@@ -125,6 +123,31 @@ const PublicSGPA = () => {
               </Box>
             </Box>
           )}
+        </Paper>
+
+        {/* Step-by-step Instructions */}
+        <Box className="steps-section">
+          <Typography variant="h5" className="steps-title">How to Use?</Typography>
+          <ul className="steps-list">
+            <li>📂 Upload your marks card in <strong>PDF format</strong>.</li>
+            <li>⚡ Click on <strong>Calculate SGPA</strong> button.</li>
+            <li>📊 Instantly view your <strong>calculated SGPA</strong>.</li>
+            <li>💾 Want to save results? Just <strong>Login/Register</strong>.</li>
+          </ul>
+        </Box>
+
+        {/* SGPA Formula Section */}
+        <Box className="formula-section">
+          <Typography variant="h5" className="formula-title">How SGPA is Calculated?</Typography>
+          <Typography variant="body1" className="formula-text">
+            According to <strong>VTU guidelines</strong>, the formula is:
+          </Typography>
+          <Typography variant="h6" className="formula-equation">
+            SGPA = Σ(C<sub>i</sub> × G<sub>i</sub>) ÷ ΣC<sub>i</sub>
+          </Typography>
+          <Typography variant="body2" className="formula-explanation">
+            Where: C<sub>i</sub> = Credits of each course, G<sub>i</sub> = Grade points earned.
+          </Typography>
         </Box>
       </Container>
       <PublicFooter />

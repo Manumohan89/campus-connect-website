@@ -171,7 +171,7 @@ function Register() {
       <div className="register-content-container">
         <div className="left-section">
           <div className="icon-container">
-            <img src={require("../components/images/campusconnect.jpg")} alt="Campus Connect" />
+            <img src={require("../components/images/logo2-cc.png")} alt="Campus Connect" />
             <h1>Join Us Today!</h1>
             <p>Become part of the Campus Connect family and unlock your academic journey.</p>
           </div>

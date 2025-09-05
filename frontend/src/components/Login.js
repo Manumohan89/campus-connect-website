@@ -107,7 +107,7 @@ function Login() {
       <div className="login-content-container">
         <div className="left-section">
           <div className="icon-container">
-            <img src={require("../components/images/campusconnect.jpg")} alt="Campus Connect" />
+            <img src={require("../components/images/Campus-connect-logo.png")} alt="Campus Connect" />
             <h1>Welcome Back!</h1>
             <p>Stay connected and access all your academic resources in one place.</p>
           </div>

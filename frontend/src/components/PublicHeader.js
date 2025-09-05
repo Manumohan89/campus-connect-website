@@ -21,7 +21,8 @@ import LoginIcon from '@mui/icons-material/Login';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import CalculateIcon from '@mui/icons-material/Calculate';
 import BookIcon from '@mui/icons-material/MenuBook';
-import logo from '../components/images/Campus-connect-logo.png';
+import logo from '../components/images/Logo-cc.png'; // Standard logo
+import logo2x from '../components/images/Logo-cc.png'; // High-res version (2x)
 import '../styles/PublicHeader.css';
 
 const PublicHeader = ({ isLoggedIn }) => {
@@ -52,11 +53,14 @@ const PublicHeader = ({ isLoggedIn }) => {
     : [];
 
   return (
-    <AppBar position="sticky" className={`modern-header ${scrolled ? 'scrolled' : ''}`}>
+    <AppBar position="sticky" className={`modern-header ${scrolled ? 'scrolled' : ''}`} aria-label="Main navigation">
       <Toolbar>
         {/* Logo + Title */}
         <div className="logo-container">
-          <img src={logo} alt="Campus Connect Logo" className="logo" />
+          <picture>
+            <source srcSet={logo2x} media="(min-resolution: 192dpi)" />
+            <img src={logo} alt="Campus Connect Logo" className="logo" loading="lazy" />
+          </picture>
           <Typography variant="h6" component={Link} to="/" className="logo-text">
             Campus Connect
           </Typography>
@@ -65,22 +69,27 @@ const PublicHeader = ({ isLoggedIn }) => {
         {/* Desktop Nav Links */}
         <div className="nav-links">
           {menuItems.map((item) => (
-            <Link key={item.text} to={item.path} className="nav-link">
+            <Link key={item.text} to={item.path} className="nav-link" aria-label={item.text}>
               {item.icon}
-              {item.text}
+              <span className="nav-text">{item.text}</span>
             </Link>
           ))}
           {authItems.map((item) => (
-            <Link key={item.text} to={item.path} className="nav-link">
+            <Link key={item.text} to={item.path} className="nav-link" aria-label={item.text}>
               {item.icon}
-              {item.text}
+              <span className="nav-text">{item.text}</span>
             </Link>
           ))}
         </div>
 
         {/* Mobile Drawer */}
         <div className="mobile-menu">
-          <IconButton edge="end" color="inherit" onClick={toggleDrawer(true)}>
+          <IconButton
+            edge="end"
+            color="inherit"
+            onClick={toggleDrawer(true)}
+            aria-label={drawerOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          >
             {drawerOpen ? <CloseIcon /> : <MenuIcon />}
           </IconButton>
 
@@ -89,9 +98,13 @@ const PublicHeader = ({ isLoggedIn }) => {
             open={drawerOpen}
             onClose={toggleDrawer(false)}
             PaperProps={{ className: 'mobile-drawer' }}
+            aria-label="Mobile navigation menu"
           >
             <div className="drawer-header">
-              <img src={logo} alt="logo" className="drawer-logo" />
+              <picture>
+                <source srcSet={logo2x} media="(min-resolution: 192dpi)" />
+                <img src={logo} alt="Campus Connect Logo" className="drawer-logo" loading="lazy" />
+              </picture>
               <Typography variant="h6">Campus Connect</Typography>
             </div>
             <Divider />
@@ -104,6 +117,7 @@ const PublicHeader = ({ isLoggedIn }) => {
                   component={Link}
                   to={item.path}
                   onClick={toggleDrawer(false)}
+                  aria-label={item.text}
                 >
                   <ListItemIcon sx={{ color: 'inherit' }}>{item.icon}</ListItemIcon>
                   <ListItemText primary={item.text} />
@@ -122,6 +136,7 @@ const PublicHeader = ({ isLoggedIn }) => {
                       component={Link}
                       to={item.path}
                       onClick={toggleDrawer(false)}
+                      aria-label={item.text}
                     >
                       <ListItemIcon sx={{ color: 'inherit' }}>{item.icon}</ListItemIcon>
                       <ListItemText primary={item.text} />

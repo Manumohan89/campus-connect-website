@@ -1,22 +1,29 @@
-.testimonials-grid {
-  margin: 5rem auto;
-  padding: 0 20px;
-  max-width: 1200px;
+/* General Testimonials Grid Styling */
+.testimonials-grid.MuiGrid-container {
+  margin: 6rem auto !important;
+  padding: 0 !important;
+  max-width: 1280px;
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  box-sizing: border-box;
 }
 
+/* Testimonial Card */
 .testimonial-card {
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 2rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(240, 244, 248, 0.85));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 2.5rem;
   text-align: center;
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-  transform: perspective(1000px) translateZ(0);
+  transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.3s ease;
+  transform: perspective(1200px) translateZ(0);
   opacity: 0;
-  transform: translateY(40px);
-  animation: slideUp 0.8s ease-out forwards;
+  transform: translateY(50px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
 
 .testimonial-card.visible {
@@ -25,55 +32,80 @@
 }
 
 .testimonial-card:hover {
-  transform: perspective(1000px) translateZ(10px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  transform: perspective(1200px) translateZ(20px);
+  box-shadow: 0 12px 32px rgba(59, 130, 246, 0.25);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 1), rgba(245, 248, 255, 0.9));
 }
 
+.testimonial-card:focus-within {
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3);
+  outline: none;
+}
+
+/* Testimonial Icon */
 .testimonial-icon {
-  width: 32px;
-  height: 32px;
-  margin: 0 auto 1rem;
+  width: 36px;
+  height: 36px;
+  margin: 0 auto 1.5rem;
   background: url('https://cdn-icons-png.flaticon.com/512/1828/1828884.png') center/contain no-repeat;
-  animation: bounce 1.5s infinite ease-in-out;
+  animation: pulse 2s infinite ease-in-out;
+  transition: transform 0.3s ease;
+  aria-hidden: true;
 }
 
+.testimonial-card:hover .testimonial-icon {
+  transform: scale(1.15);
+}
+
+/* Testimonial Image */
 .testimonial-image {
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
-  margin-bottom: 1rem;
-  border: 2px solid rgba(59, 130, 246, 0.3);
-  transition: transform 0.3s ease, border-color 0.3s ease;
+  margin-bottom: 1.5rem;
+  border: 3px solid rgba(59, 130, 246, 0.4);
+  transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+  object-fit: cover;
 }
 
 .testimonial-card:hover .testimonial-image {
-  transform: scale(1.1);
+  transform: scale(1.15);
   border-color: #3b82f6;
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.5);
 }
 
+/* Testimonial Text */
 .testimonial-name {
   font-family: 'Montserrat', sans-serif;
-  font-size: 22px;
-  font-weight: 600;
+  font-size: 1.5rem;
+  font-weight: 700;
   color: #111827;
   background: linear-gradient(90deg, #1e40af, #60a5fa);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+  transition: transform 0.3s ease;
+}
+
+.testimonial-card:hover .testimonial-name {
+  transform: translateY(-2px);
 }
 
 .testimonial-message {
   font-family: 'Open Sans', sans-serif;
-  font-size: 16px;
-  line-height: 1.7;
+  font-size: 1.1rem;
+  line-height: 1.8;
   color: #2d3748;
-  font-weight: 300;
+  font-weight: 400;
+  max-width: 300px;
+  margin: 0 auto;
 }
 
+/* Animations */
 @keyframes slideUp {
   from {
     opacity: 0;
-    transform: translateY(40px);
+    transform: translateY(50px);
   }
   to {
     opacity: 1;
@@ -81,61 +113,89 @@
   }
 }
 
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% {
-    transform: translateY(0);
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.7;
   }
-  40% {
-    transform: translateY(-10px);
-  }
-  60% {
-    transform: translateY(-5px);
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
   }
 }
 
-/* Responsive Adjustments */
+/* Responsive Adjustments for Tablets (max-width: 768px) */
 @media (max-width: 768px) {
-  .testimonials-grid {
-    margin: 3rem auto;
+  .testimonials-grid.MuiGrid-container {
+    margin: 4rem auto !important;
+    padding: 0 16px !important;
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .testimonial-card {
+    padding: 2rem;
+    border-radius: 14px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  }
+
+  .testimonial-icon {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 1.2rem;
+  }
+
+  .testimonial-image {
+    width: 80px;
+    height: 80px;
+    border: 2px solid rgba(59, 130, 246, 0.4);
+  }
+
+  .testimonial-name {
+    font-size: 1.3rem;
+  }
+
+  .testimonial-message {
+    font-size: 1rem;
+    line-height: 1.7;
+    max-width: 90%;
+  }
+}
+
+/* Responsive Adjustments for Small Mobile Devices (max-width: 480px) */
+@media (max-width: 480px) {
+  .testimonials-grid.MuiGrid-container {
+    margin: 3rem auto !important;
+    padding: 0 12px !important;
+    width: 100% !important;
+    justify-content: center !important;
   }
 
   .testimonial-card {
     padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .testimonial-icon {
+    width: 28px;
+    height: 28px;
+    margin-bottom: 1rem;
   }
 
   .testimonial-image {
     width: 60px;
     height: 60px;
+    border: 2px solid rgba(59, 130, 246, 0.4);
   }
 
   .testimonial-name {
-    font-size: 20px;
+    font-size: 1.1rem;
   }
 
   .testimonial-message {
-    font-size: 14px;
-  }
-}
-
-@media (max-width: 480px) {
-  .testimonials-grid {
-    margin: 2rem auto;
-  }
-
-  .testimonial-card {
-    padding: 1rem;
-  }
-
-  .testimonial-image {
-    width: 50px;
-    height: 50px;
-  }
-
-  .testimonial-name {
-    font-size: 18px;
-  }
-
-  .testimonial-message {
-    font-size: 13px;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    max-width: 95%;
   }
 }
