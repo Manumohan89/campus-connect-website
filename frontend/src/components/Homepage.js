@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Container, Box, Typography, Button, Grid, Paper, Zoom } from '@mui/material';
+import { Container, Box, Button, Grid, Paper,Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import TestimonialsGrid from '../components/TestimonialsGrid';
 import Counter from '../components/Counter';
@@ -8,92 +8,89 @@ import LiveChat from '../components/LiveChat';
 import PublicHeader from '../components/PublicHeader';
 import PublicFooter from '../components/PublicFooter';
 import FAQ from '../components/FAQ';
+import heroVideo from '../components/videos/HomePage-1.mp4'; // Ensure this path is correct
+import demoVideo from '../components/videos/campus-connect video.mp4'; // Separate video for demo section
+import fallbackImage from '../components/images/frontpage.png'; // Fallback image for video
 import '../styles/Home.css';
+
+// Reusable ServiceCard component
+const ServiceCard = ({ iconClass, title, description }) => (
+  <Grid item xs={12} sm={6} md={4}>
+    <Paper className="service-card" elevation={0} role="article">
+      <div className={`service-icon ${iconClass}`} aria-hidden="true" />
+      <Typography variant="h5" className="service-title">
+        {title}
+      </Typography>
+      <Typography className="service-text">{description}</Typography>
+    </Paper>
+  </Grid>
+);
 
 const Home = () => {
   const ctaRef = useRef(null);
 
-  // Custom cursor and scroll-triggered CTA animation
   useEffect(() => {
-    // Custom cursor
     const cursor = document.querySelector('.custom-cursor');
-    const handleMouseMove = (e) => {
-      cursor.style.left = `${e.clientX - 12}px`;
-      cursor.style.top = `${e.clientY - 12}px`;
-    };
-    const handleMouseOver = (e) => {
-      if (e.target.closest('a, button, .service-card, .faq-card')) {
-        cursor.classList.add('active');
-      } else {
-        cursor.classList.remove('active');
-      }
-    };
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseover', handleMouseOver);
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints;
 
-    // CTA animation
-    const ctaElement = ctaRef.current; // Store ref value
+    if (!isTouchDevice && cursor) {
+      const handleMouseMove = (e) => {
+        cursor.style.left = `${e.clientX - 12}px`;
+        cursor.style.top = `${e.clientY - 12}px`;
+      };
+
+      const handleMouseOver = (e) => {
+        if (e.target.closest('a, button, .service-card, .faq-card')) {
+          cursor.classList.add('active');
+        } else {
+          cursor.classList.remove('active');
+        }
+      };
+
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseover', handleMouseOver);
+
+      return () => {
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseover', handleMouseOver);
+      };
+    }
+  }, []);
+
+  useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
           }
         });
       },
       { threshold: 0.2 }
     );
+
+    const ctaElement = ctaRef.current;
     if (ctaElement) observer.observe(ctaElement);
 
     return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseover', handleMouseOver);
-      if (ctaElement) observer.unobserve(ctaElement); // Use stored value
+      if (ctaElement) observer.unobserve(ctaElement);
     };
-  }, []); // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
       <PublicHeader />
       <div className="home-page">
-        {/* Custom Cursor */}
-        <div className="custom-cursor"></div>
-
-        {/* Hero Section */}
-        <Box className="hero-section">
-          <div className="hero-overlay"></div>
-          <div className="hero-text">
-            <Typography
-              variant="h2"
-              className="hero-title"
-              aria-label="Campus Connect Academic Companion"
-              tabIndex={0}
-            >
-              Campus Connect
-            </Typography>
-            <Typography
-              variant="h5"
-              className="hero-subtitle"
-              aria-label="Services description"
-            >
-              SGPA Calculation | Document Sharing | Job Opportunities
-            </Typography>
-            <Zoom in={true} timeout={1000}>
-              <Button
-                variant="contained"
-                className="hero-btn"
-                component={Link}
-                to="/register"
-                aria-label="Get started with Campus Connect"
-              >
-                Get Started
-              </Button>
-            </Zoom>
-          </div>
+        <div className="custom-cursor" aria-hidden="true" />
+        <Box className="hero-section" role="banner">
+          <video className="hero-video" autoPlay loop muted playsInline poster={fallbackImage}>
+            <source src={heroVideo} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
         </Box>
 
-        {/* Quick Links */}
-        <Container className="quick-links">
+        <Container className="quick-links" role="navigation">
           <Grid container spacing={4} justifyContent="center">
             <Grid item>
               <Button
@@ -120,7 +117,6 @@ const Home = () => {
           </Grid>
         </Container>
 
-        {/* Video Section */}
         <Container maxWidth="md" className="video-section">
           <Typography
             variant="h4"
@@ -130,19 +126,19 @@ const Home = () => {
             How Campus Connect Works
           </Typography>
           <Box className="video-container">
-            <iframe
+            <video
               width="100%"
               height="400"
-              src={require('../components/videos/campus-connect video.mp4')}
-              title="Campus Connect Demo"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
+              controls
+              aria-label="Campus Connect Demo Video"
+              poster={fallbackImage}
+            >
+              <source src={demoVideo} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
           </Box>
         </Container>
 
-        {/* Services */}
         <Container maxWidth="lg" className="featured-services">
           <Typography
             variant="h4"
@@ -152,43 +148,24 @@ const Home = () => {
             Our Services
           </Typography>
           <Grid container spacing={4}>
-            <Grid item xs={12} sm={6} md={4}>
-              <Paper className="service-card" elevation={0}>
-                <div className="service-icon calculator-icon"></div>
-                <Typography variant="h5" className="service-title">
-                  SGPA & CGPA Calculation
-                </Typography>
-                <Typography className="service-text">
-                  Track and calculate your academic performance with ease.
-                </Typography>
-              </Paper>
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <Paper className="service-card" elevation={0}>
-                <div className="service-icon document-icon"></div>
-                <Typography variant="h5" className="service-title">
-                  Document Sharing
-                </Typography>
-                <Typography className="service-text">
-                  Share important study materials and projects securely.
-                </Typography>
-              </Paper>
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <Paper className="service-card" elevation={0}>
-                <div className="service-icon job-icon"></div>
-                <Typography variant="h5" className="service-title">
-                  Job Opportunities
-                </Typography>
-                <Typography className="service-text">
-                  Explore relevant internships and job opportunities in your field.
-                </Typography>
-              </Paper>
-            </Grid>
+            <ServiceCard
+              iconClass="calculator-icon"
+              title="SGPA & CGPA Calculation"
+              description="Track and calculate your academic performance with ease."
+            />
+            <ServiceCard
+              iconClass="document-icon"
+              title="Document Sharing"
+              description="Share important study materials and projects securely."
+            />
+            <ServiceCard
+              iconClass="job-icon"
+              title="Job Opportunities"
+              description="Explore relevant internships and job opportunities in your field."
+            />
           </Grid>
         </Container>
 
-        {/* Stats */}
         <Container className="stats-section">
           <Typography
             variant="h4"
@@ -199,27 +176,20 @@ const Home = () => {
           </Typography>
           <Grid container spacing={4}>
             <Grid item xs={12} sm={4}>
-              <Counter end="5000" duration="3" icon="📘" />
-              <Typography className="counter-text">
-                SGPA Calculated
-              </Typography>
+              <Counter end={5000} duration={3} icon="📘" />
+              <Typography className="counter-text">SGPA Calculated</Typography>
             </Grid>
             <Grid item xs={12} sm={4}>
-              <Counter end="1200" duration="3" icon="📝" />
-              <Typography className="counter-text">
-                Documents Shared
-              </Typography>
+              <Counter end={1200} duration={3} icon="📝" />
+              <Typography className="counter-text">Documents Shared</Typography>
             </Grid>
             <Grid item xs={12} sm={4}>
-              <Counter end="300" duration="3" icon="💼" />
-              <Typography className="counter-text">
-                Job Opportunities Found
-              </Typography>
+              <Counter end={300} duration={3} icon="💼" />
+              <Typography className="counter-text">Job Opportunities Found</Typography>
             </Grid>
           </Grid>
         </Container>
 
-        {/* Call-to-Action Banner */}
         <Container maxWidth="md" className="cta-banner" ref={ctaRef}>
           <Box className="cta-content">
             <Typography

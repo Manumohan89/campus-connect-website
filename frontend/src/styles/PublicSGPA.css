@@ -1,30 +1,66 @@
-/* General Styling */
-body {
+/* ===================== */
+/* CSS Variables for Theming and Reusability */
+/* ===================== */
+:root {
+  --primary-color: #3b82f6;
+  --primary-dark: #1e40af;
+  --secondary-color: #60a5fa;
+  --text-dark: #111827;
+  --text-medium: #374151;
+  --text-light: #4b5563;
+  --bg-gradient-start: #f0f4f8;
+  --bg-gradient-end: #d9e2ec;
+  --glass-bg: rgba(255, 255, 255, 0.2);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-blur: blur(12px);
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.15);
+  --font-primary: 'Montserrat', sans-serif;
+  --font-secondary: 'Open Sans', sans-serif;
+  --transition-fast: 0.3s ease;
+  --transition-slow: 0.6s ease;
+}
+
+/* ===================== */
+/* Global Reset and Base Styles */
+/* ===================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
   margin: 0;
-  font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: linear-gradient(180deg, #f0f4f8, #d9e2ec);
-  color: #1a202c;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-secondary);
+  background: linear-gradient(180deg, var(--bg-gradient-start), var(--bg-gradient-end));
+  color: var(--text-dark);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+  min-height: 100vh;
 }
 
+/* ===================== */
+/* Page Container */
+/* ===================== */
 .public-sgpa-page {
-  padding: 3rem 1.5rem;
-  min-height: calc(100vh - 120px); /* Account for header/footer */
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  padding: clamp(1.5rem, 5vw, 3rem) clamp(0.75rem, 3vw, 1.5rem);
+  min-height: calc(100vh - 120px); /* Adjust based on header/footer height */
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
   border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  margin: 2rem auto;
-  max-width: 600px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--glass-border);
+  margin: clamp(1rem, 3vw, 2rem) auto;
+  max-width: 800px; /* Increased for better desktop layout */
   position: relative;
   overflow: hidden;
   animation: slideUp 0.8s ease-out;
-  transform: perspective(1000px) translateZ(0);
-  transition: transform 0.3s ease;
+  transition: transform var(--transition-fast);
+  z-index: 1;
 }
 
 .public-sgpa-page:hover {
@@ -40,25 +76,26 @@ body {
   height: 200%;
   background: radial-gradient(circle at center, rgba(59, 130, 246, 0.15), transparent);
   animation: pulse 15s infinite ease-in-out;
-  z-index: 0;
+  z-index: -1;
 }
 
-/* Page Title */
+/* ===================== */
+/* Typography */
+/* ===================== */
 .page-title {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 40px;
+  font-family: var(--font-primary);
+  font-size: clamp(2rem, 5vw, 2.5rem);
   font-weight: 800;
-  color: #111827;
+  color: transparent;
   text-align: center;
-  letter-spacing: -1px;
-  background: linear-gradient(90deg, #1e40af, #60a5fa, #3b82f6);
+  letter-spacing: -0.5px;
+  background: linear-gradient(90deg, var(--primary-dark), var(--secondary-color), var(--primary-color));
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  background-clip: text;
   text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  margin-bottom: 2rem;
-  z-index: 1;
+  margin-bottom: 1.5rem;
   animation: fadeIn 1s ease-out;
-  transition: transform 0.3s ease;
+  transition: transform var(--transition-fast);
 }
 
 .page-title:hover,
@@ -66,68 +103,73 @@ body {
   transform: scale(1.03);
 }
 
+.page-subtitle {
+  font-size: clamp(1rem, 3vw, 1.125rem);
+  text-align: center;
+  color: var(--text-medium);
+  margin-bottom: 2rem;
+}
+
+/* ===================== */
 /* Upload Box */
+/* ===================== */
 .upload-box {
-  padding: 2rem;
-  background: rgba(255, 255, 255, 0.2);
+  padding: clamp(1rem, 4vw, 2rem);
+  background: var(--glass-bg);
   backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  z-index: 1;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--glass-border);
   animation: slideUp 0.8s ease-out 0.2s;
+  display: grid;
+  gap: 1.5rem;
 }
 
 /* Input Group */
 .input-group {
-  margin: 1.5rem 0;
   position: relative;
 }
 
 .file-input {
   display: block;
   width: 100%;
-  padding: 12px;
-  font-size: 16px;
-  font-family: 'Open Sans', sans-serif;
-  color: #1a202c;
+  padding: clamp(0.75rem, 2vw, 0.875rem);
+  font-size: clamp(0.875rem, 2vw, 1rem);
+  color: var(--text-dark);
   background: rgba(255, 255, 255, 0.3);
   border: 1px solid rgba(209, 213, 219, 0.5);
   border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .file-input:hover,
 .file-input:focus {
-  border-color: #3b82f6;
+  border-color: var(--primary-color);
   box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
-  transform: scale(1.02);
-}
-
-.file-input:focus {
   outline: none;
 }
 
 /* Upload Button */
 .upload-btn {
-  background: linear-gradient(90deg, #3b82f6, #1e40af);
+  background: linear-gradient(90deg, var(--primary-color), var(--primary-dark));
   color: white;
-  padding: 12px 24px;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 16px;
+  padding: clamp(0.75rem, 2vw, 0.875rem) clamp(1.5rem, 4vw, 2rem);
+  font-family: var(--font-primary);
+  font-size: clamp(0.875rem, 2vw, 1rem);
   font-weight: 600;
   border-radius: 8px;
   text-transform: none;
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
   position: relative;
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+  justify-self: center;
+  min-width: 200px;
 }
 
 .upload-btn:hover {
-  background: linear-gradient(90deg, #1e40af, #2563eb);
+  background: linear-gradient(90deg, var(--primary-dark), #2563eb);
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
 }
@@ -151,13 +193,8 @@ body {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.25),
-    transparent
-  );
-  transition: 0.6s;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  transition: left var(--transition-slow);
 }
 
 .upload-btn:hover::after {
@@ -166,13 +203,14 @@ body {
 
 /* Message */
 .message {
-  font-size: 16px;
+  font-size: clamp(0.875rem, 2vw, 1rem);
   font-weight: 400;
-  margin-top: 1rem;
-  padding: 8px 12px;
+  padding: 0.5rem 0.75rem;
   border-radius: 8px;
   text-align: center;
   animation: fadeIn 0.5s ease-out;
+  justify-self: center;
+  max-width: 80%;
 }
 
 .message.success {
@@ -185,33 +223,35 @@ body {
   background: rgba(239, 68, 68, 0.1);
 }
 
+/* ===================== */
 /* Result Box */
+/* ===================== */
 .result-box {
-  margin-top: 2rem;
-  padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.2);
+  padding: clamp(1rem, 3vw, 1.5rem);
+  background: var(--glass-bg);
   backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--glass-border);
   animation: slideUp 0.8s ease-out 0.4s;
+  text-align: center;
+  display: grid;
+  gap: 1rem;
 }
 
 .result-title {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 24px;
+  font-family: var(--font-primary);
+  font-size: clamp(1.25rem, 4vw, 1.5rem);
   font-weight: 600;
-  color: #111827;
-  background: linear-gradient(90deg, #1e40af, #60a5fa);
+  color: transparent;
+  background: linear-gradient(90deg, var(--primary-dark), var(--secondary-color));
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .result-text {
-  font-size: 16px;
-  line-height: 1.7;
-  color: #2d3748;
+  font-size: clamp(0.875rem, 2vw, 1rem);
+  color: var(--text-medium);
   font-weight: 300;
 }
 
@@ -220,33 +260,35 @@ body {
   display: flex;
   gap: 1rem;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .action-btn {
-  padding: 10px 20px;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 14px;
+  padding: clamp(0.625rem, 2vw, 0.75rem) clamp(1.25rem, 3vw, 1.5rem);
+  font-family: var(--font-primary);
+  font-size: clamp(0.75rem, 1.8vw, 0.875rem);
   font-weight: 600;
   border-radius: 8px;
   text-transform: none;
-  transition: all 0.3s ease;
+  transition: all var(--transition-fast);
+  min-width: 120px;
 }
 
 .action-btn.primary {
-  background: linear-gradient(90deg, #3b82f6, #1e40af);
+  background: linear-gradient(90deg, var(--primary-color), var(--primary-dark));
   color: white;
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
 .action-btn.primary:hover {
-  background: linear-gradient(90deg, #1e40af, #2563eb);
+  background: linear-gradient(90deg, var(--primary-dark), #2563eb);
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
 }
 
 .action-btn.secondary {
-  border: 1px solid #3b82f6;
-  color: #3b82f6;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
   background: transparent;
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
 }
@@ -257,165 +299,45 @@ body {
   box-shadow: 0 6px 16px rgba(59, 130, 246, 0.3);
 }
 
-/* Circular Progress */
-.MuiCircularProgress-root {
-  color: white;
-}
-
-/* Animations */
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-    opacity: 0.2;
-  }
-  50% {
-    transform: scale(1.2);
-    opacity: 0.3;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 0.2;
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-  .public-sgpa-page {
-    padding: 2rem 1rem;
-    margin: 1.5rem auto;
-    min-height: calc(100vh - 100px);
-  }
-
-  .page-title {
-    font-size: 36px;
-  }
-
-  .upload-box {
-    padding: 1.5rem;
-  }
-
-  .file-input {
-    font-size: 14px;
-  }
-
-  .upload-btn {
-    padding: 10px 20px;
-    font-size: 14px;
-  }
-
-  .result-title {
-    font-size: 22px;
-  }
-
-  .result-text {
-    font-size: 14px;
-  }
-}
-
-@media (max-width: 480px) {
-  .public-sgpa-page {
-    padding: 1.5rem 0.75rem;
-  }
-
-  .page-title {
-    font-size: 30px;
-  }
-
-  .upload-box {
-    padding: 1rem;
-  }
-
-  .file-input {
-    padding: 10px;
-  }
-
-  .upload-btn {
-    padding: 8px 16px;
-    font-size: 13px;
-  }
-
-  .result-title {
-    font-size: 20px;
-  }
-
-  .result-text {
-    font-size: 13px;
-  }
-
-  .result-actions {
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .action-btn {
-    width: 100%;
-  }
-}
-/* Existing styles remain same above... */
-
-/* ========================= */
-/* Steps Section Styling */
-/* ========================= */
+/* ===================== */
+/* Steps Section */
+/* ===================== */
 .steps-section {
-  margin-top: 3rem;
-  padding: 2rem;
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  margin-top: clamp(2rem, 5vw, 3rem);
+  padding: clamp(1.25rem, 4vw, 2rem);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  border-radius: 16px;
+  box-shadow: var(--shadow-md);
   animation: fadeIn 1s ease-out;
 }
 
 .steps-title {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 26px;
+  font-family: var(--font-primary);
+  font-size: clamp(1.375rem, 4vw, 1.625rem);
   font-weight: 700;
   text-align: center;
-  margin-bottom: 1rem;
-  background: linear-gradient(90deg, #1e40af, #3b82f6, #60a5fa);
+  margin-bottom: 1.5rem;
+  color: transparent;
+  background: linear-gradient(90deg, var(--primary-dark), var(--primary-color), var(--secondary-color));
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .steps-list {
   list-style: none;
-  padding: 0;
-  margin: 0;
-  font-size: 16px;
-  font-family: 'Open Sans', sans-serif;
-  line-height: 1.8;
-  color: #1a202c;
+  font-size: clamp(0.875rem, 2.5vw, 1rem);
+  line-height: 1.7;
+  color: var(--text-dark);
 }
 
 .steps-list li {
-  padding: 10px 0;
-  border-bottom: 1px solid rgba(209, 213, 219, 0.4);
+  padding: clamp(0.625rem, 1.5vw, 0.875rem) 0;
+  border-bottom: 1px solid rgba(209, 213, 219, 0.3);
   display: flex;
-  align-items: center;
-  gap: 10px;
+  align-items: flex-start;
+  gap: clamp(0.5rem, 1.5vw, 0.75rem);
+  text-align: left;
   font-weight: 500;
 }
 
@@ -423,77 +345,225 @@ body {
   border-bottom: none;
 }
 
-/* ========================= */
-/* Formula Section Styling */
-/* ========================= */
+/* ===================== */
+/* Formula Section */
+/* ===================== */
 .formula-section {
-  margin-top: 3rem;
-  padding: 2rem;
-  background: rgba(59, 130, 246, 0.1);
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  margin-top: clamp(2rem, 5vw, 3rem);
+  padding: clamp(1.25rem, 4vw, 2rem);
+  background: rgba(59, 130, 246, 0.12);
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm);
   text-align: center;
   animation: fadeIn 1s ease-out;
 }
 
 .formula-title {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 26px;
+  font-family: var(--font-primary);
+  font-size: clamp(1.375rem, 4vw, 1.625rem);
   font-weight: 700;
   margin-bottom: 1rem;
-  background: linear-gradient(90deg, #2563eb, #1e40af);
+  color: transparent;
+  background: linear-gradient(90deg, #2563eb, var(--primary-dark));
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .formula-text {
-  font-size: 16px;
-  font-weight: 400;
+  font-size: clamp(0.875rem, 2.5vw, 1rem);
   margin-bottom: 1rem;
-  color: #374151;
+  color: var(--text-medium);
 }
 
 .formula-equation {
-  font-size: 22px;
+  font-size: clamp(1.125rem, 3vw, 1.375rem);
   font-weight: 700;
   margin: 1rem 0;
   color: #1e3a8a;
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.7);
   display: inline-block;
-  padding: 8px 16px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: clamp(0.5rem, 1.5vw, 0.625rem) clamp(0.75rem, 2vw, 0.875rem);
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+  line-height: 1.4;
 }
 
 .formula-explanation {
-  font-size: 14px;
-  font-weight: 400;
-  color: #4b5563;
-  margin-top: 0.5rem;
+  font-size: clamp(0.8125rem, 2vw, 0.9375rem);
+  color: var(--text-light);
+  margin-top: 0.75rem;
   font-style: italic;
+  line-height: 1.6;
 }
 
-/* ========================= */
-/* Responsive Adjustments */
-/* ========================= */
-@media (max-width: 768px) {
+/* ===================== */
+/* Circular Progress */
+/* ===================== */
+.MuiCircularProgress-root {
+  color: white;
+}
+
+/* ===================== */
+/* Animations */
+/* ===================== */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.2; }
+  50% { transform: scale(1.2); opacity: 0.3; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===================== */
+/* Media Queries for Advanced Responsiveness */
+/* ===================== */
+/* Large Desktops (1440px+) */
+@media (min-width: 1440px) {
+  .public-sgpa-page {
+    max-width: 900px;
+  }
+  .upload-box, .result-box {
+    gap: 2rem;
+  }
+}
+
+/* Tablets/Landscape (768px - 1024px) */
+@media (max-width: 1024px) {
+  .public-sgpa-page {
+    max-width: 700px;
+  }
   .steps-title, .formula-title {
-    font-size: 22px;
+    font-size: 1.5rem;
   }
   .steps-list {
-    font-size: 15px;
+    font-size: 0.9375rem;
   }
   .formula-equation {
-    font-size: 20px;
+    font-size: 1.25rem;
   }
 }
 
-@media (max-width: 480px) {
+/* Mobile Landscape/Tablets Portrait (481px - 768px) */
+@media (max-width: 768px) {
+  .public-sgpa-page {
+    padding: 2rem 1rem;
+    margin: 1.5rem auto;
+    min-height: calc(100vh - 100px);
+  }
+  .page-title {
+    font-size: 2.25rem;
+  }
+  .upload-box {
+    padding: 1.5rem;
+  }
+  .file-input {
+    font-size: 0.875rem;
+  }
+  .upload-btn {
+    padding: 0.625rem 1.25rem;
+    font-size: 0.875rem;
+  }
+  .result-title {
+    font-size: 1.375rem;
+  }
+  .result-text {
+    font-size: 0.875rem;
+  }
+  .steps-section, .formula-section {
+    padding: 1.5rem;
+  }
   .steps-title, .formula-title {
-    font-size: 20px;
+    font-size: 1.375rem;
+  }
+  .steps-list {
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+  .steps-list li {
+    gap: 0.5rem;
+    padding: 0.5rem 0;
   }
   .formula-equation {
-    font-size: 18px;
-    padding: 6px 12px;
+    font-size: 1.125rem;
+    padding: 0.375rem 0.75rem;
+  }
+}
+
+/* Small Mobile (0 - 480px) */
+@media (max-width: 480px) {
+  .public-sgpa-page {
+    padding: 1.5rem 0.75rem;
+    border-radius: 12px;
+  }
+  .page-title {
+    font-size: 1.875rem;
+  }
+  .page-subtitle {
+    font-size: 0.875rem;
+  }
+  .upload-box {
+    padding: 1rem;
+    gap: 1rem;
+  }
+  .file-input {
+    padding: 0.625rem;
+    font-size: 0.8125rem;
+  }
+  .upload-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.8125rem;
+    min-width: 100%;
+  }
+  .message {
+    font-size: 0.8125rem;
+  }
+  .result-box {
+    padding: 1rem;
+  }
+  .result-title {
+    font-size: 1.25rem;
+  }
+  .result-text {
+    font-size: 0.8125rem;
+  }
+  .result-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .action-btn {
+    width: 100%;
+    font-size: 0.8125rem;
+  }
+  .steps-section, .formula-section {
+    padding: 1rem;
+    margin-top: 1.5rem;
+  }
+  .steps-title, .formula-title {
+    font-size: 1.25rem;
+  }
+  .steps-list {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
+  .steps-list li {
+    gap: 0.375rem;
+    padding: 0.375rem 0;
+    flex-direction: column; /* Stack icon and text if needed */
+    align-items: center;
+    text-align: center;
+  }
+  .formula-equation {
+    font-size: 1rem;
+    padding: 0.3125rem 0.625rem;
+  }
+  .formula-explanation {
+    font-size: 0.75rem;
   }
 }
