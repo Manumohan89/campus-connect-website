@@ -44,33 +44,23 @@
   transform: scale(1.05);
   box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
 }
-
 .header-logo-text {
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
   font-size: 1.8rem;
-  color: #fff;
-  background: linear-gradient(90deg, #ffcc00, #ffffff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  transition: transform 0.3s ease;
+  color: #ffffff; /* Solid white */
+  text-decoration: none;
+  transition: transform 0.3s ease, color 0.3s ease;
 }
 
 .header-logo-text:hover {
   transform: translateY(-2px);
+  color: #ffcc00; /* Gold on hover */
 }
 
 /* Desktop Navigation */
-.header-nav {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  margin-left: auto;
-  flex-wrap: wrap;
-}
-
 .nav-button {
-  color: #fff;
+  color: #ffffff; /* White by default */
   font-family: 'Poppins', sans-serif;
   font-weight: 500;
   font-size: 1rem;
@@ -83,7 +73,7 @@
 
 .nav-button:hover,
 .nav-button:focus {
-  color: #ffcc00;
+  color: #ffcc00; /* Gold on hover */
   background: rgba(255, 255, 255, 0.1);
   transform: translateY(-2px);
 }
