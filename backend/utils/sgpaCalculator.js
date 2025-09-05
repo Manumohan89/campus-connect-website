@@ -963,7 +963,7 @@ function getCreditsForSubject(subjectCode) {
         'BPSCK154': 1, 'BPCKL154': 1, 'BMATC11': 4, 'BMATE11': 4, 'BMATM11': 4, 'BMATS11': 4,
 
         // Semester II
-        'BMATS201': 4, 'BCHES202': 4, 'BPOPS203': 3, 'BPCKS203': 3, 'BCEDK203': 3,
+        'BMATS201': 4, 'BCHES202': 4, 'BPOPS203': 3, 'BPCKS203': 3, 'BCEDK203': 3,'BPHYS202': 4,
         'BESCK204A': 3, 'BESCK204B': 3, 'BESCK204C': 3, 'BESCK204D': 3, 'BESCK204E': 3,
         'BETCK205A': 3, 'BETCK205B': 3, 'BETCK205C': 3, 'BETCK205D': 3, 'BETCK205E': 3,
         'BETCK205F': 3, 'BETCK205G': 3, 'BETCK205H': 3, 'BETCK205I': 3, 'BETCK205J': 3,
@@ -1063,15 +1063,15 @@ function getCreditsForSubject(subjectCode) {
         'BCV401': 4, 'BCV402': 4, 'BCV403': 4, 'BCV404': 3, 'BCVL405': 1, 'BCVL406': 1,
         'BCV405A': 3, 'BCV405B': 3, 'BCV405C': 3, 'BCV405D': 3,
         'BCV456A': 1, 'BCV456B': 1, 'BCV456C': 1, 'BCV456D': 1,
-        'BCS401': 3, 'BCS402': 4, 'BCS403': 4, 'BCS404': 3, 'BCSL405': 1, 'BCSL406': 1,
+        'BCS401': 3, 'BCS402': 4, 'BCS403': 4, 'BCS404': 3, 'BCSL404': 1, 'BCSL405': 1, 'BCSL406': 1,
         'BCS405A': 3, 'BCS405B': 3, 'BCS405C': 3, 'BCS405D': 3,
         'BCS456A': 1, 'BCS456B': 1, 'BCS456C': 1, 'BCS456D': 1,
         'BAI401': 4, 'BAI402': 4, 'BAI403': 4, 'BAI404': 3, 'BAIL405': 1, 'BAIL406': 1,
         'BAI405A': 3, 'BAI405B': 3, 'BAI405C': 3, 'BAI405D': 3,
-        'BAI456A': 1, 'BAI456B': 1, 'BAI456C': 1, 'BAI456D': 1,
+        'BAI456A': 1, 'BAI456B': 1, 'BAI456C': 1, 'BAI456D': 1,'BAIL657A': 1,'BAIL657B': 1,'BAIL657C': 1, 'BAIL657D': 1,
         'BDS456A': 1, 'BDS456B': 1, 'BDS456C': 1, 'BDS456D': 1,
         'BDSL456A': 1, 'BDSL456B': 1, 'BDSL456C': 1, 'BDSL456D': 1,
-        'BAD456A': 1, 'BAD456B': 1, 'BAD456C': 1, 'BAD456D': 1,
+        'BAD402': 4,'BAD456A': 1, 'BAD456B': 1, 'BAD456C': 1, 'BAD456D': 1,
         'BIS401': 4, 'BIS402': 4, 'BIS403': 4, 'BIS404': 3, 'BISL405': 1, 'BISL406': 1,
         'BIS405A': 3, 'BIS405B': 3, 'BIS405C': 3, 'BIS405D': 3,
         'BIS456A': 1, 'BIS456B': 1, 'BIS456C': 1, 'BIS456D': 1,
@@ -1147,7 +1147,7 @@ function getCreditsForSubject(subjectCode) {
         'BTX401': 4, 'BTX402': 4, 'BTX403': 4, 'BTX404': 3, 'BTXL405': 1, 'BTXL406': 1,
         'BTX405A': 3, 'BTX405B': 3, 'BTX405C': 3, 'BTX405D': 3,
         'BTX456A': 1, 'BTX456B': 1, 'BTX456C': 1, 'BTX456D': 1,
-        'BCIV407': 1, 'BUHK408': 1, 'BBOC407': 3, 'BINT409': 2, 'BMATDIP401': 0,
+        'BCIV407': 1, 'BUHK408': 1, 'BBOC407': 2, 'BINT409': 2, 'BMATDIP401': 0,
         'BNSK459': 0, 'BPEK459': 0, 'BYOK459': 0,
 
         // Semester V
