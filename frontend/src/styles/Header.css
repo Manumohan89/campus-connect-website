@@ -1,16 +1,12 @@
 /* General Styling */
 .custom-header {
-  background: linear-gradient(90deg, rgba(30, 64, 175, 0.9), rgba(59, 130, 246, 0.7));
-  backdrop-filter: blur(12px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-  transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-  width: 100%;
-  box-sizing: border-box;
+  background-color: #1976d2;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .custom-header.scrolled {
-  background: linear-gradient(90deg, rgba(0, 34, 68, 0.95), rgba(30, 64, 175, 0.85));
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  background-color: #155a9c;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Toolbar Styling */
@@ -18,7 +14,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.75rem 2rem;
+  padding: 0 16px;
 }
 
 /* Logo Section */
@@ -27,175 +23,63 @@
   align-items: center;
   cursor: pointer;
   text-decoration: none;
-  flex-shrink: 0;
 }
 
 .header-logo-avatar {
-  width: 60px;
-  height: 60px;
-  margin-right: 12px;
-  border-radius: 8px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  image-rendering: crisp-edges; /* Optimize for clarity */
-  object-fit: contain;
+  width: 40px;
+  height: 40px;
+  margin-right: 8px;
 }
 
-.header-logo-avatar:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
-}
 .header-logo-text {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
-  font-size: 1.8rem;
-  color: #ffffff; /* Solid white */
-  text-decoration: none;
-  transition: transform 0.3s ease, color 0.3s ease;
-}
-
-.header-logo-text:hover {
-  transform: translateY(-2px);
-  color: #ffcc00; /* Gold on hover */
+  font-weight: bold;
+  color: #fff;
 }
 
 /* Desktop Navigation */
-.nav-button {
-  color: #ffffff; /* White by default */
-  font-family: 'Poppins', sans-serif;
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-nav button {
+  color: #fff;
   font-weight: 500;
-  font-size: 1rem;
   text-transform: capitalize;
-  padding: 8px 12px;
-  border-radius: 6px;
-  position: relative;
-  transition: color 0.3s ease, background 0.3s ease, transform 0.3s ease;
+  padding: 6px 12px;
+  transition: background-color 0.3s ease;
 }
 
-.nav-button:hover,
-.nav-button:focus {
-  color: #ffcc00; /* Gold on hover */
-  background: rgba(255, 255, 255, 0.1);
-  transform: translateY(-2px);
-}
-
-.nav-button::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: linear-gradient(90deg, #ffcc00, #ffffff);
-  transition: width 0.3s ease;
-}
-
-.nav-button:hover::after,
-.nav-button:focus::after {
-  width: 100%;
+.header-nav button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 /* Mobile Navigation */
 .header-mobile-menu {
   display: none;
-  margin-left: auto;
 }
 
 .menu-toggle-icon {
   color: #fff;
-  transition: transform 0.3s ease;
 }
 
-.menu-toggle-icon:hover {
-  transform: scale(1.1);
-}
-
-.mobile-menu-paper {
-  background: linear-gradient(135deg, #002244, #1e40af);
-  color: white;
-  width: 280px;
-  margin-top: 56px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-  animation: slideInRight 0.3s ease-in-out;
+.header-mobile-dropdown {
+  margin-top: 50px;
 }
 
 .menu-icon {
   margin-right: 8px;
-  color: #fff;
+  color: #555;
 }
 
-.MuiMenuItem-root {
-  padding: 14px 24px;
-  min-height: 48px;
-  transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
-}
-
-.MuiMenuItem-root:hover,
-.MuiMenuItem-root:focus {
-  background: rgba(255, 255, 255, 0.1);
-  color: #ffcc00;
-  transform: translateX(5px);
-}
-
-/* Animations */
-@keyframes slideInRight {
-  from {
-    transform: translateX(100%);
-  }
-  to {
-    transform: translateX(0);
-  }
-}
-
-/* Responsive Adjustments for Tablets (max-width: 900px) */
-@media (max-width: 900px) {
+/* Mobile Specific Styling */
+@media (max-width: 768px) {
   .header-nav {
     display: none;
   }
 
   .header-mobile-menu {
     display: block;
-  }
-
-  .header-logo-avatar {
-    width: 50px;
-    height: 50px;
-  }
-
-  .header-logo-text {
-    font-size: 1.5rem;
-  }
-
-  .header-toolbar {
-    padding: 0.5rem 1.5rem;
-  }
-
-  .mobile-menu-paper {
-    width: 260px;
-  }
-}
-
-/* Responsive Adjustments for Small Mobile Devices (max-width: 480px) */
-@media (max-width: 480px) {
-  .header-logo-avatar {
-    width: 40px;
-    height: 40px;
-    margin-right: 8px;
-  }
-
-  .header-logo-text {
-    font-size: 1.3rem;
-  }
-
-  .header-toolbar {
-    padding: 0.5rem 1rem;
-  }
-
-  .mobile-menu-paper {
-    width: 240px;
-  }
-
-  .MuiMenuItem-root {
-    padding: 12px 20px;
-    font-size: 0.9rem;
   }
 }
