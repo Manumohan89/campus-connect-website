@@ -17,6 +17,7 @@ import About from './components/About';
 import PublicSGPA from './components/PublicSGPA';
 import Resources from './components/Resources'; // Import the Resources component
 import VTUCircularsPreview from './components/VTUCircularsPreview'; // Import the VTUCircularsPreview component 
+import PrivacyPolicy from './components/PrivacyPolicy'; // Import Privacy Policy component
 
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
         
         <Route path="/resources" element={<Resources />} />
        <Route path="/resources/circulars" element={<VTUCircularsPreview />} />
+       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 
 
       
