@@ -1,0 +1,58 @@
+/* PublicHeader.css */
+.header {
+  background-color: #2e3b55;
+  box-shadow: none;
+  transition: background-color 0.3s ease;
+}
+
+.header.scrolled {
+  background-color: #1d273d;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 50px;
+  margin-right: 10px;
+}
+
+.logo-text {
+  color: white;
+  text-decoration: none;
+  font-size: 24px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+  margin-left: auto;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+}
+
+.right-icons {
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+}
+
+.menu-item {
+  color: #000;
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+}

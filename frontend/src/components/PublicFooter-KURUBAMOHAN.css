@@ -1,0 +1,37 @@
+.footer {
+  padding: 40px;
+  background-color: #1a1a1a;
+  color: #ffffff;
+  width: 100%; /* Ensure footer stretches across the page */
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-heading {
+  font-weight: bold;
+  color: #00bfa6;
+  margin-bottom: 20px;
+}
+
+.footer-link {
+  color: #cccccc;
+  text-decoration: none;
+  margin-bottom: 10px;
+  display: inline-block;
+  transition: color 0.2s ease-in-out;
+}
+
+.footer-link:hover {
+  color: #00bfa6;
+}
+
+.footer .MuiSvgIcon-root {
+  font-size: 30px;
+}
+
+.footer svg:hover {
+  color: #00bfa6;
+}

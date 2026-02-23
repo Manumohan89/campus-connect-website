@@ -1,0 +1,80 @@
+.profile-page {
+  padding: 20px;
+  background-color: #f8f9fa;
+  min-height: calc(100vh - 60px); /* Ensure footer is at the bottom */
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-content {
+  flex-grow: 1;
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.profile-img-container {
+  margin-right: 20px;
+}
+
+.profile-img-container img {
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+}
+
+.profile-details {
+  flex-grow: 1;
+}
+
+.profile-details table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.profile-details th, .profile-details td {
+  padding: 10px;
+  text-align: left;
+}
+
+.profile-details th {
+  background-color: #3f51b5;
+  color: white;
+  width: 30%;
+}
+
+.profile-details td {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .profile-info {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .profile-img-container {
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+
+  .profile-details th {
+    font-size: 0.9rem;
+  }
+
+  .profile-details td {
+    font-size: 0.9rem;
+  }
+}

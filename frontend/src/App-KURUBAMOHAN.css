@@ -1,0 +1,157 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+/* Ensure the body and html take full height */
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+  overscroll-behavior: none; /* Disable overscroll bounce on all devices */
+  height: 100%;
+  font-family: Arial, sans-serif;
+}
+
+/* Ensure the main app container takes at least full height */
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Main content area should grow to fill available space */
+.main-content {
+  flex: 1;
+}
+
+/* Footer should be positioned at the bottom */
+.auth-footer {
+  background-color: #283593;
+  color: #fff;
+  padding: 20px 0;
+  text-align: center;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: auto;
+  width: 100%;
+  position: relative;
+  bottom: 0;
+}
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  padding-bottom: 40px; /* To prevent overlap with the footer */
+}
+
+.public-footer {
+  margin-top: auto;
+  width: 100%;
+  background-color: #2e3b55;
+  color: #ffffff;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px; /* Adjust padding for consistent sizing */
+}
+
+@media (max-width: 768px) {
+  .footer-container {
+    padding: 20px 10px;
+  }
+}
+html {
+  overflow-y: scroll;
+}
+body {
+  margin: 0;
+  padding: 0;
+}
+
+
+
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+/* App.css */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;  /* Full height of the viewport */
+}
+
+.main-content {
+  flex: 1;  /* Grow to fill available space */
+  padding: 20px;
+}
+
+.footer {
+  width: 100%;
+  background-color: #2e3b55;
+  color: white;
+  padding: 20px 0;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+html, body {
+  overscroll-behavior: hidden;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  overflow-x: hidden;
+}

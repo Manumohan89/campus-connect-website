@@ -1,0 +1,40 @@
+.header {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #2e3b55;
+}
+
+.logo {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.menu-button {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  color: #fff;
+  text-decoration: none;
+}
+
+.menu-button:hover {
+  text-decoration: underline;
+}
+
+.right-icons {
+  display: flex;
+  align-items: center;
+}
+
+.menu-icon {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+      display: none;
+  }
+
+  .menu-icon {
+      display: flex;
+  }
+}

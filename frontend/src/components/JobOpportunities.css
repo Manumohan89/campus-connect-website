@@ -1,0 +1,44 @@
+.job-opportunities-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .job-opportunities-content {
+    padding: 40px;
+    text-align: center;
+  }
+  
+  .job-opportunities-content h2 {
+    margin-bottom: 20px;
+    font-size: 2rem;
+  }
+  
+  .job-opportunities-content ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .job-opportunities-content li {
+    margin-bottom: 20px;
+  }
+  
+  .job-opportunities-content li h3 {
+    margin: 10px 0;
+    font-size: 1.5rem;
+  }
+  
+  .job-opportunities-content li p {
+    margin: 5px 0;
+  }
+  
+  .job-opportunities-content a {
+    color: #4CAF50;
+    text-decoration: none;
+  }
+  
+  .job-opportunities-content a:hover {
+    text-decoration: underline;
+  }
+  

@@ -1,0 +1,35 @@
+.footer {
+  background-color: #2e3b55;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+}
+
+.footer-container {
+  width: 100%;
+  padding: 0 20px;
+}
+
+.footer .MuiTypography-root {
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.footer .footer-link {
+  margin-bottom: 5px;
+}
+
+.footer .MuiLink-root:hover {
+  text-decoration: underline;
+}
+
+.footer .MuiSvgIcon-root {
+  color: #fff;
+  font-size: 24px;
+}
+
+.footer .MuiSvgIcon-root:hover {
+  color: #ccc;  /* Optional: Hover effect for social icons */
+}

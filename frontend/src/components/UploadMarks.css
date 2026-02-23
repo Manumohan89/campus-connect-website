@@ -1,0 +1,42 @@
+.upload-marks-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .upload-marks-content {
+    padding: 40px;
+    text-align: center;
+  }
+  
+  .upload-marks-content h2 {
+    margin-bottom: 20px;
+    font-size: 2rem;
+  }
+  
+  .upload-marks-content input {
+    margin-bottom: 20px;
+  }
+  
+  .upload-marks-content button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+  }
+  
+  .upload-marks-content button:hover {
+    background-color: #45a049;
+  }
+  
+  .upload-marks-content p {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    color: green;
+  }
+  

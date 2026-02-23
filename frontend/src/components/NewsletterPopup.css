@@ -1,0 +1,40 @@
+.newsletter-popup {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    padding: 15px;
+    z-index: 1000;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .popup-content {
+    margin-top: 10px;
+  }
+  
+  .close-button {
+    padding: 0;
+  }
+  
+  .popup-content p {
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .popup-content .MuiTextField-root {
+    margin-bottom: 10px;
+  }
+  
+  .popup-content .MuiButton-root {
+    width: 100%;
+  }
+  

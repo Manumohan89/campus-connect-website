@@ -1,0 +1,47 @@
+.update-profile-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .update-profile-content {
+    padding: 40px;
+    text-align: center;
+  }
+  
+  .update-profile-content h2 {
+    margin-bottom: 20px;
+    font-size: 2rem;
+  }
+  
+  .update-profile-content form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .update-profile-content input {
+    padding: 10px;
+    margin: 10px 0;
+    width: 80%;
+    max-width: 300px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .update-profile-content button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+  }
+  
+  .update-profile-content button:hover {
+    background-color: #45a049;
+  }
+  
