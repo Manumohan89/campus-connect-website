@@ -1,0 +1,28 @@
+.testimonials-grid {
+    margin-top: 50px;
+}
+
+.testimonial-card {
+    padding: 20px;
+    text-align: center;
+    background-color: white;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+.testimonial-card:hover {
+    transform: scale(1.05);
+}
+
+.testimonial-image {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-bottom: 15px;
+}
+
+.testimonial-message {
+    font-style: italic;
+    margin-top: 10px;
+}

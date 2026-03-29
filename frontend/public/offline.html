@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Offline — Campus Connect</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; display: flex; align-items: center; justify-content: center;
+           min-height: 100vh; margin: 0; background: #F8FAFC; color: #374151; }
+    .card { text-align: center; padding: 48px 32px; max-width: 400px; }
+    .icon { font-size: 4rem; margin-bottom: 16px; }
+    h1 { font-size: 1.5rem; font-weight: 700; margin: 0 0 8px; }
+    p { color: #6B7280; line-height: 1.6; margin: 0 0 24px; }
+    button { background: #4F46E5; color: white; border: none; padding: 12px 32px;
+             border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; }
+    button:hover { background: #4338CA; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon">📡</div>
+    <h1>You're Offline</h1>
+    <p>Campus Connect needs an internet connection. Some cached content may still be available.</p>
+    <button onclick="window.location.reload()">Try Again</button>
+  </div>
+</body>
+</html>
