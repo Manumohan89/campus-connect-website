@@ -1,0 +1,95 @@
+/* Ensure the entire page takes at least the full viewport height */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+/* Main wrapper to include all content and push the footer down */
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Content area takes up all available space except for the footer */
+.content-wrap {
+  flex: 1;
+  padding-bottom: 40px; /* Give space for the footer */
+}
+
+/* Footer styling remains the same but now it's only at the bottom when necessary */
+.public-footer {
+  background-color: #1a73e8;
+  color: white;
+  padding: 40px 30px;
+  text-align: center;
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  margin-top: auto; /* Pushes the footer to the bottom if content is less */
+}
+
+.public-footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  max-width: 1200px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 200px;
+  margin-bottom: 20px;
+}
+
+.footer-section h4 {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+}
+
+.footer-section p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.footer-section a {
+  color: #ffeb3b;
+  text-decoration: none;
+  font-size: 0.9rem;
+  display: block;
+  margin-bottom: 10px;
+  transition: color 0.3s ease;
+}
+
+.footer-section a:hover {
+  text-decoration: underline;
+}
+
+.footer-bottom {
+  margin-top: 20px;
+  border-top: 1px solid #ccc;
+  padding-top: 20px;
+  width: 100%;
+}
+
+.footer-bottom p {
+  margin: 5px 0;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .public-footer-content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer-section {
+    margin-bottom: 30px;
+  }
+
+  .footer-bottom p {
+    font-size: 0.8rem;
+  }
+}

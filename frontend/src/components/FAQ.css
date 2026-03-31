@@ -1,0 +1,24 @@
+.faq-section {
+    padding: 40px 0;
+  }
+  
+  .faq-accordion {
+    margin-bottom: 15px;
+    background-color: #f8f9fa;
+  }
+  
+  .faq-summary {
+    font-weight: bold;
+  }
+  
+  .faq-summary:hover {
+    background-color: #e9ecef;
+  }
+  
+  .section-title {
+    text-align: center;
+    margin-bottom: 40px;
+    font-weight: bold;
+    color: #2e3b55;
+  }
+  

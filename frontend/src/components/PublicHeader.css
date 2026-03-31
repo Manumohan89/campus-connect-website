@@ -1,0 +1,42 @@
+/* Public Header Styling */
+.public-header-appbar {
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3) !important;
+  position: sticky;
+  top: 0;
+  z-index: 1100;
+}
+
+.public-logo-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  display: none;
+}
+
+@media (min-width: 600px) {
+  .public-logo-text {
+    display: inline-block;
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+  .public-header-appbar .MuiToolbar-root {
+    padding: 0 12px;
+    min-height: 56px;
+  }
+
+  .public-logo-text {
+    font-size: 1.2rem;
+  }
+}
+
+/* Navigation Drawer Styling */
+.MuiDrawer-paper {
+  background-color: #f5f5f5 !important;
+}
+
+/* Smooth transitions */
+.MuiButton-root {
+  transition: all 0.3s ease;
+}

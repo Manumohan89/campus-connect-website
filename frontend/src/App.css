@@ -1,0 +1,28 @@
+/* App.css — minimal overrides, design system in index.css */
+.App { min-height: 100vh; }
+
+/* MUI overrides for our design system */
+.MuiCard-root {
+  font-family: 'Outfit', sans-serif !important;
+}
+.MuiTypography-root {
+  font-family: 'Outfit', sans-serif;
+}
+.MuiButton-root {
+  font-family: 'Outfit', sans-serif !important;
+  letter-spacing: 0.01em !important;
+}
+.MuiChip-root {
+  font-family: 'Outfit', sans-serif !important;
+}
+
+/* Remove MUI default shadows for cleaner look */
+.MuiCard-root.MuiCard-elevation0 {
+  box-shadow: none !important;
+}
+
+/* Custom scrollbar for all containers */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #818CF8 transparent;
+}

@@ -1,0 +1,44 @@
+.live-chat-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+}
+
+.live-chat-button {
+    background-color: #2e3b55;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+.live-chat-box {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 15px;
+    position: absolute;
+    bottom: 60px;
+    right: 0;
+    width: 300px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.live-chat-box textarea {
+    width: 100%;
+    height: 60px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.send-button {
+    background-color: #2e3b55;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
