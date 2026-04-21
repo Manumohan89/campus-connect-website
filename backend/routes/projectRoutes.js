@@ -45,6 +45,40 @@ router.get('/my-purchases', authMiddleware, async (req, res) => {
 // ── POST /api/projects/:id/create-order — initiate payment ───────────────────
 router.post('/:id/create-order', authMiddleware, async (req, res) => {
   try {
+    // Ensure tables exist (safe to run multiple times)
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS project_listings (
+        id SERIAL PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        description TEXT,
+        tech_stack TEXT[],
+        category VARCHAR(100),
+        level VARCHAR(50) DEFAULT 'intermediate',
+        price_paise INTEGER DEFAULT 0,
+        preview_url TEXT,
+        download_url TEXT,
+        thumbnail_url TEXT,
+        tags TEXT[],
+        is_active BOOLEAN DEFAULT TRUE,
+        downloads_count INTEGER DEFAULT 0,
+        created_at TIMESTAMPTZ DEFAULT NOW(),
+        updated_at TIMESTAMPTZ DEFAULT NOW()
+      )
+    `);
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS project_purchases (
+        id SERIAL PRIMARY KEY,
+        project_id INTEGER REFERENCES project_listings(id) ON DELETE CASCADE,
+        user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE,
+        amount_paise INTEGER NOT NULL DEFAULT 0,
+        payment_id VARCHAR(255),
+        order_id VARCHAR(255),
+        status VARCHAR(50) DEFAULT 'pending',
+        purchased_at TIMESTAMPTZ DEFAULT NOW(),
+        UNIQUE(project_id, user_id)
+      )
+    `);
+
     const { rows: proj } = await pool.query(
       'SELECT * FROM project_listings WHERE id = $1 AND is_active = true',
       [req.params.id]

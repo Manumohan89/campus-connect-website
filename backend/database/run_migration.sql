@@ -15,6 +15,18 @@ ALTER TABLE users ADD COLUMN IF NOT EXISTS username     TEXT;    -- already exis
 CREATE INDEX IF NOT EXISTS idx_users_role ON users(role);
 
 -- ── 2. Marks table ────────────────────────────────────────────────────────────
+-- Rename sgpa column to grade_points (safe: only if sgpa exists)
+DO $$
+BEGIN
+  IF EXISTS (
+    SELECT 1 FROM information_schema.columns 
+    WHERE table_name = 'marks' AND column_name = 'sgpa'
+  ) THEN
+    ALTER TABLE marks RENAME COLUMN sgpa TO grade_points;
+    RAISE NOTICE 'Successfully renamed marks.sgpa to marks.grade_points';
+  END IF;
+END $$;
+
 -- is_failed is a generated column (already in init.sql if fresh install)
 -- ALTER TABLE marks ADD COLUMN IF NOT EXISTS is_failed BOOLEAN GENERATED ALWAYS AS (total < 40) STORED;
 -- Skip above if it already exists — the CHECK below handles it safely
