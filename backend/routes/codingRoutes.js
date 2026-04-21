@@ -250,8 +250,8 @@ router.post('/submit', authMiddleware, async (req, res) => {
     res.json({ passed: allPassed, score, status, results: clientResults, total: testCases.length, passed_count: passedCount });
 
   } catch (e) {
-    console.error('❌ Coding submission error for user', req.user?.userId, ':', e.message);
-    if (process.env.NODE_ENV !== 'production') console.error('Stack:', e.stack);
+    console.error('❌ Coding submission error for user', req.user?.userId, 'problem', problem_id, ':', e.message);
+    if (process.env.NODE_ENV !== 'production') console.error('Stack trace:', e.stack);
     res.status(500).json({ error: 'Submission failed: ' + e.message });
   }
 });

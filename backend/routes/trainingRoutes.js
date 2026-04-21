@@ -36,9 +36,13 @@ router.get('/courses/:id', async (req, res) => {
 // POST /api/training/enroll
 router.post('/enroll', authMiddleware, async (req, res) => {
   const { course_id } = req.body;
-  const user_id = req.user.userId;
+  const user_id = req.user?.userId;
   
-  // Validate course_id is provided
+  // Validate inputs
+  if (!user_id) {
+    console.error('❌ Enroll: No user_id in request');
+    return res.status(401).json({ error: 'User not authenticated' });
+  }
   if (!course_id) {
     return res.status(400).json({ error: 'course_id is required' });
   }
@@ -46,26 +50,30 @@ router.post('/enroll', authMiddleware, async (req, res) => {
   try {
     // Verify course exists before attempting enrollment
     const courseCheck = await pool.query(
-      'SELECT 1 FROM training_courses WHERE course_id = $1',
+      'SELECT course_id FROM training_courses WHERE course_id = $1 LIMIT 1',
       [course_id]
     );
     if (!courseCheck.rows.length) {
       return res.status(404).json({ error: 'Course not found' });
     }
     
+    // Attempt enrollment with conflict handling
     const result = await pool.query(
-      'INSERT INTO enrollments (user_id, course_id) VALUES ($1, $2) ON CONFLICT (user_id, course_id) DO NOTHING RETURNING id',
+      `INSERT INTO enrollments (user_id, course_id, enrolled_at) 
+       VALUES ($1, $2, NOW()) 
+       ON CONFLICT (user_id, course_id) DO NOTHING 
+       RETURNING id`,
       [user_id, course_id]
     );
     
     if (result.rows.length === 0) {
-      return res.status(409).json({ message: 'Already enrolled in this course' });
+      return res.status(200).json({ message: 'Already enrolled in this course' });
     }
     
-    res.status(201).json({ message: 'Enrolled successfully' });
+    res.status(201).json({ message: 'Enrolled successfully', enrollment_id: result.rows[0].id });
   } catch (err) {
     console.error('❌ Enrollment error for user', user_id, 'course', course_id, ':', err.message);
-    if (process.env.NODE_ENV !== 'production') console.error('Stack:', err.stack);
+    if (process.env.NODE_ENV !== 'production') console.error('Stack trace:', err.stack);
     res.status(500).json({ error: 'Enrollment failed: ' + err.message });
   }
 });
