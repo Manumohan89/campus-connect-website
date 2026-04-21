@@ -37,14 +37,36 @@ router.get('/courses/:id', async (req, res) => {
 router.post('/enroll', authMiddleware, async (req, res) => {
   const { course_id } = req.body;
   const user_id = req.user.userId;
+  
+  // Validate course_id is provided
+  if (!course_id) {
+    return res.status(400).json({ error: 'course_id is required' });
+  }
+  
   try {
-    await pool.query(
-      'INSERT INTO enrollments (user_id, course_id) VALUES ($1, $2) ON CONFLICT (user_id, course_id) DO NOTHING',
+    // Verify course exists before attempting enrollment
+    const courseCheck = await pool.query(
+      'SELECT 1 FROM training_courses WHERE course_id = $1',
+      [course_id]
+    );
+    if (!courseCheck.rows.length) {
+      return res.status(404).json({ error: 'Course not found' });
+    }
+    
+    const result = await pool.query(
+      'INSERT INTO enrollments (user_id, course_id) VALUES ($1, $2) ON CONFLICT (user_id, course_id) DO NOTHING RETURNING id',
       [user_id, course_id]
     );
+    
+    if (result.rows.length === 0) {
+      return res.status(409).json({ message: 'Already enrolled in this course' });
+    }
+    
     res.status(201).json({ message: 'Enrolled successfully' });
   } catch (err) {
-    res.status(500).json({ error: 'Enrollment failed' });
+    console.error('❌ Enrollment error for user', user_id, 'course', course_id, ':', err.message);
+    if (process.env.NODE_ENV !== 'production') console.error('Stack:', err.stack);
+    res.status(500).json({ error: 'Enrollment failed: ' + err.message });
   }
 });
 

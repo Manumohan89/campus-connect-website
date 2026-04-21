@@ -154,6 +154,8 @@ router.post('/run', authMiddleware, async (req, res) => {
       language,
     });
   } catch (e) {
+    console.error('❌ Code execution error for user', req.user?.userId, 'language', language, ':', e.message);
+    if (process.env.NODE_ENV !== 'production') console.error('Stack:', e.stack);
     res.status(500).json({ error: 'Execution failed: ' + e.message });
   }
 });
@@ -248,6 +250,8 @@ router.post('/submit', authMiddleware, async (req, res) => {
     res.json({ passed: allPassed, score, status, results: clientResults, total: testCases.length, passed_count: passedCount });
 
   } catch (e) {
+    console.error('❌ Coding submission error for user', req.user?.userId, ':', e.message);
+    if (process.env.NODE_ENV !== 'production') console.error('Stack:', e.stack);
     res.status(500).json({ error: 'Submission failed: ' + e.message });
   }
 });
