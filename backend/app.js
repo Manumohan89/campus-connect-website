@@ -140,7 +140,7 @@ app.use((err, req, res, _next) => {
 // ── Auto-migrations ───────────────────────────────────────────────────────────
 const runMigrations = async () => {
   const pool = require('./db');
-  for (const file of ['init.sql','run_migration.sql','migration_v2.sql','migration_v3.sql','earn_migration.sql','admin_migration.sql','workshop_feedback_migration.sql','remove_otp_migration.sql','fix_constraints_migration.sql','enrollments_constraint_migration.sql']) {
+  for (const file of ['init.sql','run_migration.sql','migration_v2.sql','migration_v3.sql','earn_migration.sql','admin_migration.sql','workshop_feedback_migration.sql','remove_otp_migration.sql','fix_constraints_migration.sql','enrollments_constraint_migration.sql','user_solved_problems_constraint_migration.sql']) {
     const fp = path.join(__dirname, 'database', file);
     if (!fs.existsSync(fp)) continue;
     try {

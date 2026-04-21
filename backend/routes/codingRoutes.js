@@ -227,21 +227,52 @@ router.post('/submit', authMiddleware, async (req, res) => {
     );
 
     // Update acceptance_rate for this problem
-    await pool.query(`
-      UPDATE coding_problems SET acceptance_rate = (
-        SELECT ROUND(100.0 * COUNT(*) FILTER (WHERE status='accepted') / NULLIF(COUNT(*),0), 1)
-        FROM coding_submissions WHERE problem_id = $1
-      ) WHERE id = $1
-    `, [problem_id]).catch(() => {});
+    try {
+      await pool.query(`
+        UPDATE coding_problems SET acceptance_rate = (
+          SELECT ROUND(100.0 * COUNT(*) FILTER (WHERE status='accepted') / NULLIF(COUNT(*),0), 1)
+          FROM coding_submissions WHERE problem_id = $1
+        ) WHERE id = $1
+      `, [problem_id]);
+    } catch (e) {
+      console.warn('⚠️  Could not update acceptance_rate:', e.message);
+      // Non-critical, continue
+    }
 
     // Mark as solved if all passed
     if (allPassed) {
-      await pool.query(
-        `INSERT INTO user_solved_problems (user_id, problem_id, solved_at, language)
-         VALUES ($1,$2,NOW(),$3)
-         ON CONFLICT (user_id, problem_id) DO UPDATE SET solved_at=NOW(), language=$3`,
-        [req.user.userId, problem_id, language]
-      );
+      try {
+        // Try ON CONFLICT approach first (requires PRIMARY KEY constraint)
+        await pool.query(
+          `INSERT INTO user_solved_problems (user_id, problem_id, solved_at, language)
+           VALUES ($1,$2,NOW(),$3)
+           ON CONFLICT (user_id, problem_id) DO UPDATE SET solved_at=NOW(), language=$3`,
+          [req.user.userId, problem_id, language]
+        );
+      } catch (conflictErr) {
+        // If ON CONFLICT fails (missing constraint), use fallback approach
+        if (conflictErr.message.includes('ON CONFLICT')) {
+          console.warn('⚠️  ON CONFLICT not supported, using fallback INSERT-OR-IGNORE approach');
+          try {
+            // Delete existing to avoid unique constraint violation
+            await pool.query(
+              'DELETE FROM user_solved_problems WHERE user_id=$1 AND problem_id=$2',
+              [req.user.userId, problem_id]
+            );
+            // Insert fresh record
+            await pool.query(
+              `INSERT INTO user_solved_problems (user_id, problem_id, solved_at, language)
+               VALUES ($1,$2,NOW(),$3)`,
+              [req.user.userId, problem_id, language]
+            );
+          } catch (fallbackErr) {
+            console.error('❌ Fallback failed for user_solved_problems:', fallbackErr.message);
+            // Continue anyway - submission was still saved
+          }
+        } else {
+          throw conflictErr;
+        }
+      }
     }
 
     // Mask hidden test case details before sending to client
