@@ -168,6 +168,10 @@ router.post('/submit', authMiddleware, async (req, res) => {
   if (!problem_id || !language || !source_code)
     return res.status(400).json({ error: 'problem_id, language, source_code required' });
 
+  if (!LANG_CONFIG[language]) {
+    return res.status(400).json({ error: `Language '${language}' not supported` });
+  }
+
   try {
     const probRes = await pool.query(
       'SELECT * FROM coding_problems WHERE id=$1 AND is_active=true',
@@ -261,6 +265,83 @@ router.post('/submit', authMiddleware, async (req, res) => {
 // ─────────────────────────────────────────────────────────────────────────────
 router.get('/languages', async (_req, res) => {
   res.json({ supported: Object.keys(LANG_CONFIG), engine: 'built-in' });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// GET /api/coding/diagnostics — check system dependencies (admin only)
+// ─────────────────────────────────────────────────────────────────────────────
+router.get('/diagnostics', authMiddleware, async (req, res) => {
+  try {
+    // Check if user is admin
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'Admin access required' });
+    }
+
+    const diagnostics = {
+      languages_supported: Object.keys(LANG_CONFIG),
+      system_info: {
+        platform: os.platform(),
+        tmpdir: os.tmpdir(),
+        node_version: process.version,
+      },
+      available_commands: {},
+      database: {},
+    };
+
+    // Check which compilers are available
+    for (const [lang, config] of Object.entries(LANG_CONFIG)) {
+      let cmd = config.cmd;
+      if (lang === 'java') cmd = 'javac';
+      if (lang === 'c' || lang === 'cpp') cmd = config.compile ? config.compile('', '')[0] : null;
+      if (lang === 'csharp') cmd = 'mcs';
+
+      if (!cmd) continue;
+
+      const result = await new Promise(resolve => {
+        const test = spawn(cmd, ['--version'], { timeout: 2000 });
+        let output = '';
+        let hasError = false;
+
+        test.stdout?.on('data', d => { output += d; });
+        test.stderr?.on('data', d => { output += d; });
+        test.on('error', () => { hasError = true; });
+        test.on('close', code => {
+          diagnostics.available_commands[cmd] = { available: !hasError && code === 0, version_output: output.substring(0, 100) };
+          resolve();
+        });
+
+        setTimeout(() => {
+          test.kill();
+          diagnostics.available_commands[cmd] = { available: false, error: 'timeout' };
+          resolve();
+        }, 3000);
+      });
+    }
+
+    // Check database schema
+    try {
+      const result = await pool.query(`
+        SELECT 
+          c.constraint_name,
+          c.constraint_type,
+          c.table_name
+        FROM information_schema.table_constraints c
+        WHERE c.table_name IN ('enrollments', 'coding_submissions', 'user_solved_problems')
+        ORDER BY c.table_name, c.constraint_name
+      `);
+      diagnostics.database.constraints = result.rows;
+    } catch (e) {
+      diagnostics.database.constraints_error = e.message;
+    }
+
+    // Check tmp directory
+    diagnostics.tmp_writable = fs.existsSync(TMP_DIR);
+
+    res.json(diagnostics);
+  } catch (e) {
+    console.error('❌ Diagnostics error:', e.message);
+    res.status(500).json({ error: e.message });
+  }
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
