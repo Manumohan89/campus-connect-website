@@ -1,0 +1,520 @@
+/* ═══════════════════════════════════════════════════════════════
+   Campus Connect — Global Design System
+   Theme: Dark-tech academic / Premium editorial
+═══════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Fraunces:ital,wght@0,400;0,700;1,400&display=swap');
+
+/* ── Design Tokens ─────────────────────────────────────────── */
+:root {
+  /* Brand */
+  --indigo-900:  #0E0B2E;
+  --indigo-800:  #16103F;
+  --indigo-700:  #1E1B4B;
+  --indigo-600:  #312E81;
+  --indigo-500:  #4338CA;
+  --indigo-400:  #4F46E5;
+  --indigo-300:  #6366F1;
+  --indigo-200:  #818CF8;
+  --indigo-100:  #C7D2FE;
+
+  --violet-500: #7C3AED;
+  --violet-400: #8B5CF6;
+  --violet-300: #A78BFA;
+
+  --sky-400:    #38BDF8;
+  --sky-300:    #7DD3FC;
+
+  --emerald-500: #10B981;
+  --amber-400:   #FBBF24;
+  --rose-500:    #EF4444;
+
+  /* Surfaces */
+  --bg:          #F6F8FC;
+  --surface:     #FFFFFF;
+  --surface-2:   #F1F5F9;
+  --surface-3:   #E8EDF5;
+  --border:      #E2E8F0;
+  --border-2:    #CBD5E1;
+
+  /* Text */
+  --text-primary:  #0F172A;
+  --text-secondary: #475569;
+  --text-muted:    #94A3B8;
+
+  /* Gradients */
+  --grad-primary:  linear-gradient(135deg, #4338CA 0%, #7C3AED 50%, #38BDF8 100%);
+  --grad-dark:     linear-gradient(135deg, #0E0B2E 0%, #1E1B4B 50%, #0F2449 100%);
+  --grad-card:     linear-gradient(145deg, rgba(255,255,255,0.9), rgba(248,250,252,0.6));
+
+  /* Shadows */
+  --shadow-xs:   0 1px 2px rgba(15,23,42,0.05);
+  --shadow-sm:   0 2px 8px rgba(15,23,42,0.08), 0 1px 2px rgba(15,23,42,0.04);
+  --shadow-md:   0 4px 16px rgba(15,23,42,0.10), 0 2px 4px rgba(15,23,42,0.06);
+  --shadow-lg:   0 12px 32px rgba(15,23,42,0.12), 0 4px 8px rgba(15,23,42,0.06);
+  --shadow-xl:   0 24px 48px rgba(15,23,42,0.16);
+  --shadow-glow: 0 0 40px rgba(79,70,229,0.25);
+  --shadow-glow-violet: 0 0 40px rgba(124,58,237,0.2);
+
+  /* Typography */
+  --font-display: 'Syne', sans-serif;
+  --font-body:    'Outfit', sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+
+  /* Spacing */
+  --radius-sm:  8px;
+  --radius-md:  12px;
+  --radius-lg:  16px;
+  --radius-xl:  24px;
+  --radius-2xl: 32px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
+}
+
+/* ── Base Reset ─────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+a { color: var(--indigo-400); text-decoration: none; transition: color var(--duration-fast); }
+a:hover { color: var(--indigo-300); }
+
+/* ── Custom Scrollbar ───────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--indigo-200); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--indigo-300); }
+
+/* ── Animations ─────────────────────────────────────────────── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(32px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-32px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(79,70,229,0.3); }
+  50%       { box-shadow: 0 0 40px rgba(79,70,229,0.6); }
+}
+@keyframes gradient-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes particle-float {
+  0%, 100% { transform: translate(0,0) scale(1); opacity: 0.6; }
+  33%       { transform: translate(20px,-30px) scale(1.1); opacity: 0.8; }
+  66%       { transform: translate(-15px,15px) scale(0.9); opacity: 0.4; }
+}
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Utility Classes ────────────────────────────────────────── */
+.animate-fadeInUp    { animation: fadeInUp var(--duration-slow) var(--ease-smooth) both; }
+.animate-fadeIn      { animation: fadeIn var(--duration-normal) both; }
+.animate-scaleIn     { animation: scaleIn var(--duration-slow) var(--ease-spring) both; }
+.animate-float       { animation: float 3s ease-in-out infinite; }
+.animate-glow        { animation: glow-pulse 2s ease-in-out infinite; }
+
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-600 { animation-delay: 600ms; }
+.delay-700 { animation-delay: 700ms; }
+.delay-800 { animation-delay: 800ms; }
+
+/* ── Gradient Text ──────────────────────────────────────────── */
+.gradient-text {
+  background: var(--grad-primary);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 4s ease infinite;
+}
+
+/* ── Glass Effect ───────────────────────────────────────────── */
+.glass {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+.glass-light {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+.glass-dark {
+  background: rgba(10, 8, 30, 0.6);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ── Card Hover Effects ─────────────────────────────────────── */
+.card-hover {
+  transition: transform var(--duration-normal) var(--ease-spring),
+              box-shadow var(--duration-normal) var(--ease-smooth);
+  will-change: transform;
+}
+.card-hover:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-xl);
+}
+
+/* ── Noise Texture ──────────────────────────────────────────── */
+.noise::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* ── Shimmer Loading ────────────────────────────────────────── */
+.shimmer {
+  background: linear-gradient(90deg, var(--surface-2) 25%, var(--border) 50%, var(--surface-2) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* ── Focus Styles ───────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--indigo-400);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ── Form Elements ──────────────────────────────────────────── */
+input, select, textarea {
+  font-family: var(--font-body);
+}
+
+/* ── Code/Mono ──────────────────────────────────────────────── */
+code, pre, .mono {
+  font-family: var(--font-mono);
+}
+
+/* ── Print ──────────────────────────────────────────────────── */
+@media print {
+  body { background: white; }
+  header, nav, footer { display: none !important; }
+}
+
+/* ── Reduced Motion ─────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   RESPONSIVE IMPROVEMENTS — Mobile, Tablet, Laptop
+══════════════════════════════════════════════════════════════ */
+
+/* ── Base responsive helpers ────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+img, video, canvas, svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ── MUI Container max-widths ───────────────────────────────── */
+.MuiContainer-root {
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+}
+@media (min-width: 600px) {
+  .MuiContainer-root {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+}
+
+/* ── Tables — horizontal scroll on mobile ───────────────────── */
+.MuiTableContainer-root,
+.responsive-table {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── Cards — remove hover lift on touch devices ─────────────── */
+@media (hover: none) {
+  .MuiCard-root:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+}
+
+/* ── Dialog — full-screen on small phones ───────────────────── */
+@media (max-width: 480px) {
+  .MuiDialog-paper:not(.MuiDialog-paperFullWidth) {
+    margin: 8px !important;
+    width: calc(100% - 16px) !important;
+    max-width: calc(100% - 16px) !important;
+    border-radius: 16px !important;
+  }
+}
+
+/* ── Tabs — horizontal scroll on mobile ────────────────────── */
+.MuiTabs-root .MuiTabs-scroller {
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.MuiTabs-root .MuiTabs-scroller::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── AppBar / Header ────────────────────────────────────────── */
+@media (max-width: 599px) {
+  .MuiAppBar-root .MuiToolbar-root {
+    min-height: 56px !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+}
+
+/* ── Button text wrapping on tiny screens ───────────────────── */
+@media (max-width: 360px) {
+  .MuiButton-root {
+    font-size: 0.75rem !important;
+    padding: 6px 12px !important;
+  }
+}
+
+/* ── Grid spacing on mobile ─────────────────────────────────── */
+@media (max-width: 599px) {
+  .MuiGrid-container {
+    margin-top: 0 !important;
+  }
+}
+
+/* ── Typography scaling ─────────────────────────────────────── */
+@media (max-width: 480px) {
+  h1, .MuiTypography-h1 { font-size: clamp(1.6rem, 7vw, 2.2rem) !important; }
+  h2, .MuiTypography-h2 { font-size: clamp(1.3rem, 6vw, 1.8rem) !important; }
+  h3, .MuiTypography-h3 { font-size: clamp(1.1rem, 5vw, 1.5rem) !important; }
+  h4, .MuiTypography-h4 { font-size: clamp(1rem, 4.5vw, 1.3rem) !important; }
+  h5, .MuiTypography-h5 { font-size: clamp(0.95rem, 4vw, 1.1rem) !important; }
+}
+
+/* ── Prevent overflow on small screens ──────────────────────── */
+body, #root {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* ── Stack/Flex gap fallback ────────────────────────────────── */
+@supports not (gap: 1rem) {
+  .MuiStack-root > * + * { margin-left: 8px; }
+}
+
+/* ── Custom scrollbar (desktop) ─────────────────────────────── */
+@media (min-width: 600px) {
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: #F1F5F9; }
+  ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 99px; }
+  ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+}
+
+/* ── Safe area insets (notch phones) ────────────────────────── */
+@supports (padding: max(0px)) {
+  .MuiAppBar-root {
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+  }
+  footer {
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+  }
+}
+
+/* ── Internship / Project card grid responsive ──────────────── */
+.cc-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: 20px;
+}
+
+/* ── Form inputs — better touch targets ─────────────────────── */
+@media (max-width: 599px) {
+  .MuiInputBase-root {
+    font-size: 1rem !important; /* prevents iOS zoom on focus */
+  }
+  .MuiSelect-select {
+    font-size: 1rem !important;
+  }
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   GLOBAL DARK MODE — CSS variable-based overrides
+   Works for inline-styled components that can't use useTheme()
+══════════════════════════════════════════════════════════════ */
+
+/* Root variables set by ThemeContext.js */
+:root {
+  --bg-page:   #F4F6FB;
+  --bg-card:   #FFFFFF;
+  --bg-card2:  #F8FAFC;
+  --bg-input:  #FFFFFF;
+  --border:    #E8EDF5;
+  --border2:   #E2E8F0;
+  --text-1:    #0F172A;
+  --text-2:    #475569;
+  --text-3:    #94A3B8;
+  --skeleton-1:#E2E8F0;
+  --skeleton-2:#F1F5F9;
+}
+
+/* Body dark mode */
+[data-theme="dark"] {
+  color-scheme: dark;
+  background-color: #0F172A !important;
+}
+
+/* All MUI Paper/Card when dark */
+[data-theme="dark"] .MuiPaper-root { background-color: #1E293B !important; }
+[data-theme="dark"] .MuiDialog-paper { background-color: #1E293B !important; border: 1px solid rgba(255,255,255,0.08) !important; }
+[data-theme="dark"] .MuiPopover-paper { background-color: #1E293B !important; }
+[data-theme="dark"] .MuiMenu-paper { background-color: #1E293B !important; }
+[data-theme="dark"] .MuiAutocomplete-paper { background-color: #1E293B !important; }
+
+/* Inputs */
+[data-theme="dark"] .MuiInputBase-input { color: #F1F5F9 !important; }
+[data-theme="dark"] .MuiOutlinedInput-notchedOutline { border-color: rgba(255,255,255,0.12) !important; }
+[data-theme="dark"] .MuiInputLabel-root { color: #94A3B8 !important; }
+[data-theme="dark"] .MuiSelect-icon { color: #94A3B8 !important; }
+[data-theme="dark"] .MuiSelect-select { color: #F1F5F9 !important; }
+[data-theme="dark"] textarea { color: #F1F5F9; background: transparent; }
+[data-theme="dark"] input:not([type="range"]) { color: #F1F5F9; }
+
+/* Tables */
+[data-theme="dark"] .MuiTableContainer-root { background-color: #1E293B !important; }
+[data-theme="dark"] .MuiTableRow-root:hover { background-color: rgba(255,255,255,0.03) !important; }
+[data-theme="dark"] th { background-color: #0F172A !important; color: #94A3B8 !important; }
+
+/* AppBar */
+[data-theme="dark"] .MuiAppBar-root { background-color: #1E293B !important; border-bottom: 1px solid rgba(255,255,255,0.06) !important; }
+
+/* Drawer */
+[data-theme="dark"] .MuiDrawer-paper { background-color: #1E293B !important; }
+
+/* Dashboard: inline white backgrounds → dark */
+[data-theme="dark"] .dash-card-white {
+  background: #1E293B !important;
+  border-color: rgba(255,255,255,0.08) !important;
+  color: #F1F5F9 !important;
+}
+
+/* Marks table rows */
+[data-theme="dark"] .marks-row-normal { background: #1E293B !important; }
+[data-theme="dark"] .marks-row-fail   { background: #2D1515 !important; }
+[data-theme="dark"] .marks-row-normal:hover { background: #263348 !important; }
+[data-theme="dark"] .marks-row-fail:hover   { background: #3D1A1A !important; }
+
+/* Feature cards */
+[data-theme="dark"] .feature-card {
+  background: #1E293B !important;
+  border-color: rgba(255,255,255,0.08) !important;
+}
+
+/* Backlog alert */
+[data-theme="dark"] .backlog-alert {
+  background: linear-gradient(135deg,#2D1515,#2A1010) !important;
+  border-color: rgba(239,68,68,0.3) !important;
+}
+
+/* Scrollbars in dark */
+[data-theme="dark"] ::-webkit-scrollbar-track { background: #1E293B !important; }
+[data-theme="dark"] ::-webkit-scrollbar-thumb { background: #334155 !important; }
+
+/* Login page */
+[data-theme="dark"] .login-right-panel {
+  background: #1E293B !important;
+}
+
+/* Register form */
+[data-theme="dark"] select,
+[data-theme="dark"] .native-select {
+  background: #1E293B !important;
+  color: #F1F5F9 !important;
+  border-color: rgba(255,255,255,0.12) !important;
+}

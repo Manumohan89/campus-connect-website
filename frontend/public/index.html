@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" sizes="any" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0A0A14" />
+
+    <!-- Primary SEO -->
+    <title>Campus Connect — VTU SGPA Calculator, Notes & Placement Portal</title>
+    <meta name="description" content="Free SGPA/CGPA calculator for VTU students. Upload your marks card PDF, download notes & PYQs, clear backlogs with free courses, and find placement opportunities." />
+    <meta name="keywords" content="VTU SGPA calculator, VTU CGPA calculator, VTU notes, VTU results, backlog clearing, VTU 2021 scheme, VTU 2022 scheme, placement portal Karnataka" />
+    <meta name="author" content="Campus Connect" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://campusconnect.in/" />
+    <meta property="og:title" content="Campus Connect — VTU Student Portal" />
+    <meta property="og:description" content="Free SGPA calculator, VTU notes, backlog clearing courses, and placement drives for VTU students." />
+    <meta property="og:image" content="%PUBLIC_URL%/logo512.png" />
+    <meta property="og:site_name" content="Campus Connect" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Campus Connect — VTU Student Portal" />
+    <meta name="twitter:description" content="Free SGPA calculator, VTU notes, and placement portal for VTU students." />
+    <meta name="twitter:image" content="%PUBLIC_URL%/logo512.png" />
+
+    <!-- PWA -->
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Campus Connect" />
+
+    <!-- Fonts: preconnect first, then load async to avoid preload warnings -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- font-display=swap ensures text is visible while fonts load, no layout shift -->
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" /></noscript>
+
+    <style>
+      /* Critical above-fold CSS */
+      *, *::before, *::after { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body { margin: 0; background: #F8FAFC; }
+      #root { min-height: 100vh; }
+      
+      /* Page load fade-in */
+      @keyframes fadeInPage {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      #root { animation: fadeInPage 0.5s ease both; }
+    </style>
+
+    <link rel="canonical" href="https://campusconnect.in/" />
+
+    <!-- Payment Gateway -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js" defer></script>
+  </head>
+  <body>
+    <noscript>Campus Connect requires JavaScript. Please enable it to use the platform.</noscript>
+    <div id="root"></div>
+  </body>
+</html>

@@ -1,0 +1,30 @@
+.profile-customization-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100vh;
+  }
+  
+  .profile-customization-content {
+    padding: 40px;
+    text-align: center;
+  }
+  
+  .avatar-options {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .avatar {
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+  
+  .avatar.selected {
+    transform: scale(1.1);
+    border: 2px solid #4CAF50;
+  }
+  

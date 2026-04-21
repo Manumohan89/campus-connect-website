@@ -1,0 +1,58 @@
+.shared-documents-page {
+  padding: 20px;
+  background-color: #f8f9fa;
+  min-height: calc(100vh - 60px); /* Ensure footer is at the bottom */
+  display: flex;
+  flex-direction: column;
+}
+
+.shared-documents-content {
+  flex-grow: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.documents-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.document-item {
+  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.document-preview {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.document-download {
+  color: #3f51b5;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.document-download:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .documents-grid {
+    grid-template-columns: 1fr; /* Stack items on top of each other */
+  }
+
+  .document-preview {
+    height: auto;
+  }
+}

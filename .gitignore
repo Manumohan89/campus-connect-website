@@ -1,0 +1,37 @@
+# ─── Environment / Secrets ────────────────────────────────────────────────────
+.env
+.env.local
+.env.production
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ─── Dependencies ─────────────────────────────────────────────────────────────
+node_modules/
+*/node_modules/
+
+# ─── Build output ─────────────────────────────────────────────────────────────
+frontend/build/
+dist/
+
+# ─── Uploads (user data — never commit) ──────────────────────────────────────
+backend/uploads/*.pdf
+backend/uploads/*.xlsx
+backend/uploads/*.xls
+backend/uploads/*.json
+
+# ─── Logs ─────────────────────────────────────────────────────────────────────
+*.log
+startup.log
+npm-debug.log*
+
+# ─── OS / Editor ──────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# ─── Python cache ─────────────────────────────────────────────────────────────
+__pycache__/
+*.pyc
+*.pyo

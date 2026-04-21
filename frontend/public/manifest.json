@@ -1,0 +1,15 @@
+{
+  "short_name": "Campus Connect",
+  "name": "Campus Connect — VTU Student Portal",
+  "description": "Free SGPA calculator, VTU notes, backlog clearing courses, and placement portal for VTU students.",
+  "icons": [
+    { "src": "favicon.svg", "type": "image/svg+xml", "sizes": "any" },
+    { "src": "logo192.png", "type": "image/png", "sizes": "192x192" },
+    { "src": "logo512.png", "type": "image/png", "sizes": "512x512" }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#4F46E5",
+  "background_color": "#0F172A",
+  "orientation": "portrait-primary"
+}
