@@ -39,12 +39,12 @@ function SectionCard({ title, subtitle, icon, children, isDark }) {
     <Card elevation={0} sx={{
       border: isDark ? '1px solid rgba(255,255,255,0.1)' : '1px solid #E5E7EB',
       borderRadius:'16px',
-      p:3,
+      p:{ xs:2, sm:3 },
       mb:2,
       background: isDark ? 'rgba(255,255,255,0.03)' : '#FFFFFF',
       backdropFilter:'blur(8px)'
     }}>
-      <Box sx={{ display:'flex', gap:2, alignItems:'flex-start', mb:3 }}>
+      <Box sx={{ display:'flex', gap:2, alignItems:'flex-start', mb:3, flexDirection:{ xs:'column', sm:'row' } }}>
         <Box sx={{ width:44, height:44, borderRadius:'12px', background:'linear-gradient(135deg,#4F46E5,#7C3AED)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
           {React.cloneElement(icon, { sx:{ color:'white', fontSize:22 } })}
         </Box>
@@ -215,37 +215,40 @@ export default function Settings() {
       <Header />
       
       {/* Hero Banner */}
-      <Box sx={{ background: isDark ? 'linear-gradient(135deg,#1E293B,#0F172A)' : 'linear-gradient(135deg,#1E1B4B,#4F46E5)', py:5, px:2, borderBottom: isDark ? '1px solid rgba(255,255,255,0.1)' : 'none' }}>
+      <Box sx={{ background: isDark ? 'linear-gradient(135deg,#1E293B,#0F172A)' : 'linear-gradient(135deg,#1E1B4B,#4F46E5)', py:{ xs:3, sm:5 }, px:2, borderBottom: isDark ? '1px solid rgba(255,255,255,0.1)' : 'none' }}>
         <Container>
-          <Box sx={{ display:'flex', alignItems:'center', gap:2 }}>
-            <SettingsIcon sx={{ fontSize:32, color:'white' }} />
+          <Box sx={{ display:'flex', alignItems:'center', gap:2, flexDirection:{ xs:'column', sm:'row' }, textAlign:{ xs:'center', sm:'left' } }}>
+            <SettingsIcon sx={{ fontSize:32, color:'white', display:{ xs:'none', sm:'block' } }} />
             <Box>
-              <Typography variant="h4" fontWeight={900} color="white" fontFamily="'Syne',sans-serif">Settings</Typography>
-              <Typography color="rgba(255,255,255,0.7)" mt={0.5}>Manage your account, preferences & security</Typography>
+              <Typography variant="h4" fontWeight={900} color="white" fontFamily="'Syne',sans-serif" sx={{ fontSize:{ xs:'1.5rem', sm:'2rem' } }}>Settings</Typography>
+              <Typography color="rgba(255,255,255,0.7)" mt={0.5} sx={{ fontSize:{ xs:'0.85rem', sm:'1rem' } }}>Manage your account, preferences & security</Typography>
             </Box>
           </Box>
         </Container>
       </Box>
 
-      <Container maxWidth="lg" sx={{ py:4, flex:1 }}>
-        <Grid container spacing={3}>
+      <Container maxWidth="lg" sx={{ py:3, px:{ xs:1.5, sm:2, md:3 }, flex:1 }}>
+        <Grid container spacing={{ xs:2, md:3 }}>
           {/* Sidebar */}
           <Grid item xs={12} md={3}>
-            <Card elevation={0} sx={{ background: isDark ? 'rgba(255,255,255,0.05)' : '#FFFFFF', border: isDark ? '1px solid rgba(255,255,255,0.1)' : '1px solid #E5E7EB', borderRadius:'16px', overflow:'hidden', position:{ md:'sticky' }, top:{ md:100 } }}>
+            <Card elevation={0} sx={{ background: isDark ? 'rgba(255,255,255,0.05)' : '#FFFFFF', border: isDark ? '1px solid rgba(255,255,255,0.1)' : '1px solid #E5E7EB', borderRadius:'16px', overflow:{ xs:'auto', md:'hidden' }, position:{ md:'sticky' }, top:{ md:100 }, mb:{ xs:2, md:0 }, display:{ xs:'flex', md:'block' }, flexDirection:{ xs:'row', md:'column' } }}>
               {SETTINGS_MENU.map((item, i) => (
-                <Box key={item.id}>
+                <Box key={item.id} sx={{ display:{ xs:'contents', md:'block' } }}>
                   <Box onClick={() => setActiveTab(item.id)} sx={{
                     display:'flex', alignItems:'center', gap:2, px:3, py:2.5,
                     cursor:'pointer',
                     bgcolor: activeTab === item.id ? isDark ? 'rgba(79,70,229,0.15)' : 'rgba(79,70,229,0.08)' : 'transparent',
                     borderLeft: activeTab === item.id ? `4px solid ${item.color}` : '4px solid transparent',
+                    borderBottom:{ xs: activeTab === item.id ? `3px solid ${item.color}` : 'none', md:'none' },
                     transition:'all 0.2s',
+                    whiteSpace:{ xs:'nowrap', md:'normal' },
+                    flexShrink:{ xs:0, md:'unset' },
                     '&:hover': { bgcolor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.03)' }
                   }}>
-                    <Box sx={{ color: activeTab === item.id ? item.color : isDark ? '#94A3B8' : '#9CA3AF', display:'flex' }}>{item.icon}</Box>
+                    <Box sx={{ color: activeTab === item.id ? item.color : isDark ? '#94A3B8' : '#9CA3AF', display:'flex', flexShrink:0 }}>{item.icon}</Box>
                     <Typography sx={{ fontWeight: activeTab === item.id ? 700 : 500, color: activeTab === item.id ? isDark ? '#F1F5F9' : '#111827' : isDark ? '#CBD5E1' : '#6B7280', fontSize:'0.9rem' }}>{item.label}</Typography>
                   </Box>
-                  {i < SETTINGS_MENU.length - 1 && <Divider sx={{ my:0 }} />}
+                  {i < SETTINGS_MENU.length - 1 && <Divider sx={{ my:0, display:{ xs:'none', md:'block' } }} />}
                 </Box>
               ))}
             </Card>

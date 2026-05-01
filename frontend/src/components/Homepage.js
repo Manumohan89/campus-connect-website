@@ -322,7 +322,7 @@ export default function Homepage() {
             </p>
           </div>
 
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(min(100%,280px), 1fr))', gap:20 }}>
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(clamp(150px,100%,280px), 1fr))', gap:20 }}>
             {FEATURES.map((f, i) => {
               const featureRoutes = {
                 'SGPA / CGPA Calculator':    '/sgpa-calculator',
