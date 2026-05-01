@@ -14,6 +14,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import Header from './Header';
 import Footer from './Footer';
 import api from '../utils/api';
+import { useThemeMode } from '../ThemeContext';
 
 const STATUS_COLOR = {
   upcoming: { label:'Upcoming', bg:'#DBEAFE', color:'#1E3A8A' },
@@ -24,7 +25,7 @@ const TYPE_COLOR = {
   off_campus: { label:'Off Campus', bg:'#FEF9C3', color:'#92400E' },
   pool: { label:'Pool Drive', bg:'#D1FAE5', color:'#065F46' } };
 
-function DriveCard({ drive, onApply, appliedIds, profile }) {
+function DriveCard({ drive, onApply, appliedIds, profile, isDark }) {
   const [eligDialog, setEligDialog] = useState(false);
   const [eligibility, setEligibility] = useState(null);
   const isApplied = appliedIds.includes(drive.drive_id);
@@ -42,14 +43,14 @@ function DriveCard({ drive, onApply, appliedIds, profile }) {
   const daysLeft = drive.registration_deadline ? Math.max(0, Math.floor((new Date(drive.registration_deadline) - new Date()) / 86400000)) : null;
 
   return (
-    <Card elevation={0} sx={{ border:'1px solid #E2E8F0', borderRadius:3, height:'100%', display:'flex', flexDirection:'column', transition:'all 0.2s', '&:hover': { transform:'translateY(-4px)', boxShadow:'0 12px 30px rgba(79,70,229,0.12)' } }}>
-      <Box sx={{ p:2.5, bgcolor:'#F8FAFC', borderBottom:'1px solid #E2E8F0', display:'flex', justifyContent:'space-between', alignItems:'flex-start' }}>
+    <Card elevation={0} sx={{ border: isDark ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E2E8F0', bgcolor: isDark ? '#111827' : '#FFFFFF', borderRadius:3, height:'100%', display:'flex', flexDirection:'column', transition:'all 0.2s', '&:hover': { transform:'translateY(-4px)', boxShadow:'0 12px 30px rgba(79,70,229,0.12)' } }}>
+      <Box sx={{ p:2.5, bgcolor: isDark ? '#0F172A' : '#F8FAFC', borderBottom: isDark ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E2E8F0', display:'flex', justifyContent:'space-between', alignItems:'flex-start' }}>
         <Box sx={{ display:'flex', alignItems:'center', gap:1.5 }}>
-          <Box sx={{ width:44, height:44, borderRadius:2, bgcolor:'white', border:'1px solid #E2E8F0', display:'flex', alignItems:'center', justifyContent:'center' }}>
+          <Box sx={{ width:44, height:44, borderRadius:2, bgcolor: isDark ? '#111827' : 'white', border: isDark ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E2E8F0', display:'flex', alignItems:'center', justifyContent:'center' }}>
             <BusinessIcon sx={{ color:'#4F46E5' }} />
           </Box>
           <Box>
-            <Typography fontWeight={700} fontFamily="'Space Grotesk', sans-serif">{drive.company_name}</Typography>
+            <Typography fontWeight={700} fontFamily="'Space Grotesk', sans-serif" color={isDark ? '#F8FAFC' : '#111827'}>{drive.company_name}</Typography>
             <Typography variant="caption" color="text.secondary">{drive.role}</Typography>
           </Box>
         </Box>
@@ -84,7 +85,7 @@ function DriveCard({ drive, onApply, appliedIds, profile }) {
             <Typography variant="caption" color="text.secondary" display="block">Eligible Branches</Typography>
             <Box sx={{ display:'flex', flexWrap:'wrap', gap:0.5, mt:0.5 }}>
               {(drive.eligible_branches || []).map(b => (
-                <Chip key={b} label={b} size="small" sx={{ bgcolor:'#EEF2FF', color:'#4F46E5', fontSize:'0.65rem', height:20 }} />
+                <Chip key={b} label={b} size="small" sx={{ bgcolor: isDark ? 'rgba(79,70,229,0.16)' : '#EEF2FF', color:'#4F46E5', fontSize:'0.65rem', height:20 }} />
               ))}
             </Box>
           </Grid>
@@ -159,6 +160,8 @@ function DriveCard({ drive, onApply, appliedIds, profile }) {
 }
 
 function PlacementDrives() {
+  const { mode } = useThemeMode();
+  const isDark = mode === 'dark';
   const [drives, setDrives] = useState([]);
   const [myApps, setMyApps] = useState([]);
   const [profile, setProfile] = useState(null);
@@ -202,13 +205,13 @@ function PlacementDrives() {
   const BRANCHES = ['CSE','ISE','ECE','ME','CV','EEE','AIML','DS'];
 
   if (loading) return (
-    <Box sx={{ display:'flex', flexDirection:'column', minHeight:'100vh' }}>
+    <Box sx={{ display:'flex', flexDirection:'column', minHeight:'100vh', bgcolor: isDark ? '#0F172A' : '#F8FAFC' }}>
       <Header /><Box sx={{ flex:1, display:'flex', alignItems:'center', justifyContent:'center' }}><CircularProgress /></Box>
     </Box>
   );
 
   return (
-    <Box sx={{ display:'flex', flexDirection:'column', minHeight:'100vh', bgcolor:'#F8FAFC' }}>
+    <Box sx={{ display:'flex', flexDirection:'column', minHeight:'100vh', bgcolor: isDark ? '#0F172A' : '#F8FAFC' }}>
       <Header />
 
       {/* Hero */}
@@ -229,7 +232,7 @@ function PlacementDrives() {
 
       <Container sx={{ py:4 }}>
         {/* Filters */}
-        <Paper elevation={0} sx={{ border:'1px solid #E2E8F0', borderRadius:3, p:2.5, mb:3, display:'flex', gap:2, flexWrap:'wrap', alignItems:'center' }}>
+        <Paper elevation={0} sx={{ border: isDark ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E2E8F0', bgcolor: isDark ? '#111827' : '#FFFFFF', borderRadius:3, p:2.5, mb:3, display:'flex', gap:2, flexWrap:'wrap', alignItems:'center' }}>
           <TextField size="small" placeholder="Search company or role..." value={search} onChange={e => setSearch(e.target.value)}
             InputProps={{ startAdornment: <InputAdornment position="start"><SearchIcon /></InputAdornment> }}
             sx={{ flex:1, minWidth:200, '& .MuiOutlinedInput-root': { borderRadius:2 } }} />
@@ -243,7 +246,7 @@ function PlacementDrives() {
           {(search || branch) && <Button onClick={() => { setSearch(''); setBranch(''); }} sx={{ textTransform:'none' }}>Clear</Button>}
         </Paper>
 
-        <Tabs value={tab} onChange={(_,v) => setTab(v)} sx={{ mb:3, '& .Mui-selected': { color:'#4F46E5' }, '& .MuiTabs-indicator': { bgcolor:'#4F46E5' }, '& .MuiTab-root': { textTransform:'none', fontWeight:600 } }}>
+        <Tabs value={tab} onChange={(_,v) => setTab(v)} sx={{ mb:3, '& .Mui-selected': { color:'#4F46E5' }, '& .MuiTabs-indicator': { bgcolor:'#4F46E5' }, '& .MuiTab-root': { textTransform:'none', fontWeight:600, color: isDark ? '#CBD5E1' : '#475569' } }}>
           {[['all','All Drives'],['open','🟢 Open Now'],['upcoming','📅 Upcoming'],['applied','📋 Applied']].map(([v,l]) => <Tab key={v} value={v} label={l} />)}
         </Tabs>
 
@@ -255,7 +258,7 @@ function PlacementDrives() {
           </Box>
         ) : (
           <Grid container spacing={3}>
-            {display.map(d => <Grid item xs={12} md={6} key={d.drive_id}><DriveCard drive={d} onApply={handleApply} appliedIds={appliedIds} profile={profile} /></Grid>)}
+            {display.map(d => <Grid item xs={12} md={6} key={d.drive_id}><DriveCard drive={d} onApply={handleApply} appliedIds={appliedIds} profile={profile} isDark={isDark} /></Grid>)}
           </Grid>
         )}
       </Container>

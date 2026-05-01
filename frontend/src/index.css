@@ -148,6 +148,100 @@ a:hover { color: var(--indigo-300); }
   0%, 100% { transform: translateY(0px); }
   50%       { transform: translateY(-10px); }
 }
+
+/* ── Cinematic Animations ───────────────────────────────────── */
+@keyframes cinematicGlow {
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba(79, 70, 229, 0.3), inset 0 0 20px rgba(79, 70, 229, 0.1);
+  }
+  50% { 
+    box-shadow: 0 0 40px rgba(79, 70, 229, 0.5), inset 0 0 30px rgba(79, 70, 229, 0.15);
+  }
+}
+
+@keyframes slideInCinematic {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes fadeInCinematic {
+  from { 
+    opacity: 0; 
+    filter: blur(10px);
+  }
+  to { 
+    opacity: 1; 
+    filter: blur(0);
+  }
+}
+
+@keyframes scaleInCinematic {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes rotateInCinematic {
+  from {
+    opacity: 0;
+    transform: rotate(-10deg) scale(0.9);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { 
+    opacity: 1;
+    box-shadow: 0 0 12px rgba(79, 70, 229, 0.4);
+  }
+  50% { 
+    opacity: 0.7;
+    box-shadow: 0 0 24px rgba(79, 70, 229, 0.6);
+  }
+}
+
+@keyframes shimmerCinematic {
+  0% { 
+    background-position: -1000px 0;
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% { 
+    background-position: 1000px 0;
+    opacity: 0;
+  }
+}
+
+/* Utility animation classes */
+.cinematic-glow { animation: cinematicGlow 3s ease-in-out infinite; }
+.slide-in-cinematic { animation: slideInCinematic 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+.fade-in-cinematic { animation: fadeInCinematic 0.8s ease-out forwards; }
+.scale-in-cinematic { animation: scaleInCinematic 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+.rotate-in-cinematic { animation: rotateInCinematic 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+.pulse-glow { animation: pulseGlow 2s ease-in-out infinite; }
+.shimmer-cinematic { animation: shimmerCinematic 2s linear infinite; }
 @keyframes glow-pulse {
   0%, 100% { box-shadow: 0 0 20px rgba(79,70,229,0.3); }
   50%       { box-shadow: 0 0 40px rgba(79,70,229,0.6); }

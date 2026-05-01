@@ -82,23 +82,29 @@ const STEPS = [
     ] },
 ];
 
-export default function Onboarding({ open, onClose }) {
+export default function Onboarding({ open = true, onClose, onDone }) {
   const [step, setStep] = useState(0);
   const navigate = useNavigate();
   const s = STEPS[step];
+  
+  const handleClose = () => {
+    localStorage.setItem('onboardingDone', 'true');
+    if (onDone) onDone();
+    if (onClose) onClose();
+  };
 
   const handleCta = () => {
     if (step < STEPS.length - 1) {
-      if (s.ctaPath) { onClose(); navigate(s.ctaPath); return; }
+      if (s.ctaPath) { handleClose(); navigate(s.ctaPath); return; }
       setStep(st => st + 1);
     } else {
-      onClose();
+      handleClose();
       if (s.ctaPath) navigate(s.ctaPath);
     }
   };
 
   const handleSkip = () => {
-    onClose();
+    handleClose();
     navigate('/dashboard');
   };
 

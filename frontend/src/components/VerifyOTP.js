@@ -64,16 +64,21 @@ export default function VerifyOTP() {
   };
 
   return (
-    <Box sx={{ display:'flex', flexDirection:'column', minHeight:'100vh', bgcolor:'var(--bg-card2,#F8FAFC)' }}>
+    <Box sx={{ display:'flex', flexDirection:'column', minHeight:'100vh', bgcolor:'var(--bg-card2,#F8FAFC)', overflow:'hidden' }}>
       <PublicHeader />
 
-      <Container sx={{ flex:1, display:'flex', alignItems:'center', justifyContent:'center', py:4 }}>
+      <Container sx={{ 
+        flex:1, display:'flex', alignItems:'center', justifyContent:'center', 
+        py:{ xs:2, md:4 }, px:{ xs:2, sm:3 },
+        maxWidth:{ xs:'100%', sm:'sm' }
+      }}>
         <Card sx={{
           width:'100%', maxWidth:'440px',
-          p:{ xs:3, md:4 },
-          boxShadow:'0 10px 40px rgba(0,0,0,0.08)',
+          p:{ xs:2.5, sm:3, md:4 },
+          boxShadow:{ xs:'0 4px 20px rgba(0,0,0,0.05)', md:'0 10px 40px rgba(0,0,0,0.08)' },
           borderRadius:'20px',
           border:'1px solid #E5E7EB',
+          overflow:'visible',
         }}>
           {/* Icon + title */}
           <Box sx={{ textAlign:'center', mb:3 }}>

@@ -85,6 +85,30 @@ function generateOTP() {
   return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
+// ── Send certificate issued email ────────────────────────────────────────────
+async function sendCertificateEmail(email, studentName, courseName, certificateId) {
+  const verifyUrl = (process.env.CLIENT_URL || 'http://localhost:3000') + '/certificate/' + certificateId;
+  const bodyHtml = `
+    <h2 style="color:#111827;font-size:22px;font-weight:900;margin:0 0 14px;letter-spacing:-0.3px;">🎓 Certificate Issued!</h2>
+    <p style="color:#374151;line-height:1.75;margin:0 0 28px;font-size:15px;">
+      Congratulations <strong>${studentName}</strong>! Your certificate for <strong>${courseName}</strong> has been approved.
+    </p>
+    <div style="background:linear-gradient(135deg,#D97706,#F59E0B);border-radius:18px;padding:28px;text-align:center;margin:0 0 28px;">
+      <p style="color:white;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.18em;margin:0 0 12px;">Your Certificate is Ready</p>
+      <a href="${verifyUrl}" style="display:inline-block;background:white;color:#D97706;padding:12px 28px;border-radius:10px;text-decoration:none;font-weight:800;font-size:14px;margin:0;">
+        📥 Download Certificate
+      </a>
+    </div>
+    <div style="background:#EEF2FF;border-left:4px solid #4F46E5;border-radius:0 12px 12px 0;padding:14px 18px;margin:0 0 24px;">
+      <p style="color:#3730A3;font-size:13px;margin:0;font-weight:700;">💡 Certificate Details</p>
+      <p style="color:#4F46E5;font-size:12px;margin:6px 0 0;">Certificate ID: <strong>${certificateId}</strong></p>
+      <p style="color:#4F46E5;font-size:12px;margin:4px 0 0;">You can share this certificate and verify it using the ID above.</p>
+    </div>
+    <p style="color:#9CA3AF;font-size:13px;margin:0;">Questions? Contact your course coordinator or support team.</p>`;
+  await sendEmail(email, `🎓 Your Certificate for ${courseName} is Ready!`,
+    emailTemplate('Certificate Issued', 'Download your certificate', bodyHtml));
+}
+
 // ── POST /api/users/register ──────────────────────────────────────────────────
 const registerUser = async (req, res) => {
   const { username, email, password, fullName, semester, college, mobile, branch, yearScheme } = req.body;
@@ -297,6 +321,6 @@ const loginWithOTP = async (req, res) => res.status(410).json({ error: 'This end
 
 module.exports = {
   registerUser, loginUser, getUserProfile, updateUserProfile,
-  verifyOTP, loginWithOTP, generateOTP, sendOTP, sendEmail,
+  verifyOTP, loginWithOTP, generateOTP, sendOTP, sendEmail, sendCertificateEmail,
   forgotPassword, resetPassword, changePassword,
 };

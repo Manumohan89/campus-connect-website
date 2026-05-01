@@ -28,6 +28,14 @@ CREATE TABLE IF NOT EXISTS users (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Per-user settings (email + privacy preferences)
+CREATE TABLE IF NOT EXISTS user_settings (
+    user_id INTEGER PRIMARY KEY REFERENCES users(user_id) ON DELETE CASCADE,
+    email_prefs JSONB NOT NULL DEFAULT '{"newsletter": true, "drives": true, "deadlines": true, "updates": true}',
+    privacy_settings JSONB NOT NULL DEFAULT '{"profilePublic": false, "showStats": true, "allowMessages": true}',
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Marks per subject per semester
 CREATE TABLE IF NOT EXISTS marks (
     mark_id SERIAL PRIMARY KEY,
@@ -127,6 +135,11 @@ CREATE TABLE IF NOT EXISTS enrollments (
     completed_at TIMESTAMP,
     certificate_issued BOOLEAN DEFAULT FALSE,
     certificate_id TEXT,     -- unique certificate ID e.g. CC-2024-ABC123
+    certificate_status TEXT NOT NULL DEFAULT 'not_requested'
+      CHECK (certificate_status IN ('not_requested', 'in_progress', 'pending_review', 'issued', 'rejected', 'not_applicable')),
+    review_remark TEXT,
+    reviewed_at TIMESTAMP,
+    reviewed_by INTEGER REFERENCES users(user_id) ON DELETE SET NULL,
     UNIQUE (user_id, course_id)
 );
 
@@ -331,7 +344,7 @@ CREATE TABLE IF NOT EXISTS alumni (
     branch TEXT NOT NULL,
     graduation_year INTEGER NOT NULL,
     current_company TEXT,
-    current_role TEXT,
+    job_role TEXT,
     linkedin_url TEXT,
     bio TEXT,
     skills TEXT[],
@@ -389,7 +402,7 @@ VALUES
 ON CONFLICT DO NOTHING;
 
 -- Seed: Sample alumni
-INSERT INTO alumni (full_name, email, branch, graduation_year, current_company, current_role, linkedin_url, bio, skills, is_available)
+INSERT INTO alumni (full_name, email, branch, graduation_year, current_company, job_role, linkedin_url, bio, skills, is_available)
 VALUES
   ('Rahul Sharma', 'rahul.sharma@alumni.com', 'CSE', 2022, 'Google', 'Software Engineer', 'https://linkedin.com/in/rahulsharma', 'VTU CSE 2022. Currently at Google Hyderabad. Happy to mentor juniors on DSA, system design, and FAANG prep.', ARRAY['DSA','System Design','Python','Java'], true),
   ('Priya Nair', 'priya.nair@alumni.com', 'CSE', 2021, 'Microsoft', 'SDE-1', 'https://linkedin.com/in/priyanair', 'VTU CSE 2021 gold medalist. At Microsoft Bangalore. Can guide on campus placements and competitive programming.', ARRAY['C++','LeetCode','Azure','React'], true),

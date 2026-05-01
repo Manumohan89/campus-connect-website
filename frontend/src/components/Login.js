@@ -41,7 +41,8 @@ export default function Login() {
       const r = await api.post('/users/login', form);
       localStorage.setItem('token', r.data.token);
       localStorage.setItem('role', r.data.role || 'user');
-      navigate('/dashboard');
+      const next = location.state?.from?.pathname;
+      navigate(next && next !== '/login' ? next : '/dashboard');
     } catch (err) {
       const d = err.response?.data;
       // If account not verified, redirect to OTP page

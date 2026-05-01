@@ -12,6 +12,97 @@ const { notifyMarksUploaded } = require('../utils/notificationService');
 const router = express.Router();
 const { validate, registerRules, loginRules, changePasswordRules, contactRules, profileUpdateRules } = require('../middleware/validate');
 
+const defaultSettings = {
+  email_prefs: {
+    newsletter: true,
+    drives: true,
+    deadlines: true,
+    updates: true,
+  },
+  privacy_settings: {
+    profilePublic: false,
+    showStats: true,
+    allowMessages: true,
+  },
+};
+
+function normalizeSettingsPayload(settings = {}) {
+  const email = settings.emailPrefs || settings.email_prefs || {};
+  const privacy = settings.privacySettings || settings.privacy_settings || {};
+  return {
+    email_prefs: {
+      newsletter: !!email.newsletter,
+      drives: !!email.drives,
+      deadlines: !!email.deadlines,
+      updates: !!email.updates,
+    },
+    privacy_settings: {
+      profilePublic: !!privacy.profilePublic,
+      showStats: !!privacy.showStats,
+      allowMessages: !!privacy.allowMessages,
+    },
+  };
+}
+
+function toISODate(d) {
+  return d.toISOString().split('T')[0];
+}
+
+async function collectUserActivityByDay(userId, days = 105) {
+  const sources = [
+    { table: 'coding_submissions', col: 'submitted_at' },
+    { table: 'mock_tests', col: 'completed_at' },
+    { table: 'study_plan', col: 'created_at' },
+    { table: 'reminders', col: 'created_at' },
+    { table: 'shared_documents', col: 'shared_at' },
+    { table: 'enrollments', col: 'enrolled_at' },
+    { table: 'forum_posts', col: 'created_at' },
+    { table: 'forum_answers', col: 'created_at' },
+    { table: 'forum_votes', col: 'created_at' },
+  ];
+
+  const since = new Date();
+  since.setDate(since.getDate() - (days - 1));
+  const activityMap = new Map();
+
+  for (const src of sources) {
+    try {
+      const result = await pool.query(
+        `SELECT DATE(${src.col}) AS d, COUNT(*)::int AS c
+         FROM ${src.table}
+         WHERE user_id = $1 AND ${src.col} >= $2
+         GROUP BY DATE(${src.col})`,
+        [userId, since]
+      );
+      for (const row of result.rows) {
+        const key = toISODate(new Date(row.d));
+        activityMap.set(key, (activityMap.get(key) || 0) + Number(row.c || 0));
+      }
+    } catch (_) {
+      // Ignore missing table/column sources to keep dashboard robust across migrations.
+    }
+  }
+
+  const daily = [];
+  for (let i = days - 1; i >= 0; i--) {
+    const date = new Date();
+    date.setDate(date.getDate() - i);
+    const key = toISODate(date);
+    daily.push({ date: key, count: activityMap.get(key) || 0 });
+  }
+
+  let streak = 0;
+  for (let i = daily.length - 1; i >= 0; i--) {
+    if (daily[i].count > 0) streak += 1;
+    else break;
+  }
+
+  return {
+    streak,
+    last15Weeks: daily,
+  };
+}
+
 // ─── Auth routes ────────────────────────────────────────────────────────────
 
 // POST /api/users/register
@@ -53,10 +144,15 @@ router.put('/profile', authMiddleware, validate(profileUpdateRules), updateUserP
 router.get('/dashboard-data', authMiddleware, async (req, res) => {
   try {
     const user = await userModel.findUserById(req.user.userId);
+    const activity = await collectUserActivityByDay(req.user.userId, 105);
     res.json({
       username: user.username,
       semester: user.semester,
+      branch: user.branch,
       cgpa: user.cgpa || 'N/A',
+      sgpa: user.sgpa || 'N/A',
+      streak: activity.streak,
+      activityLast15Weeks: activity.last15Weeks,
     });
   } catch (error) {
     console.error('Error fetching dashboard data:', error);
@@ -510,6 +606,73 @@ router.delete('/push-subscribe', authMiddleware, async (req, res) => {
     await pool.query('DELETE FROM push_subscriptions WHERE user_id=$1', [req.user.userId]);
     res.json({ message: 'Push subscription removed' });
   } catch (e) { res.status(500).json({ error: 'Failed' }); }
+});
+
+// GET /api/users/settings — load account settings
+router.get('/settings', authMiddleware, async (req, res) => {
+  try {
+    const profileResult = await pool.query(
+      `SELECT username, email, created_at
+       FROM users
+       WHERE user_id = $1`,
+      [req.user.userId]
+    );
+
+    if (!profileResult.rows.length) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const settingsResult = await pool.query(
+      `SELECT email_prefs, privacy_settings
+       FROM user_settings
+       WHERE user_id = $1`,
+      [req.user.userId]
+    );
+
+    const persisted = settingsResult.rows[0] || defaultSettings;
+    const account = profileResult.rows[0];
+
+    return res.json({
+      account: {
+        username: account.username,
+        email: account.email,
+        createdAt: account.created_at,
+      },
+      emailPrefs: persisted.email_prefs || defaultSettings.email_prefs,
+      privacySettings: persisted.privacy_settings || defaultSettings.privacy_settings,
+    });
+  } catch (e) {
+    console.error('Error fetching settings:', e);
+    return res.status(500).json({ error: 'Failed to fetch settings' });
+  }
+});
+
+// PUT /api/users/settings — update account settings
+router.put('/settings', authMiddleware, async (req, res) => {
+  const normalized = normalizeSettingsPayload(req.body || {});
+  try {
+    const result = await pool.query(
+      `INSERT INTO user_settings (user_id, email_prefs, privacy_settings, updated_at)
+       VALUES ($1, $2, $3, NOW())
+       ON CONFLICT (user_id)
+       DO UPDATE SET
+         email_prefs = EXCLUDED.email_prefs,
+         privacy_settings = EXCLUDED.privacy_settings,
+         updated_at = NOW()
+       RETURNING email_prefs, privacy_settings, updated_at`,
+      [req.user.userId, normalized.email_prefs, normalized.privacy_settings]
+    );
+
+    return res.json({
+      message: 'Settings updated successfully',
+      emailPrefs: result.rows[0].email_prefs,
+      privacySettings: result.rows[0].privacy_settings,
+      updatedAt: result.rows[0].updated_at,
+    });
+  } catch (e) {
+    console.error('Error updating settings:', e);
+    return res.status(500).json({ error: 'Failed to update settings' });
+  }
 });
 
 // Health check for Render

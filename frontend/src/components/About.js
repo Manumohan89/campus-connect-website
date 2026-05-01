@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, Box, Typography, Grid, Card, CardContent, Chip, Avatar, Stack } from '@mui/material';
 import PublicHeader from './PublicHeader';
 import PublicFooter from './PublicFooter';
+import mohanPhoto from './Mohan.jpg';
 
 const FEATURES = [
   { emoji: '📊', title: 'SGPA / CGPA Calculator',   desc: 'Upload any VTU marks card PDF — subjects auto-extracted, SGPA calculated instantly.' },
@@ -31,11 +32,21 @@ const STATS = [
 
 const TEAM = [
   {
-    name: 'Founder & Developer',
-    role: 'Campus Connect',
+    name: 'K Mohan',
+    role: 'Founder & Full Stack Developer',
     bio: 'A VTU student who built Campus Connect to solve the real academic challenges faced by VTU students across Karnataka — from confusing mark calculations to lack of career guidance.',
+    photo: mohanPhoto,
     avatar: '👨‍💻',
-    tags: ['Full Stack', 'React', 'Node.js', 'PostgreSQL'] },
+    tags: ['Full Stack', 'React', 'Node.js', 'PostgreSQL'],
+    skills: {
+      Programming: ['Java', 'Python', 'C', 'SQL'],
+      'Web Technologies': ['HTML', 'CSS', 'JavaScript', 'React', 'Node.js'],
+      Concepts: ['OOP', 'Data Structures', 'DBMS', 'SDLC'],
+      'Machine Learning': ['Model Building', 'Data Preprocessing', 'Supervised Learning'],
+      Databases: ['PostgreSQL', 'MySQL'],
+      Tools: ['Git', 'VS Code', 'Jupyter'],
+    },
+  },
 ];
 
 export default function About() {
@@ -123,7 +134,11 @@ export default function About() {
             {TEAM.map((member, i) => (
               <Grid item xs={12} sm={8} md={6} key={i}>
                 <Card elevation={0} sx={{ border: '1px solid', borderColor: 'divider', borderRadius: 3, p: 3, textAlign: 'center', background: 'linear-gradient(135deg,rgba(79,70,229,0.04),rgba(124,58,237,0.04))' }}>
-                  <Avatar sx={{ width: 100, height: 100, mx: 'auto', mb: 2, bgcolor: 'linear-gradient(135deg,#4F46E5,#7C3AED)', background: 'linear-gradient(135deg,#4F46E5,#7C3AED)', fontSize: '2.5rem' }}>
+                  <Avatar
+                    src={member.photo}
+                    alt={member.name}
+                    sx={{ width: 100, height: 100, mx: 'auto', mb: 2, bgcolor: 'linear-gradient(135deg,#4F46E5,#7C3AED)', background: 'linear-gradient(135deg,#4F46E5,#7C3AED)', fontSize: '2.5rem' }}
+                  >
                     {member.avatar}
                   </Avatar>
                   <Typography fontWeight={800} fontSize="1.1rem" color="var(--text-1,#111827)" fontFamily="'Syne',sans-serif">{member.name}</Typography>
@@ -134,6 +149,16 @@ export default function About() {
                       <Chip key={tag} label={tag} size="small" sx={{ bgcolor: '#EEF2FF', color: '#4F46E5', fontWeight: 600, fontSize: '0.72rem' }} />
                     ))}
                   </Stack>
+                  <Box sx={{ mt: 2.25, textAlign: 'left', p: 2, borderRadius: 2, border: '1px solid #E2E8F0', bgcolor: 'var(--bg-card,white)' }}>
+                    {Object.entries(member.skills || {}).map(([group, items]) => (
+                      <Box key={group} sx={{ mb: 1.2, '&:last-child': { mb: 0 } }}>
+                        <Typography sx={{ fontSize: '0.74rem', color: '#6366F1', fontWeight: 700, mb: 0.4 }}>{group}</Typography>
+                        <Typography sx={{ fontSize: '0.8rem', color: 'text.secondary', lineHeight: 1.6 }}>
+                          {items.join(', ')}
+                        </Typography>
+                      </Box>
+                    ))}
+                  </Box>
                 </Card>
               </Grid>
             ))}

@@ -9,6 +9,7 @@ import CodeIcon from '@mui/icons-material/Code';
 import PersonIcon from '@mui/icons-material/Person';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import api from '../utils/api';
+import { useThemeMode } from '../ThemeContext';
 
 const NAV_ITEMS = [
   { label: 'Home',      value: '/dashboard',         icon: <DashboardIcon /> },
@@ -28,6 +29,8 @@ const HIDDEN_PATHS = [
 export default function MobileBottomNav() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { mode } = useThemeMode();
+  const isDark = mode === 'dark';
   const [unread, setUnread] = useState(0);
 
   // Load unread count
@@ -63,33 +66,69 @@ export default function MobileBottomNav() {
         left: 0,
         right: 0,
         zIndex: 1200,
-        borderTop: '1px solid #E2E8F0',
-        boxShadow: '0 -4px 24px rgba(15,23,42,0.08)',
+        borderTop: '1px solid var(--border, #E2E8F0)',
+        backdropFilter: 'blur(8px)',
+        WebkitBackdropFilter: 'blur(8px)',
+        backgroundColor: isDark ? 'rgba(15, 23, 42, 0.94)' : 'rgba(255, 255, 255, 0.95)',
+        boxShadow: isDark
+          ? '0 -4px 24px rgba(0,0,0,0.3), 0 -1px 3px rgba(0,0,0,0.2)'
+          : '0 -4px 24px rgba(15,23,42,0.1), 0 -1px 3px rgba(0,0,0,0.08)',
         paddingBottom: 'env(safe-area-inset-bottom)',
+        transition: 'all 0.3s ease',
       }}
     >
       <BottomNavigation
         value={activeValue}
         onChange={(_, newValue) => navigate(newValue)}
         sx={{
-          height: 60,
-          bgcolor: 'white',
+          height: 'calc(60px + env(safe-area-inset-bottom))',
+          bgcolor: 'transparent',
+          paddingBottom: 'env(safe-area-inset-bottom)',
+          
           '& .MuiBottomNavigationAction-root': {
             minWidth: 0,
-            padding: '6px 0 2px',
-            color: '#94A3B8',
+            padding: '6px 0 calc(8px + env(safe-area-inset-bottom))',
+            color: 'var(--text-3, #94A3B8)',
             fontSize: '0.65rem',
+            fontFamily: "'Outfit', sans-serif",
+            fontWeight: 600,
+            transition: 'all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)',
+            position: 'relative',
+            
             '&.Mui-selected': {
-              color: '#4F46E5',
+              color: 'var(--primary, #4F46E5)',
+              
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: 0,
+                left: '50%',
+                transform: 'translateX(-50%)',
+                width: '24px',
+                height: '3px',
+                borderRadius: '3px',
+                background: 'linear-gradient(90deg, #4F46E5, #7C3AED)',
+                boxShadow: '0 0 10px rgba(79, 70, 229, 0.5)',
+              }
+            },
+            
+            '&:hover': {
+              transform: 'scale(1.05)',
             },
           },
+          
           '& .MuiBottomNavigationAction-label': {
             fontSize: '0.62rem !important',
-            fontWeight: 600,
+            fontWeight: 700,
             fontFamily: "'Outfit', sans-serif",
-            marginTop: '2px',
+            marginTop: '3px',
+            textTransform: 'capitalize',
+            letterSpacing: '0.01em',
+            transition: 'all 0.2s',
+            
             '&.Mui-selected': {
-              fontSize: '0.62rem !important',
+              fontSize: '0.63rem !important',
+              fontWeight: 700,
             },
           },
         }}

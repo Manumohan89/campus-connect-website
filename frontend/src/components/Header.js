@@ -79,6 +79,9 @@ const NAV_GROUPS = [
     { label:'Leaderboard',          path:'/leaderboard',          icon:<LeaderboardIcon fontSize="small"/> },
     { label:'Go Premium',           path:'/premium',              icon:<StarIcon        fontSize="small"/>, badge:'⭐' },
   ]},
+  { label:'Earn', color:'#10B981', items:[
+    { label:'AI Data Earn',       path:'/earn',              icon:<WorkIcon        fontSize="small"/>, badge:'EARN' },
+  ]},
   { label:'Tools', color:'#0EA5E9', items:[
     { label:'Study Planner',      path:'/study-planner',     icon:<CalendarMonthIcon fontSize="small"/>, badge:'NEW' },
     { label:'Aptitude Test',      path:'/aptitude-test',     icon:<BusinessCenterIcon fontSize="small"/>, badge:'NEW' },
@@ -168,15 +171,41 @@ export default function Header() {
   return (
     <>
       <AppBar position="sticky" elevation={0}
-        sx={{ background:'linear-gradient(145deg,#0A0818 0%,#1E1B4B 40%,#16103F 100%)', borderBottom:'1px solid rgba(99,102,241,0.15)', boxShadow:'0 4px 24px rgba(0,0,0,0.3)' }}>
+        sx={{ 
+          background: mode === 'dark'
+            ? 'linear-gradient(145deg, #0F172A 0%, #1E293B 50%, #16293F 100%)'
+            : 'linear-gradient(145deg,#0A0818 0%,#1E1B4B 40%,#16103F 100%)',
+          borderBottom: mode === 'dark'
+            ? '1px solid rgba(129,140,248,0.1)'
+            : '1px solid rgba(99,102,241,0.15)',
+          boxShadow: mode === 'dark'
+            ? '0 4px 24px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05)'
+            : '0 4px 24px rgba(0,0,0,0.3)',
+          backdropFilter: 'blur(8px)',
+          WebkitBackdropFilter: 'blur(8px)',
+          transition: 'all 0.3s ease',
+        }}>
         <Toolbar sx={{ justifyContent:'space-between', px:{ xs:2, md:3 }, minHeight:'62px' }}>
 
           {/* Logo */}
-          <Box onClick={() => navigate('/dashboard')} sx={{ display:'flex', alignItems:'center', gap:1.5, cursor:'pointer', flexShrink:0 }}>
-            <Box sx={{ width:34, height:34, borderRadius:'9px', background:'rgba(255,255,255,0.18)', display:'flex', alignItems:'center', justifyContent:'center' }}>
+          <Box onClick={() => navigate('/dashboard')} sx={{ display:'flex', alignItems:'center', gap:1.5, cursor:'pointer', flexShrink:0, transition: 'transform 0.2s',
+            '&:hover': { transform: 'scale(1.05)' }
+          }}>
+            <Box sx={{ 
+              width:34, height:34, borderRadius:'9px', 
+              background: mode === 'dark'
+                ? 'rgba(129,140,248,0.2)'
+                : 'rgba(255,255,255,0.18)',
+              display:'flex', alignItems:'center', justifyContent:'center',
+              backdropFilter: 'blur(4px)',
+              border: mode === 'dark'
+                ? '1px solid rgba(129,140,248,0.3)'
+                : '1px solid rgba(255,255,255,0.2)',
+              transition: 'all 0.2s',
+            }}>
               <SchoolIcon sx={{ color:'white', fontSize:20 }} />
             </Box>
-            <Typography sx={{ fontFamily:"'Space Grotesk',sans-serif", fontWeight:700, fontSize:'1rem', color:'white', letterSpacing:'-0.3px', display:{ xs:'none', sm:'block' } }}>
+            <Typography sx={{ fontFamily:"'Space Grotesk',sans-serif", fontWeight:700, fontSize:'1rem', color:'white', letterSpacing:'-0.3px', display:{ xs:'none', sm:'block' }, textShadow: '0 2px 8px rgba(0,0,0,0.3)' }}>
               Campus Connect
             </Typography>
           </Box>
@@ -185,7 +214,24 @@ export default function Header() {
           <Box sx={{ display:{ xs:'none', xl:'flex' }, gap:0.25, alignItems:'center' }}>
             {TOP_NAV.map(item => (
               <Box key={item.path}>
-                <Button onClick={() => navigate(item.path)} sx={{ color: isActive(item.path) ? '#FDE68A':'rgba(255,255,255,0.82)', textTransform:'none', fontSize:'0.82rem', fontWeight: isActive(item.path)?700:500, px:1.2, py:0.7, borderRadius:'7px', bgcolor: isActive(item.path)?'rgba(255,255,255,0.14)':'transparent', '&:hover':{ bgcolor:'rgba(255,255,255,0.1)', color:'white' }, minWidth:0 }}>
+                <Button onClick={() => navigate(item.path)} sx={{ 
+                  color: isActive(item.path) ? '#FDE68A':'rgba(255,255,255,0.82)', 
+                  textTransform:'none', fontSize:'0.82rem', fontWeight: isActive(item.path)?700:500, 
+                  px:1.2, py:0.7, borderRadius:'7px', 
+                  bgcolor: isActive(item.path)
+                    ? mode === 'dark'
+                      ? 'rgba(129,140,248,0.2)'
+                      : 'rgba(255,255,255,0.14)'
+                    : 'transparent',
+                  '&:hover':{ 
+                    bgcolor: mode === 'dark'
+                      ? 'rgba(129,140,248,0.15)'
+                      : 'rgba(255,255,255,0.1)',
+                    color:'white' 
+                  }, 
+                  minWidth:0,
+                  transition: 'all 0.2s',
+                }}>
                   {item.label}
                   {item.badge && <Chip label={item.badge} size="small" sx={{ ml:0.5, height:15, fontSize:'0.55rem', bgcolor:'#F59E0B', color:'white', fontWeight:700 }} />}
                 </Button>
@@ -196,7 +242,16 @@ export default function Header() {
           {/* Right actions */}
           <Box sx={{ display:'flex', alignItems:'center', gap:0.75 }}>
             {/* Notification bell */}
-            <IconButton onClick={() => navigate('/notifications')} sx={{ color:'rgba(255,255,255,0.8)', display:{ xs:'none', md:'flex' } }}>
+            <IconButton onClick={() => navigate('/notifications')} sx={{ 
+              color:'rgba(255,255,255,0.8)', 
+              display:{ xs:'none', md:'flex' },
+              transition: 'all 0.2s',
+              '&:hover': {
+                bgcolor: mode === 'dark'
+                  ? 'rgba(129,140,248,0.15)'
+                  : 'rgba(255,255,255,0.1)',
+              }
+            }}>
               <Badge badgeContent={unreadCount > 0 ? unreadCount : null} color="error" max={9}
                 sx={{ '& .MuiBadge-badge':{ fontSize:'0.6rem', height:16, minWidth:16 } }}>
                 <NotificationsIcon sx={{ fontSize:22 }} />
@@ -204,27 +259,75 @@ export default function Header() {
             </IconButton>
 
             {/* Dark mode toggle */}
-            <IconButton onClick={toggleMode} sx={{ color:'rgba(255,255,255,0.7)', display:{ xs:'none', md:'flex' } }} title={mode === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}>
+            <IconButton onClick={toggleMode} sx={{ 
+              color:'rgba(255,255,255,0.7)', 
+              display:{ xs:'none', md:'flex' },
+              transition: 'all 0.2s',
+              '&:hover': {
+                bgcolor: mode === 'dark'
+                  ? 'rgba(129,140,248,0.15)'
+                  : 'rgba(255,255,255,0.1)',
+                color: 'white',
+              }
+            }} title={mode === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}>
               {mode === 'dark' ? <LightModeIcon sx={{ fontSize:20 }} /> : <DarkModeIcon sx={{ fontSize:20 }} />}
             </IconButton>
 
             {/* Search button */}
-            <IconButton onClick={() => setSearchOpen(true)} sx={{ color:'rgba(255,255,255,0.6)', display:{ xs:'none', md:'flex' } }} title="Search (Ctrl+K)">
+            <IconButton onClick={() => setSearchOpen(true)} sx={{ 
+              color:'rgba(255,255,255,0.6)', 
+              display:{ xs:'none', md:'flex' },
+              transition: 'all 0.2s',
+              '&:hover': {
+                bgcolor: mode === 'dark'
+                  ? 'rgba(129,140,248,0.15)'
+                  : 'rgba(255,255,255,0.1)',
+                color: 'rgba(255,255,255,0.9)',
+              }
+            }} title="Search (Ctrl+K)">
               <SearchIcon sx={{ fontSize:20 }} />
             </IconButton>
 
             {/* Real profile avatar */}
-            <IconButton onClick={() => navigate('/profile')} sx={{ display:{ xs:'none', md:'flex' }, p:0.5 }}>
+            <IconButton onClick={() => navigate('/profile')} sx={{ display:{ xs:'none', md:'flex' }, p:0.5, transition: 'transform 0.2s',
+              '&:hover': { transform: 'scale(1.1)' }
+            }}>
               {AvatarEl}
             </IconButton>
 
             {/* Settings */}
-            <IconButton onClick={() => navigate('/settings')} sx={{ color:'rgba(255,255,255,0.6)', display:{ xs:'none', md:'flex' } }}>
+            <IconButton onClick={() => navigate('/settings')} sx={{ 
+              color:'rgba(255,255,255,0.6)', 
+              display:{ xs:'none', md:'flex' },
+              transition: 'all 0.2s',
+              '&:hover': {
+                bgcolor: mode === 'dark'
+                  ? 'rgba(129,140,248,0.15)'
+                  : 'rgba(255,255,255,0.1)',
+                color: 'rgba(255,255,255,0.9)',
+              }
+            }}>
               <SettingsIcon sx={{ fontSize:19 }} />
             </IconButton>
 
             <Button onClick={handleLogout} size="small"
-              sx={{ color:'rgba(255,255,255,0.8)', textTransform:'none', fontSize:'0.82rem', display:{ xs:'none', md:'flex' }, border:'1px solid rgba(255,255,255,0.2)', borderRadius:'7px', px:1.5, '&:hover':{ bgcolor:'rgba(255,255,255,0.1)' } }}>
+              sx={{ 
+                color:'rgba(255,255,255,0.8)', 
+                textTransform:'none', fontSize:'0.82rem', 
+                display:{ xs:'none', md:'flex' }, 
+                border: mode === 'dark'
+                  ? '1px solid rgba(129,140,248,0.3)'
+                  : '1px solid rgba(255,255,255,0.2)',
+                borderRadius:'7px', px:1.5, 
+                bgcolor: 'transparent',
+                transition: 'all 0.2s',
+                '&:hover':{ 
+                  bgcolor: mode === 'dark'
+                    ? 'rgba(129,140,248,0.15)'
+                    : 'rgba(255,255,255,0.1)',
+                  borderColor: 'rgba(255,255,255,0.4)',
+                } 
+              }}>
               Logout
             </Button>
             <IconButton onClick={() => setMobileOpen(true)} sx={{ color:'white', display:{ xs:'flex', xl:'none' } }}>
@@ -238,31 +341,56 @@ export default function Header() {
 
       {/* Mobile drawer */}
       <Drawer anchor="right" open={mobileOpen} onClose={() => setMobileOpen(false)}
-        PaperProps={{ sx:{ width:{ xs:'85vw', sm:300 }, maxWidth:320, display:'flex', flexDirection:'column' } }}>
-        <Box sx={{ background:'linear-gradient(135deg,#1E1B4B,#4F46E5)', p:2, display:'flex', justifyContent:'space-between', alignItems:'center', flexShrink:0 }}>
+        ModalProps={{ keepMounted: true, disableScrollLock: true }}
+        PaperProps={{ sx:{ width:{ xs:'85vw', sm:300 }, maxWidth:320, display:'flex', flexDirection:'column',
+          background: mode === 'dark'
+            ? 'linear-gradient(135deg, #1E293B 0%, #2D3A4F 100%)'
+            : 'linear-gradient(180deg, #FFFFFF 0%, #F5F7FF 100%)',
+          color: mode === 'dark' ? '#F1F5F9' : '#111827',
+          borderLeft: mode === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(99,102,241,0.12)',
+        } }}>
+        <Box sx={{ 
+          background: mode === 'dark'
+            ? 'linear-gradient(135deg, #2D3A4F 0%, #3F4A5E 100%)'
+            : 'linear-gradient(135deg,#EEF2FF,#E0E7FF)',
+          p:2, display:'flex', justifyContent:'space-between', alignItems:'center', flexShrink:0 
+        }}>
           <Box sx={{ display:'flex', alignItems:'center', gap:1.5 }}>
             {AvatarEl}
             <Box>
-              <Typography fontWeight={700} color="white" fontSize="0.9rem">{userInfo.username}</Typography>
-              <Typography color="rgba(255,255,255,0.6)" fontSize="0.72rem">Student</Typography>
+              <Typography fontWeight={700} color={mode === 'dark' ? 'white' : '#111827'} fontSize="0.9rem">{userInfo.username}</Typography>
+              <Typography color={mode === 'dark' ? 'rgba(255,255,255,0.6)' : '#64748B'} fontSize="0.72rem">Student</Typography>
             </Box>
           </Box>
-          <IconButton onClick={() => setMobileOpen(false)} sx={{ color:'white' }}><CloseIcon /></IconButton>
+          <IconButton onClick={() => setMobileOpen(false)} sx={{ color: mode === 'dark' ? 'white' : '#334155' }}><CloseIcon /></IconButton>
         </Box>
 
         <Box sx={{ flex:1, overflowY:'auto', overflowX:'hidden' }}>
           {NAV_GROUPS.map(group => (
             <Box key={group.label}>
-              <ListItem button onClick={() => toggleGroup(group.label)} sx={{ bgcolor: openGroup===group.label ? `${group.color}12`:'white', py:1.5 }}>
+              <ListItem button onClick={() => toggleGroup(group.label)} sx={{
+                bgcolor: openGroup===group.label ? `${group.color}12` : (mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(15,23,42,0.03)'),
+                borderBottom: mode === 'dark' ? '1px solid rgba(255,255,255,0.05)' : '1px solid rgba(226,232,240,0.8)',
+                py:1.5
+              }}>
                 <ListItemText primary={group.label} primaryTypographyProps={{ fontWeight:700, color:group.color, fontSize:'0.875rem' }} />
                 <ExpandMoreIcon sx={{ color:group.color, fontSize:18, transform: openGroup===group.label?'rotate(180deg)':'none', transition:'0.2s' }} />
               </ListItem>
               <Collapse in={openGroup===group.label}>
-                <List disablePadding sx={{ bgcolor:'#FAFAFA' }}>
+                <List disablePadding sx={{ bgcolor: mode === 'dark' ? 'rgba(255,255,255,0.03)' : 'rgba(255,255,255,0.78)' }}>
                   {group.items.map(item => (
-                    <ListItem button key={item.path} onClick={() => { navigate(item.path); setMobileOpen(false); }} sx={{ pl:3, py:1, bgcolor: isActive(item.path)?`${group.color}12`:'transparent' }}>
-                      <ListItemIcon sx={{ color: isActive(item.path)?group.color:'#64748B', minWidth:32 }}>{item.icon}</ListItemIcon>
-                      <ListItemText primary={item.label} primaryTypographyProps={{ fontSize:'0.85rem', fontWeight: isActive(item.path)?600:400 }} />
+                    <ListItem button key={item.path} onClick={() => { navigate(item.path); setMobileOpen(false); }} sx={{
+                      pl:3,
+                      py:1,
+                      bgcolor: isActive(item.path)?`${group.color}14`:'transparent',
+                      borderLeft: isActive(item.path) ? `3px solid ${group.color}` : '3px solid transparent'
+                    }}>
+                      <ListItemIcon sx={{ color: isActive(item.path)?group.color : (mode === 'dark' ? '#94A3B8' : '#64748B'), minWidth:32 }}>{item.icon}</ListItemIcon>
+                      <ListItemText primary={item.label} primaryTypographyProps={{
+                        fontSize:'0.85rem',
+                        fontWeight: isActive(item.path)?700:500,
+                        color: isActive(item.path) ? group.color : (mode === 'dark' ? '#F1F5F9' : '#0F172A')
+                      }} />
                       {item.badge && <Chip label={item.badge} size="small" sx={{ height:16, fontSize:'0.55rem', bgcolor:group.color, color:'white', fontWeight:700 }} />}
                     </ListItem>
                   ))}
@@ -273,19 +401,19 @@ export default function Header() {
           ))}
         </Box>
 
-        <Box sx={{ p:2, borderTop:'1px solid #E2E8F0', flexShrink:0 }}>
+        <Box sx={{ p:2, borderTop: mode === 'dark' ? '1px solid rgba(255,255,255,0.1)' : '1px solid #E2E8F0', flexShrink:0 }}>
           <Button fullWidth variant="outlined" onClick={toggleMode}
             startIcon={mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
-            sx={{ textTransform:'none', borderRadius:'10px', mb:1, justifyContent:'flex-start', color:'#374151', borderColor:'#E2E8F0' }}>
+            sx={{ textTransform:'none', borderRadius:'10px', mb:1, justifyContent:'flex-start', color: mode === 'dark' ? '#F1F5F9' : '#374151', borderColor: mode === 'dark' ? 'rgba(255,255,255,0.2)' : '#E2E8F0' }}>
             {mode === 'dark' ? 'Light Mode' : 'Dark Mode'}
           </Button>
           <Button fullWidth variant="outlined" onClick={() => { navigate('/notifications'); setMobileOpen(false); }}
             startIcon={<Badge badgeContent={unreadCount||null} color="error"><NotificationsIcon /></Badge>}
-            sx={{ textTransform:'none', borderRadius:2, mb:1, justifyContent:'flex-start', color:'#374151', borderColor:'#E2E8F0' }}>
+            sx={{ textTransform:'none', borderRadius:2, mb:1, justifyContent:'flex-start', color: mode === 'dark' ? '#F1F5F9' : '#374151', borderColor: mode === 'dark' ? 'rgba(255,255,255,0.2)' : '#E2E8F0' }}>
             Notifications {unreadCount > 0 && `(${unreadCount})`}
           </Button>
-          <Button fullWidth variant="outlined" onClick={() => { navigate('/profile'); setMobileOpen(false); }} startIcon={<PersonIcon />} sx={{ textTransform:'none', borderRadius:2, mb:1, justifyContent:'flex-start', color:'#374151', borderColor:'#E2E8F0' }}>Profile</Button>
-          <Button fullWidth variant="outlined" onClick={() => { navigate('/settings'); setMobileOpen(false); }} startIcon={<SettingsIcon />} sx={{ textTransform:'none', borderRadius:2, mb:1, justifyContent:'flex-start', color:'#374151', borderColor:'#E2E8F0' }}>Settings</Button>
+          <Button fullWidth variant="outlined" onClick={() => { navigate('/profile'); setMobileOpen(false); }} startIcon={<PersonIcon />} sx={{ textTransform:'none', borderRadius:2, mb:1, justifyContent:'flex-start', color: mode === 'dark' ? '#F1F5F9' : '#374151', borderColor: mode === 'dark' ? 'rgba(255,255,255,0.2)' : '#E2E8F0' }}>Profile</Button>
+          <Button fullWidth variant="outlined" onClick={() => { navigate('/settings'); setMobileOpen(false); }} startIcon={<SettingsIcon />} sx={{ textTransform:'none', borderRadius:2, mb:1, justifyContent:'flex-start', color: mode === 'dark' ? '#F1F5F9' : '#374151', borderColor: mode === 'dark' ? 'rgba(255,255,255,0.2)' : '#E2E8F0' }}>Settings</Button>
           <Button fullWidth variant="contained" onClick={handleLogout} startIcon={<LogoutIcon />} sx={{ textTransform:'none', borderRadius:2, bgcolor:'#EF4444', '&:hover':{ bgcolor:'#DC2626' }, justifyContent:'flex-start' }}>Logout</Button>
         </Box>
       </Drawer>

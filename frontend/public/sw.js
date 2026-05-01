@@ -82,8 +82,8 @@ self.addEventListener('push', (event) => {
   const title = data.title || 'Campus Connect';
   const options = {
     body: data.body || 'You have a new notification',
-    icon: '/logo192.png',
-    badge: '/favicon.ico',
+    icon: '/favicon.svg',
+    badge: '/favicon.svg',
     data: { url: data.url || '/' },
     actions: [{ action: 'open', title: 'Open' }],
   };

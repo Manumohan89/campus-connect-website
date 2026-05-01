@@ -82,7 +82,8 @@ router.post('/enroll', authMiddleware, async (req, res) => {
 router.get('/my-courses', authMiddleware, async (req, res) => {
   try {
     const result = await pool.query(`
-      SELECT tc.*, e.progress, e.enrolled_at, e.completed_at, e.certificate_issued, e.certificate_id
+      SELECT tc.*, e.progress, e.enrolled_at, e.completed_at, e.certificate_issued, e.certificate_id,
+             e.certificate_status, e.review_remark, e.reviewed_at
       FROM training_courses tc
       JOIN enrollments e ON tc.course_id = e.course_id
       WHERE e.user_id = $1
@@ -100,74 +101,62 @@ router.put('/progress', authMiddleware, async (req, res) => {
   const user_id = req.user.userId;
   try {
     const completed_at = progress >= 100 ? new Date() : null;
-    const certificate_issued = progress >= 100;
+    const courseRes = await pool.query('SELECT has_certificate, title FROM training_courses WHERE course_id=$1', [course_id]);
+    if (!courseRes.rows.length) return res.status(404).json({ error: 'Course not found' });
+    const hasCertificate = !!courseRes.rows[0].has_certificate;
+    const nextStatus = hasCertificate
+      ? (progress >= 100 ? 'pending_review' : 'in_progress')
+      : 'not_applicable';
 
-    // Generate certificate ID on completion
-    let certificate_id = null;
-    if (progress >= 100) {
-      const existing = await pool.query(
-        'SELECT certificate_id FROM enrollments WHERE user_id=$1 AND course_id=$2',
-        [user_id, course_id]
-      );
-      if (existing.rows[0]?.certificate_id) {
-        certificate_id = existing.rows[0].certificate_id;
-      } else {
-        const rand = require('crypto').randomBytes(4).toString('hex').toUpperCase();
-        certificate_id = 'CC-' + new Date().getFullYear() + '-' + rand;
-      }
-    }
-
+    // Certificate is no longer auto-issued on completion.
+    // It must be approved by admin/course coordinator.
     await pool.query(
-      'UPDATE enrollments SET progress=$1, completed_at=$2, certificate_issued=$3, certificate_id=$4 WHERE user_id=$5 AND course_id=$6',
-      [progress, completed_at, certificate_issued, certificate_id, user_id, course_id]
+      `UPDATE enrollments
+       SET progress=$1,
+           completed_at=$2,
+           certificate_status=$3,
+           review_remark=CASE WHEN $3='pending_review' THEN NULL ELSE review_remark END,
+           reviewed_at=CASE WHEN $3='pending_review' THEN NULL ELSE reviewed_at END,
+           reviewed_by=CASE WHEN $3='pending_review' THEN NULL ELSE reviewed_by END
+       WHERE user_id=$4 AND course_id=$5`,
+      [progress, completed_at, nextStatus, user_id, course_id]
     );
 
-    // Send completion email
-    if (progress >= 100 && certificate_id) {
+    // Notify student that certificate request is submitted for review.
+    if (progress >= 100) {
       try {
-        const [userRes, courseRes] = await Promise.all([
-          pool.query('SELECT email, full_name FROM users WHERE user_id=$1', [user_id]),
+        const [courseTitleRes, certStateRes] = await Promise.all([
           pool.query('SELECT title FROM training_courses WHERE course_id=$1', [course_id]),
+          pool.query('SELECT certificate_issued FROM enrollments WHERE user_id=$1 AND course_id=$2', [user_id, course_id]),
         ]);
-        const user = userRes.rows[0];
-        const course = courseRes.rows[0];
-        if (user && course) {
-          const { sendEmail } = require('../controllers/userController');
-          const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
-          const certUrl = clientUrl + '/certificate/' + certificate_id;
-          const emailHtml = `
-<div style="font-family:'Segoe UI',sans-serif;max-width:600px;margin:auto;border-radius:16px;overflow:hidden;border:1px solid #e5e7eb;">
-  <div style="background:linear-gradient(135deg,#4F46E5,#7C3AED);padding:40px 32px;text-align:center;">
-    <div style="font-size:48px;margin-bottom:8px;">🎓</div>
-    <h1 style="color:white;margin:0;font-size:26px;font-weight:800;">Certificate of Completion</h1>
-    <p style="color:rgba(255,255,255,0.8);margin:8px 0 0;font-size:15px;">Campus Connect — VTU Student Portal</p>
-  </div>
-  <div style="background:white;padding:32px;">
-    <p style="font-size:16px;color:#374151;margin:0 0 16px;">Dear <strong>${user.full_name || 'Student'}</strong>,</p>
-    <p style="color:#374151;line-height:1.7;margin:0 0 24px;">Congratulations on completing <strong>${course.title}</strong>! Your hard work and dedication have paid off. Your official certificate has been issued and is ready for download.</p>
-    <div style="background:#F5F3FF;border:2px solid #DDD6FE;border-radius:12px;padding:24px;text-align:center;margin:0 0 24px;">
-      <p style="color:#6D28D9;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin:0 0 8px;">Certificate ID</p>
-      <p style="color:#1E1B4B;font-size:28px;font-weight:900;font-family:monospace;margin:0;letter-spacing:0.05em;">${certificate_id}</p>
-      <p style="color:#6D28D9;font-size:12px;margin:8px 0 0;">Keep this ID for verification</p>
-    </div>
-    <div style="text-align:center;margin:0 0 24px;">
-      <a href="${certUrl}" style="display:inline-block;background:linear-gradient(135deg,#4F46E5,#7C3AED);color:white;padding:14px 36px;border-radius:10px;text-decoration:none;font-weight:700;font-size:15px;">⬇ Download Certificate</a>
-    </div>
-    <hr style="border:none;border-top:1px solid #e5e7eb;margin:0 0 20px;">
-    <p style="color:#9CA3AF;font-size:13px;margin:0;">Continue your learning journey at <a href="${clientUrl}/training" style="color:#4F46E5;">Campus Connect Training</a>. Explore more courses and boost your placement profile.</p>
-  </div>
-  <div style="background:#F9FAFB;padding:16px 32px;text-align:center;border-top:1px solid #e5e7eb;">
-    <p style="color:#9CA3AF;font-size:12px;margin:0;">© 2025 Campus Connect · VTU Student Portal · <a href="${clientUrl}/unsubscribe" style="color:#9CA3AF;">Unsubscribe</a></p>
-  </div>
-</div>`;
-          sendEmail(user.email, 'Certificate Issued: ' + course.title, emailHtml).catch(e => console.error('Cert email err:', e));
+        const course = courseTitleRes.rows[0];
+        const certIssued = !!certStateRes.rows[0]?.certificate_issued;
+        if (course && !certIssued) {
+          await pool.query(
+            'INSERT INTO notifications (user_id, type, title, body, link) VALUES ($1,$2,$3,$4,$5)',
+            [
+              user_id,
+              'announcement',
+              '📨 Certificate Review Submitted',
+              `You completed "${course.title}". Your certificate will be issued after review by the course coordinator/admin.`,
+              '/training',
+            ]
+          );
         }
       } catch (e) {
-        console.error('Cert email process err:', e.message);
+        console.error('Certificate review notification error:', e.message);
       }
     }
 
-    res.json({ message: 'Progress updated', certificate_issued, certificate_id });
+    res.json({
+      message: progress >= 100
+        ? 'Course marked complete. Certificate is pending coordinator/admin review.'
+        : 'Progress updated',
+      certificate_issued: false,
+      certificate_pending_review: progress >= 100 && hasCertificate,
+      certificate_status: nextStatus,
+      certificate_id: null
+    });
   } catch (err) {
     console.error('Progress update error:', err);
     res.status(500).json({ error: 'Failed to update progress' });

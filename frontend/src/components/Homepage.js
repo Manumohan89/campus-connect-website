@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { Grid } from '@mui/material';
 import axios from 'axios';
 import PublicHeader from './PublicHeader';
 import PublicFooter from './PublicFooter';
+import HomepageSidebar from './HomepageSidebar';
 const PUBLIC_API_BASE = (() => {
   const envUrl = process.env.REACT_APP_API_URL;
   if (envUrl) return envUrl.endsWith('/api') ? envUrl : envUrl.replace(/\/$/, '') + '/api';
@@ -147,7 +149,11 @@ export default function Homepage() {
         minHeight: '88vh',
         display: 'flex',
         alignItems: 'center',
-        overflow: 'hidden' }}>
+        overflow: 'hidden',
+        
+        // Cinematic effects
+        backgroundAttachment: 'fixed',
+      }}>
         <ParticleField />
 
         {/* Mesh gradient orbs */}
@@ -296,7 +302,11 @@ export default function Homepage() {
 
       {/* ═══ FEATURES ════════════════════════════════════════════ */}
       <section style={{ padding:'clamp(48px,8vw,96px) clamp(16px,4vw,24px)', background:'var(--bg-page,#F6F8FC)' }}>
-        <div style={{ maxWidth:1200, margin:'0 auto' }}>
+        <Grid container spacing={3} sx={{ maxWidth: 1400, margin: '0 auto' }}>
+          <Grid item xs={12} md={2.5}>
+            <HomepageSidebar isDark={false} />
+          </Grid>
+          <Grid item xs={12} md={9.5}>
           <div style={{ textAlign:'center', marginBottom:64 }}>
             <div style={{ display:'inline-flex', alignItems:'center', gap:8, background:'#EEF2FF', border:'1px solid #C7D2FE', borderRadius:99, padding:'5px 16px', marginBottom:16 }}>
               <span style={{ fontSize:'0.78rem', fontWeight:700, color:'#4F46E5', letterSpacing:'0.05em', textTransform:'uppercase' }}>Everything in One Place</span>
@@ -361,10 +371,9 @@ export default function Homepage() {
               );
             })}
           </div>
-        </div>
+          </Grid>
+        </Grid>
       </section>
-
-      {/* ═══ HOW IT WORKS ════════════════════════════════════════ */}
       <section style={{ padding:'clamp(48px,8vw,96px) clamp(16px,4vw,24px)', background:'#0E0B2E', position:'relative', overflow:'hidden' }}>
         <div style={{ position:'absolute', inset:0, backgroundImage:'linear-gradient(rgba(99,102,241,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,0.04) 1px, transparent 1px)', backgroundSize:'60px 60px', pointerEvents:'none' }} />
         

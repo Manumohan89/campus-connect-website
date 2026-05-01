@@ -21,6 +21,7 @@ import Header from './Header';
 import Footer from './Footer';
 import api from '../utils/api';
 import { useNavigate } from 'react-router-dom';
+import { useThemeMode } from '../ThemeContext';
 
 const CAT = {
   backlog_clearing: { label:'Backlog Clearing', color:'#EF4444', bg:'#FEF2F2', icon:<WarningIcon fontSize="small"/>, gradient:'linear-gradient(135deg,#EF444422,#EF444411)' },
@@ -54,12 +55,12 @@ function CourseSkeletons() {
   );
 }
 
-function CourseCard({ course, isEnrolled, onEnroll, onContinue }) {
+function CourseCard({ course, isEnrolled, onEnroll, onContinue, isDark }) {
   const cat = CAT[course.category] || CAT.upskill;
   const progress = course.progress || 0;
 
   return (
-    <Card elevation={0} sx={{ border:`1px solid ${isEnrolled ? cat.color+'44' : '#E2E8F0'}`, borderRadius:'16px', height:'100%', display:'flex', flexDirection:'column', transition:'all 0.2s', '&:hover':{ transform:'translateY(-4px)', boxShadow:`0 16px 40px ${cat.color}20` } }}>
+    <Card elevation={0} sx={{ border:`1px solid ${isEnrolled ? cat.color+'44' : (isDark ? 'rgba(255,255,255,0.08)' : '#E2E8F0')}`, bgcolor: isDark ? '#111827' : '#FFFFFF', borderRadius:'16px', height:'100%', display:'flex', flexDirection:'column', transition:'all 0.2s', '&:hover':{ transform:'translateY(-4px)', boxShadow:`0 16px 40px ${cat.color}20` } }}>
       {/* Coloured header */}
       <Box sx={{ p:2.5, background:cat.gradient, borderBottom:`1px solid ${cat.color}22`, position:'relative' }}>
         <Box sx={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', mb:1 }}>
@@ -101,10 +102,10 @@ function CourseCard({ course, isEnrolled, onEnroll, onContinue }) {
             </Box>
           )}
           {course.department && course.department !== 'ALL' && (
-            <Chip label={course.department} size="small" sx={{ height:20, fontSize:'0.65rem', bgcolor:'#F1F5F9', fontWeight:700 }} />
+          <Chip label={course.department} size="small" sx={{ height:20, fontSize:'0.65rem', bgcolor: isDark ? '#1E293B' : '#F1F5F9', color: isDark ? '#E2E8F0' : '#334155', fontWeight:700 }} />
           )}
           {course.semester && (
-            <Chip label={`Sem ${course.semester}`} size="small" sx={{ height:20, fontSize:'0.65rem', bgcolor:'#F1F5F9', fontWeight:700 }} />
+            <Chip label={`Sem ${course.semester}`} size="small" sx={{ height:20, fontSize:'0.65rem', bgcolor: isDark ? '#1E293B' : '#F1F5F9', color: isDark ? '#E2E8F0' : '#334155', fontWeight:700 }} />
           )}
         </Stack>
 
@@ -112,7 +113,7 @@ function CourseCard({ course, isEnrolled, onEnroll, onContinue }) {
         {course.has_certificate && (
           <Box sx={{ display:'flex', alignItems:'center', gap:0.75, p:1.25, bgcolor:'#F5F3FF', borderRadius:'8px', border:'1px solid #DDD6FE' }}>
             <WorkspacePremiumIcon sx={{ fontSize:16, color:'#7C3AED' }} />
-            <Typography variant="caption" fontWeight={700} color="#6D28D9">Certificate on completion</Typography>
+            <Typography variant="caption" fontWeight={700} color="#6D28D9">Certificate issued after coordinator review</Typography>
           </Box>
         )}
 
@@ -132,6 +133,20 @@ function CourseCard({ course, isEnrolled, onEnroll, onContinue }) {
                 sx={{ mt:1, color:'#7C3AED', fontWeight:700, textTransform:'none', fontSize:'0.75rem', p:0, '&:hover':{bgcolor:'transparent', textDecoration:'underline'} }}>
                 View Certificate →
               </Button>
+            )}
+            {!course.certificate_issued && progress === 100 && course.has_certificate && (
+              <Box sx={{ mt:1 }}>
+                <Typography variant="caption" sx={{ display:'block', color: course.certificate_status === 'rejected' ? '#DC2626' : '#D97706', fontWeight:700 }}>
+                  {course.certificate_status === 'rejected'
+                    ? 'Certificate request rejected by coordinator/admin.'
+                    : 'Certificate pending coordinator/admin review.'}
+                </Typography>
+                {course.certificate_status === 'rejected' && course.review_remark && (
+                  <Typography variant="caption" sx={{ display:'block', color:'#7F1D1D', mt:0.25 }}>
+                    Remark: {course.review_remark}
+                  </Typography>
+                )}
+              </Box>
             )}
           </Box>
         )}
@@ -165,6 +180,8 @@ function CourseCard({ course, isEnrolled, onEnroll, onContinue }) {
 }
 
 export default function Training() {
+  const { mode } = useThemeMode();
+  const isDark = mode === 'dark';
   const [tab, setTab] = useState('all');
   const [search, setSearch] = useState('');
   const [courses, setCourses] = useState([]);
@@ -219,6 +236,9 @@ export default function Training() {
         setSnackMsg('🏆 Course complete! Certificate issued! Check your email.');
         setProgressDialog(null);
         navigate(`/certificate/${res.data.certificate_id}`);
+      } else if (res.data.certificate_pending_review) {
+        setSnackMsg('✅ Course completed. Certificate request submitted for coordinator review.');
+        setProgressDialog(null);
       } else {
         setSnackMsg(`Progress updated to ${progress}%!`);
         setProgressDialog(null);
@@ -262,7 +282,7 @@ export default function Training() {
   ];
 
   return (
-    <Box sx={{ display:'flex', flexDirection:'column', minHeight:'100vh', bgcolor:'#F8FAFC' }}>
+    <Box sx={{ display:'flex', flexDirection:'column', minHeight:'100vh', bgcolor: isDark ? '#0F172A' : '#F8FAFC' }}>
       <Header />
 
       {/* Hero */}
@@ -312,16 +332,16 @@ export default function Training() {
           <TextField fullWidth placeholder="Search courses, subject codes, instructors..."
             value={search} onChange={e => setSearch(e.target.value)}
             InputProps={{ startAdornment:<InputAdornment position="start"><SearchIcon sx={{ color:'#9CA3AF' }} /></InputAdornment> }}
-            sx={{ '& .MuiOutlinedInput-root':{ borderRadius:'14px', bgcolor:'white', boxShadow:'0 1px 4px rgba(0,0,0,0.06)' } }} />
+            sx={{ '& .MuiOutlinedInput-root':{ borderRadius:'14px', bgcolor: isDark ? '#111827' : 'white', boxShadow:'0 1px 4px rgba(0,0,0,0.06)' } }} />
         </Box>
 
         {/* Tabs */}
-        <Tabs value={tab} onChange={(_, v) => setTab(v)} variant="scrollable" scrollButtons="auto" sx={{ mb:3, bgcolor:'white', borderRadius:'14px', p:0.5, border:'1px solid #E2E8F0', '& .MuiTab-root':{ textTransform:'none', fontWeight:600, borderRadius:'10px', minHeight:38, py:0.75 }, '& .Mui-selected':{ bgcolor:'#4F46E5 !important', color:'white !important', fontWeight:700 }, '& .MuiTabs-indicator':{ display:'none' } }}>
+        <Tabs value={tab} onChange={(_, v) => setTab(v)} variant="scrollable" scrollButtons="auto" sx={{ mb:3, bgcolor: isDark ? '#111827' : 'white', borderRadius:'14px', p:0.5, border: isDark ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E2E8F0', '& .MuiTab-root':{ textTransform:'none', fontWeight:600, borderRadius:'10px', minHeight:38, py:0.75, color: isDark ? '#CBD5E1' : '#475569' }, '& .Mui-selected':{ bgcolor:'#4F46E5 !important', color:'white !important', fontWeight:700 }, '& .MuiTabs-indicator':{ display:'none' } }}>
           {TABS.map(t => (
             <Tab key={t.value} value={t.value}
               label={<Box sx={{ display:'flex', alignItems:'center', gap:0.75 }}>
                 <span>{t.label}</span>
-                {t.count > 0 && <Box sx={{ bgcolor: tab===t.value ? 'rgba(255,255,255,0.3)' : '#F1F5F9', borderRadius:'6px', px:0.75, py:0.125, fontSize:'0.65rem', fontWeight:700, color: tab===t.value ? 'white' : '#64748B', lineHeight:1.6 }}>{t.count}</Box>}
+                {t.count > 0 && <Box sx={{ bgcolor: tab===t.value ? 'rgba(255,255,255,0.3)' : (isDark ? '#1E293B' : '#F1F5F9'), borderRadius:'6px', px:0.75, py:0.125, fontSize:'0.65rem', fontWeight:700, color: tab===t.value ? 'white' : (isDark ? '#CBD5E1' : '#64748B'), lineHeight:1.6 }}>{t.count}</Box>}
               </Box>} />
           ))}
         </Tabs>
@@ -339,11 +359,11 @@ export default function Training() {
             <Grid container spacing={3}>
               {myCerts.map(cert => (
                 <Grid item xs={12} sm={6} md={4} key={cert.certificate_id}>
-                  <Card elevation={0} sx={{ border:'1.5px solid #DDD6FE', borderRadius:'16px', p:3, bgcolor:'#F5F3FF', transition:'all 0.2s', '&:hover':{ transform:'translateY(-3px)', boxShadow:'0 12px 30px rgba(124,58,237,0.15)' } }}>
+                    <Card elevation={0} sx={{ border:'1.5px solid #DDD6FE', borderRadius:'16px', p:3, bgcolor: isDark ? 'rgba(124,58,237,0.14)' : '#F5F3FF', transition:'all 0.2s', '&:hover':{ transform:'translateY(-3px)', boxShadow:'0 12px 30px rgba(124,58,237,0.15)' } }}>
                     <Box sx={{ display:'flex', gap:2, mb:2, alignItems:'flex-start' }}>
                       <Box sx={{ width:52, height:52, borderRadius:'12px', background:'linear-gradient(135deg,#7C3AED,#4F46E5)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'1.5rem', flexShrink:0 }}>🏆</Box>
                       <Box>
-                        <Typography fontWeight={800} fontSize="0.9rem" color="#1E1B4B" lineHeight={1.3}>{cert.title}</Typography>
+                        <Typography fontWeight={800} fontSize="0.9rem" color={isDark ? '#F8FAFC' : '#1E1B4B'} lineHeight={1.3}>{cert.title}</Typography>
                         <Typography variant="caption" color="#7C3AED" fontWeight={700} sx={{ textTransform:'uppercase', letterSpacing:'0.05em' }}>{CAT[cert.category]?.label || cert.category}</Typography>
                       </Box>
                     </Box>
@@ -394,6 +414,7 @@ export default function Training() {
                     isEnrolled={enrolledIds.includes(course.course_id)}
                     onEnroll={handleEnroll}
                     onContinue={c => setProgressDialog(c)}
+                    isDark={isDark}
                   />
                 </Grid>
               ))}
@@ -431,7 +452,7 @@ export default function Training() {
                     color: p === 100 ? 'white' : isHigher ? '#4F46E5' : '#9CA3AF',
                     opacity: !isHigher && p !== 100 && p !== (progressDialog.progress||0) ? 0.5 : 1
                   }}>
-                  {p === 100 ? '🏆 Complete & Get Certificate (100%)' : `${p}% Complete`}
+                  {p === 100 ? '🏁 Complete & Send for Review (100%)' : `${p}% Complete`}
                 </Button>
               );
             })}

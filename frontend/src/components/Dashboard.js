@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useTheme } from '@mui/material';
+import { useTheme, Grid } from '@mui/material';
 import Header from './Header';
 import Footer from './Footer';
 import Onboarding from './Onboarding';
+import DashboardSidebar from './DashboardSidebar';
 import api from '../utils/api';
 
 // ── Cinematic number counter ──────────────────────────────────────────────────
@@ -63,18 +64,25 @@ function CGPARing({ value, max = 10, color, size = 96, label, sub, animate }) {
 }
 
 // ── Activity Heatmap ──────────────────────────────────────────────────────────
-function ActivityHeatmap({ color = '#4F46E5' }) {
+function ActivityHeatmap({ color = '#4F46E5', data = [] }) {
   const weeks  = 15;
-  const today  = new Date();
-  const cells  = [];
-  for (let w = weeks - 1; w >= 0; w--) {
-    for (let d = 6; d >= 0; d--) {
-      const date = new Date(today);
-      date.setDate(today.getDate() - (w * 7 + d));
-      const v = Math.random() > 0.55 ? Math.floor(Math.random() * 4) + 1 : 0;
-      cells.push({ date, v });
-    }
+  const cells = (Array.isArray(data) ? data : []).slice(-weeks * 7).map(item => ({
+    date: new Date(item.date),
+    v: Number(item.count || 0),
+  }));
+  while (cells.length < weeks * 7) {
+    cells.unshift({ date: new Date(), v: 0 });
   }
+
+  const max = Math.max(1, ...cells.map(c => c.v));
+  const level = (v) => {
+    if (v <= 0) return 0;
+    const r = v / max;
+    if (r < 0.25) return 1;
+    if (r < 0.5) return 2;
+    if (r < 0.75) return 3;
+    return 4;
+  };
   const opacity = [0, 0.2, 0.45, 0.7, 1];
   return (
     <div style={{ display: 'flex', gap: 3 }}>
@@ -86,7 +94,7 @@ function ActivityHeatmap({ color = '#4F46E5' }) {
               <div key={d} style={{
                 width: 11, height: 11, borderRadius: 2,
                 background: cell.v === 0 ? 'rgba(255,255,255,0.07)' : color,
-                opacity: cell.v === 0 ? 1 : opacity[cell.v],
+                opacity: cell.v === 0 ? 1 : opacity[level(cell.v)],
                 transition: 'opacity .2s' }} title={`${cell.date.toDateString()}: ${cell.v} activities`}/>
             );
           })}
@@ -105,25 +113,96 @@ function FeatureCard({ emoji, title, desc, badge, color = '#4F46E5', on, highlig
   return (
     <div onClick={on} onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
       style={{
-        background: bg, border: `1.5px solid ${hov ? color+'88' : border}`,
-        borderRadius: 18, padding: '20px 18px', cursor: 'pointer', height: '100%',
-        position: 'relative', overflow: 'hidden',
+        background: bg, 
+        border: `1.5px solid ${hov ? color+'88' : border}`,
+        borderRadius: 18, 
+        padding: '20px 18px', 
+        cursor: 'pointer', 
+        height: '100%',
+        position: 'relative', 
+        overflow: 'hidden',
         opacity: visible ? 1 : 0,
         transform: visible ? (hov ? 'translateY(-6px) scale(1.01)' : 'translateY(0)') : 'translateY(22px)',
         transition: `opacity .5s ease ${delay}ms, transform .28s ease, box-shadow .25s, border-color .22s`,
-        boxShadow: hov ? `0 20px 48px ${color}28` : '0 2px 8px rgba(0,0,0,0.06)' }}>
-      {/* Top accent */}
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg,${color},${color}44,transparent)`, opacity: highlight || hov ? 1 : 0.4, transition: 'opacity .22s' }}/>
-      {/* Mouse beam */}
-      <div style={{ position: 'absolute', inset: 0, borderRadius: 18, background: `radial-gradient(180px at 50% 50%, ${color}0a, transparent 70%)`, opacity: hov ? 1 : 0, transition: 'opacity .3s', pointerEvents: 'none' }}/>
+        boxShadow: hov 
+          ? isDark 
+            ? `0 20px 48px ${color}32, inset 0 1px 0 rgba(255,255,255,0.1)` 
+            : `0 20px 48px ${color}28`
+          : isDark
+            ? '0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05)'
+            : '0 2px 8px rgba(0,0,0,0.06)',
+        backdropFilter: isDark ? 'blur(8px)' : 'none',
+      }}>
+      {/* Cinematic top accent bar */}
+      <div style={{ 
+        position: 'absolute', 
+        top: 0, 
+        left: 0, 
+        right: 0, 
+        height: 3, 
+        background: `linear-gradient(90deg,${color},${color}44,transparent)`, 
+        opacity: highlight || hov ? 1 : 0.4, 
+        transition: 'opacity .22s',
+        boxShadow: `0 0 12px ${color}40`
+      }}/>
+      
+      {/* Mouse beam effect */}
+      <div style={{ 
+        position: 'absolute', 
+        inset: 0, 
+        borderRadius: 18, 
+        background: `radial-gradient(180px at 50% 50%, ${color}0a, transparent 70%)`, 
+        opacity: hov ? 1 : 0, 
+        transition: 'opacity .3s', 
+        pointerEvents: 'none' 
+      }}/>
+      
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 14 }}>
-        <div style={{ width: 46, height: 46, borderRadius: 13, background: `${color}18`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.4rem', transition: 'transform .25s', transform: hov ? 'scale(1.12) rotate(-6deg)' : 'scale(1)' }}>
+        <div style={{ 
+          width: 46, 
+          height: 46, 
+          borderRadius: 13, 
+          background: `${color}18`, 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'center', 
+          fontSize: '1.4rem', 
+          transition: 'transform .25s, filter .25s',
+          transform: hov ? 'scale(1.12) rotate(-6deg)' : 'scale(1)',
+          filter: hov ? `drop-shadow(0 4px 12px ${color}40)` : 'drop-shadow(none)',
+          backdropFilter: 'blur(4px)',
+        }}>
           {emoji}
         </div>
-        {badge && <span style={{ padding: '3px 9px', borderRadius: 99, background: `${color}18`, color, fontSize: '0.6rem', fontWeight: 800, letterSpacing: '0.07em', border: `1px solid ${color}30`, textTransform: 'uppercase' }}>{badge}</span>}
+        {badge && <span style={{ 
+          padding: '3px 9px', 
+          borderRadius: 99, 
+          background: `${color}18`, 
+          color, 
+          fontSize: '0.6rem', 
+          fontWeight: 800, 
+          letterSpacing: '0.07em', 
+          border: `1px solid ${color}30`, 
+          textTransform: 'uppercase',
+          backdropFilter: 'blur(4px)',
+        }}>{badge}</span>}
       </div>
-      <h3 style={{ fontFamily: "'Syne',sans-serif", fontSize: '0.875rem', fontWeight: 700, color: isDark ? '#F1F5F9' : '#0F172A', marginBottom: 5, lineHeight: 1.35 }}>{title}</h3>
-      <p style={{ fontSize: '0.775rem', color: isDark ? '#94A3B8' : '#6B7280', lineHeight: 1.65, margin: 0 }}>{desc}</p>
+      <h3 style={{ 
+        fontFamily: "'Syne',sans-serif", 
+        fontSize: '0.875rem', 
+        fontWeight: 700, 
+        color: isDark ? '#F1F5F9' : '#0F172A', 
+        marginBottom: 5, 
+        lineHeight: 1.35,
+        transition: 'color .2s',
+      }}>{title}</h3>
+      <p style={{ 
+        fontSize: '0.775rem', 
+        color: isDark ? '#94A3B8' : '#6B7280', 
+        lineHeight: 1.65, 
+        margin: 0,
+        transition: 'color .2s',
+      }}>{desc}</p>
     </div>
   );
 }
@@ -198,7 +277,8 @@ export default function Dashboard() {
   const sgpaColor  = sgpaNum >= 8 ? '#3B82F6' : sgpaNum >= 6 ? '#A78BFA' : sgpaNum > 0 ? '#F97316' : '#64748B';
   const gradeLabel = cgpaNum >= 9 ? 'Distinction' : cgpaNum >= 8 ? '1st Class+' : cgpaNum >= 7 ? 'First Class' : cgpaNum >= 6 ? 'Second Class' : cgpaNum > 0 ? 'Pass Class' : 'Not uploaded yet';
   const today      = new Date().toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long' });
-  const streak     = parseInt(localStorage.getItem('cc_streak') || '0') + 1;
+  const streak     = Number(data?.streak || 0);
+  const activityLast15Weeks = Array.isArray(data?.activityLast15Weeks) ? data.activityLast15Weeks : [];
 
   const pageBg  = isDark ? '#0F172A' : '#F0F2F8';
 
@@ -236,6 +316,13 @@ export default function Dashboard() {
     { emoji:'🏆', title:'Leaderboard',         desc:'CGPA + coding + courses combined rank',               path:'/leaderboard',         badge:'LIVE', color:'#F59E0B' },
     { emoji:'🎓', title:'Scholarships',        desc:'Govt & private scholarships you qualify for',         path:'/scholarships',        badge:'FREE', color:'#10B981' },
   ];
+  const EARN = [
+    { emoji:'💰', title:'AI Data Earn',        desc:'Complete micro-tasks & earn real money',              path:'/earn',               badge:'EARN', color:'#10B981' },
+  ];
+  const TOOLS = [
+    { emoji:'📅', title:'Study Planner',       desc:'Schedule your study sessions & track goals',         path:'/study-planner',     badge:'NEW', color:'#0EA5E9' },
+    { emoji:'📤', title:'Bulk Marks Upload',   desc:'Upload marks for multiple students at once',         path:'/bulk-upload',       color:'#7C3AED' },
+  ];
 
   return (
     <div style={{ minHeight: '100vh', background: pageBg, fontFamily: "'Outfit',sans-serif" }}>
@@ -249,7 +336,12 @@ export default function Dashboard() {
       <Header />
       {showOnboarding && <Onboarding onDone={() => { localStorage.setItem('onboardingDone','true'); setShowOnboarding(false); }}/>}
 
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '28px 20px 60px' }}>
+      <div style={{ maxWidth: 1400, margin: '0 auto', padding: '28px 20px 60px' }}>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={2.5}>
+            <DashboardSidebar isDark={isDark} />
+          </Grid>
+          <Grid item xs={12} md={9.5}>
 
         {/* ── HERO BANNER ─────────────────────────────────────────────────── */}
         {loading && (
@@ -317,7 +409,7 @@ export default function Dashboard() {
           {/* Activity heatmap */}
           <div style={{ position: 'relative', zIndex: 1, marginTop: 24, paddingTop: 18, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
             <div style={{ fontSize: '0.68rem', color: 'rgba(255,255,255,0.35)', marginBottom: 8, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Your activity — last 15 weeks</div>
-            <ActivityHeatmap color="#4F46E5"/>
+            <ActivityHeatmap color="#4F46E5" data={activityLast15Weeks}/>
           </div>
         </div>
 
@@ -354,7 +446,25 @@ export default function Dashboard() {
             <FeatureCard key={c.path} {...c} on={() => nav(c.path)} delay={i * 40} visible={vis} isDark={isDark}/>
           ))}
         </div>
-      </div>
+
+        {/* ── EARN ─────────────────────────────────────────────────────────── */}
+        <Section label="Earn Money" emoji="💸" isDark={isDark}/>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(200px,1fr))', gap: 14 }}>
+          {EARN.map((c, i) => (
+            <FeatureCard key={c.path} {...c} on={() => nav(c.path)} delay={i * 40} visible={vis} isDark={isDark}/>
+          ))}
+        </div>
+
+        {/* ── TOOLS ────────────────────────────────────────────────────────── */}
+        <Section label="Tools & Utilities" emoji="🔧" isDark={isDark}/>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(200px,1fr))', gap: 14 }}>
+          {TOOLS.map((c, i) => (
+            <FeatureCard key={c.path} {...c} on={() => nav(c.path)} delay={i * 40} visible={vis} isDark={isDark}/>
+          ))}
+        </div>
+        </div>
+          </Grid>
+        </Grid>
       </div>
       <Footer/>
     </div>

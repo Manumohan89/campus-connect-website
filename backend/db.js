@@ -36,7 +36,14 @@ pool.on('error', (err) => {
 pool.connect((err, client, release) => {
   if (err) {
     console.error('❌ PostgreSQL connection failed:', err.message);
-    console.error('   Check your .env DB_USER / DB_PASSWORD / DB_NAME values.');
+    console.error('   Full error:', err);
+    console.error('   Config:', {
+      user: process.env.DB_USER || 'postgres',
+      host: process.env.DB_HOST || 'localhost',
+      database: process.env.DB_NAME || 'CampusConnect',
+      port: parseInt(process.env.DB_PORT || '5432', 10),
+      hasPassword: !!(process.env.DB_PASSWORD),
+    });
   } else {
     release();
     console.log('✅ PostgreSQL connected successfully');

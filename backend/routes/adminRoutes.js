@@ -4,6 +4,7 @@ const pool = require('../db');
 const authMiddleware = require('../middleware/authMiddleware');
 const isAdmin = require('../middleware/adminMiddleware');
 const { validate, notificationRules } = require('../middleware/validate');
+const { sendCertificateEmail } = require('../controllers/userController');
 
 // All admin routes require BOTH auth + admin role
 router.use(authMiddleware, isAdmin);
@@ -323,25 +324,25 @@ router.get('/alumni', async (req, res) => {
 });
 
 router.post('/alumni', async (req, res) => {
-  const { full_name, email, branch, graduation_year, current_company, current_role, linkedin_url, bio, skills, is_available, college } = req.body;
+  const { full_name, email, branch, graduation_year, current_company, job_role, linkedin_url, bio, skills, is_available, college } = req.body;
   if (!full_name || !email || !branch || !graduation_year) return res.status(400).json({ error: 'Missing required fields' });
   try {
     const result = await pool.query(
-      `INSERT INTO alumni (full_name, email, branch, graduation_year, current_company, current_role, linkedin_url, bio, skills, is_available, college)
+      `INSERT INTO alumni (full_name, email, branch, graduation_year, current_company, job_role, linkedin_url, bio, skills, is_available, college)
        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING *`,
-      [full_name, email, branch, graduation_year, current_company, current_role, linkedin_url, bio, skills || [], is_available !== false, college]
+      [full_name, email, branch, graduation_year, current_company, job_role, linkedin_url, bio, skills || [], is_available !== false, college]
     );
     res.status(201).json(result.rows[0]);
   } catch (e) { res.status(500).json({ error: 'Failed to add alumni' }); }
 });
 
 router.put('/alumni/:id', async (req, res) => {
-  const { full_name, email, branch, graduation_year, current_company, current_role, linkedin_url, bio, skills, is_available, college } = req.body;
+  const { full_name, email, branch, graduation_year, current_company, job_role, linkedin_url, bio, skills, is_available, college } = req.body;
   try {
     const result = await pool.query(
-      `UPDATE alumni SET full_name=$1, email=$2, branch=$3, graduation_year=$4, current_company=$5, current_role=$6, linkedin_url=$7, bio=$8, skills=$9, is_available=$10, college=$11
+      `UPDATE alumni SET full_name=$1, email=$2, branch=$3, graduation_year=$4, current_company=$5, job_role=$6, linkedin_url=$7, bio=$8, skills=$9, is_available=$10, college=$11
        WHERE id=$12 RETURNING *`,
-      [full_name, email, branch, graduation_year, current_company, current_role, linkedin_url, bio, skills || [], is_available !== false, college, req.params.id]
+      [full_name, email, branch, graduation_year, current_company, job_role, linkedin_url, bio, skills || [], is_available !== false, college, req.params.id]
     );
     if (!result.rows.length) return res.status(404).json({ error: 'Alumni not found' });
     res.json(result.rows[0]);
@@ -408,7 +409,7 @@ router.get('/analytics', async (req, res) => {
         FROM training_courses tc LEFT JOIN enrollments e ON tc.course_id = e.course_id
         GROUP BY tc.course_id, tc.title ORDER BY enrollments DESC LIMIT 10`),
       safe(`SELECT pd.company_name, pd.role, pd.package_lpa,
-        COUNT(a.application_id) as applications, pd.status
+        COUNT(a.id) as applications, pd.status
         FROM placement_drives pd
         LEFT JOIN placement_applications a ON pd.drive_id = a.drive_id
         GROUP BY pd.drive_id, pd.company_name, pd.role, pd.package_lpa, pd.status
@@ -418,7 +419,7 @@ router.get('/analytics', async (req, res) => {
         GROUP BY TO_CHAR(created_at, 'YYYY-MM') ORDER BY month`),
       safe(`SELECT COUNT(DISTINCT user_id) as count FROM marks WHERE updated_on > NOW() - INTERVAL '7 days'`),
       safe(`SELECT COUNT(*) as count FROM users WHERE is_blocked = false`),
-      safe(`SELECT COUNT(*) as count FROM training_courses WHERE is_active = true`),
+      safe(`SELECT COUNT(*) as count FROM training_courses`),
       safe(`SELECT COUNT(*) as count FROM enrollments`),
       safe(`SELECT COUNT(*) as count FROM coding_submissions`),
     ]);
@@ -505,7 +506,8 @@ router.get('/marks', async (req, res) => {
 router.get('/certificates', async (req, res) => {
   try {
     const result = await pool.query(`
-      SELECT e.certificate_id, e.completed_at, u.full_name, u.username, u.branch,
+      SELECT e.certificate_id, e.completed_at, e.reviewed_at, e.certificate_status, e.review_remark,
+        u.full_name, u.username, u.branch,
         tc.title as course_title, tc.category
       FROM enrollments e
       JOIN users u ON e.user_id = u.user_id
@@ -547,25 +549,92 @@ router.post('/certificates/approve/:enrollmentId', async (req, res) => {
     // Generate unique certificate ID
     const certId = 'CC-' + new Date().getFullYear() + '-' + Math.random().toString(36).substr(2,8).toUpperCase();
     const result = await pool.query(
-      `UPDATE enrollments SET certificate_issued=true, certificate_id=$1, completed_at=NOW(), progress=100
-       WHERE id=$2 RETURNING *, (SELECT user_id FROM enrollments WHERE id=$2) as uid`,
-      [certId, enrollmentId]
+      `UPDATE enrollments
+       SET certificate_issued=true,
+           certificate_id=$1,
+           completed_at=NOW(),
+           progress=100,
+           certificate_status='issued',
+           review_remark='Approved by course coordinator/admin',
+           reviewed_at=NOW(),
+           reviewed_by=$2
+       WHERE id=$3
+       RETURNING *`,
+      [certId, req.user.userId, enrollmentId]
     );
     if (!result.rows.length) return res.status(404).json({ error: 'Enrollment not found' });
-    // Notify user
+    
+    // Notify user and send email
+    const enr = result.rows[0];
+    const [courseRes, userRes] = await Promise.all([
+      pool.query('SELECT title FROM training_courses WHERE course_id=$1', [enr.course_id]),
+      pool.query('SELECT email, full_name FROM users WHERE user_id=$1', [enr.user_id])
+    ]);
+    
+    const courseTitle = courseRes.rows[0]?.title || 'Course';
+    const userEmail = userRes.rows[0]?.email;
+    const userName = userRes.rows[0]?.full_name || 'Student';
+    
+    await pool.query(
+      'INSERT INTO notifications (user_id, type, title, body, link) VALUES ($1,$2,$3,$4,$5)',
+      [enr.user_id, 'announcement',
+       '🎓 Certificate Issued!',
+       `Your certificate for "${courseTitle}" has been approved by admin.`,
+       `/certificate/${certId}`]
+    );
+    
+    // Send email with certificate download link
+    if (userEmail) {
+      try {
+        await sendCertificateEmail(userEmail, userName, courseTitle, certId);
+      } catch (emailError) {
+        console.error('Failed to send certificate email:', emailError.message);
+        // Continue even if email fails
+      }
+    }
+    
+    res.json({ message: 'Certificate issued', certificate_id: certId });
+  } catch (e) {
+    console.error('Cert approve error:', e);
+    res.status(500).json({ error: 'Failed to issue certificate' });
+  }
+});
+
+// POST /api/admin/certificates/reject/:enrollmentId — admin rejects certificate
+router.post('/certificates/reject/:enrollmentId', async (req, res) => {
+  try {
+    const { enrollmentId } = req.params;
+    const remark = (req.body?.remark || '').trim();
+    if (!remark) return res.status(400).json({ error: 'Rejection remark is required' });
+
+    const result = await pool.query(
+      `UPDATE enrollments
+       SET certificate_issued=false,
+           certificate_id=NULL,
+           certificate_status='rejected',
+           review_remark=$1,
+           reviewed_at=NOW(),
+           reviewed_by=$2
+       WHERE id=$3
+       RETURNING *`,
+      [remark, req.user.userId, enrollmentId]
+    );
+    if (!result.rows.length) return res.status(404).json({ error: 'Enrollment not found' });
+
     const enr = result.rows[0];
     const courseRes = await pool.query('SELECT title FROM training_courses WHERE course_id=$1', [enr.course_id]);
     await pool.query(
       'INSERT INTO notifications (user_id, type, title, body, link) VALUES ($1,$2,$3,$4,$5)',
       [enr.user_id, 'announcement',
-       '🎓 Certificate Issued!',
-       `Your certificate for "${courseRes.rows[0]?.title}" has been approved by admin.`,
-       `/certificate/${certId}`]
+        '⚠️ Certificate Review Update',
+        `Your certificate request for "${courseRes.rows[0]?.title}" was reviewed. Remark: ${remark}`,
+        '/training']
     );
-    res.json({ message: 'Certificate issued', certificate_id: certId });
+
+    res.json({ message: 'Certificate request rejected' });
   } catch (e) {
-    console.error('Cert approve error:', e);
-    res.status(500).json({ error: 'Failed to issue certificate' });
+    console.error('Cert reject error:', e);
+    res.status(500).json({ error: 'Failed to reject certificate request' });
   }
 });
 
@@ -574,13 +643,17 @@ router.get('/certificates/pending', async (req, res) => {
   try {
     const result = await pool.query(`
       SELECT e.id as enrollment_id, e.user_id, e.course_id, e.progress, e.enrolled_at,
+        e.certificate_status, e.review_remark, e.reviewed_at,
         u.full_name, u.username, u.branch, u.semester,
         tc.title as course_title, tc.category, tc.has_certificate
       FROM enrollments e
       JOIN users u ON e.user_id = u.user_id
       JOIN training_courses tc ON e.course_id = tc.course_id
-      WHERE e.certificate_issued = false AND tc.has_certificate = true AND e.progress >= 80
-      ORDER BY e.enrolled_at DESC
+      WHERE e.certificate_issued = false
+        AND tc.has_certificate = true
+        AND e.progress >= 100
+        AND (e.certificate_status = 'pending_review' OR e.certificate_status IS NULL OR e.certificate_status = 'not_requested')
+      ORDER BY e.completed_at DESC NULLS LAST, e.enrolled_at DESC
     `);
     res.json(result.rows);
   } catch (e) { res.status(500).json({ error: 'Failed' }); }

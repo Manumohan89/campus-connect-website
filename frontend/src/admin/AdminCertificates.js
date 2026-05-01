@@ -22,6 +22,7 @@ export default function AdminCertificates() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch]   = useState('');
   const [approving, setApproving] = useState(null);
+  const [rejecting, setRejecting] = useState(null);
   const [snack, setSnack]     = useState('');
 
   useEffect(() => { load(); }, []);
@@ -49,6 +50,20 @@ export default function AdminCertificates() {
       setSnack('❌ Failed: ' + (e.response?.data?.error || 'Unknown error'));
     }
     setApproving(null);
+  };
+
+  const rejectCert = async (enrollmentId, studentName) => {
+    const remark = window.prompt(`Enter rejection remark for ${studentName}:`);
+    if (!remark || !remark.trim()) return;
+    setRejecting(enrollmentId);
+    try {
+      await adminApi.post(`/certificates/reject/${enrollmentId}`, { remark: remark.trim() });
+      setSnack(`⚠️ Certificate request rejected for ${studentName}.`);
+      await load();
+    } catch (e) {
+      setSnack('❌ Failed: ' + (e.response?.data?.error || 'Unknown error'));
+    }
+    setRejecting(null);
   };
 
   const filter = (list) => !search ? list : list.filter(c =>
@@ -97,7 +112,7 @@ export default function AdminCertificates() {
             <Box sx={{ textAlign:'center', py:8, color:'#9CA3AF' }}>
               <CheckCircleIcon sx={{ fontSize:48, color:'#D1FAE5', mb:2, display:'block', mx:'auto' }} />
               <Typography fontWeight={600}>No pending certificates</Typography>
-              <Typography fontSize="0.85rem" mt={0.5}>Students need to complete ≥80% of a course to be eligible</Typography>
+              <Typography fontSize="0.85rem" mt={0.5}>Students must complete 100% to enter coordinator/admin review queue</Typography>
             </Box>
           ) : (
             <Box sx={{ overflowX:'auto' }}>
@@ -141,12 +156,20 @@ export default function AdminCertificates() {
                         </Typography>
                       </TableCell>
                       <TableCell>
-                        <Button size="small" variant="contained" startIcon={approving === c.enrollment_id ? <CircularProgress size={12} sx={{ color:'#fff' }} /> : <EmojiEventsIcon sx={{ fontSize:'14px !important' }}/>}
-                          onClick={() => approveCert(c.enrollment_id, c.full_name)}
-                          disabled={approving === c.enrollment_id}
-                          sx={{ background:'linear-gradient(135deg,#4F46E5,#7C3AED)', textTransform:'none', fontWeight:700, fontSize:'0.75rem', boxShadow:'none', borderRadius:'8px' }}>
-                          Issue Certificate
-                        </Button>
+                        <Box sx={{ display:'flex', gap:1, alignItems:'center' }}>
+                          <Button size="small" variant="contained" startIcon={approving === c.enrollment_id ? <CircularProgress size={12} sx={{ color:'#fff' }} /> : <EmojiEventsIcon sx={{ fontSize:'14px !important' }}/>}
+                            onClick={() => approveCert(c.enrollment_id, c.full_name)}
+                            disabled={approving === c.enrollment_id || rejecting === c.enrollment_id}
+                            sx={{ background:'linear-gradient(135deg,#4F46E5,#7C3AED)', textTransform:'none', fontWeight:700, fontSize:'0.75rem', boxShadow:'none', borderRadius:'8px' }}>
+                            Issue
+                          </Button>
+                          <Button size="small" variant="outlined"
+                            onClick={() => rejectCert(c.enrollment_id, c.full_name)}
+                            disabled={rejecting === c.enrollment_id || approving === c.enrollment_id}
+                            sx={{ textTransform:'none', fontWeight:700, fontSize:'0.75rem', borderRadius:'8px', color:'#DC2626', borderColor:'#FCA5A5' }}>
+                            {rejecting === c.enrollment_id ? 'Rejecting...' : 'Reject'}
+                          </Button>
+                        </Box>
                       </TableCell>
                     </TableRow>
                   ))}
