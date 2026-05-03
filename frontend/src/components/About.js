@@ -55,10 +55,10 @@ export default function About() {
       <PublicHeader />
 
       {/* Hero */}
-      <Box sx={{ background: 'linear-gradient(135deg,#06030F 0%,#1E1B4B 45%,#0D1B35 100%)', py: { xs: 8, md: 12 }, px: 2, textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+      <Box sx={{ background: 'linear-gradient(135deg,#06030F 0%,#1E1B4B 45%,#0D1B35 100%)', py: { xs: 8, md: 12 }, px: { xs: 2, sm: 2, md: 2 }, textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
         <Box sx={{ position: 'absolute', top: -60, right: '10%', width: 300, height: 300, borderRadius: '50%', background: 'radial-gradient(circle,rgba(99,102,241,0.2) 0%,transparent 70%)', pointerEvents: 'none' }} />
         <Box sx={{ position: 'absolute', bottom: -40, left: '5%', width: 200, height: 200, borderRadius: '50%', background: 'radial-gradient(circle,rgba(139,92,246,0.15) 0%,transparent 70%)', pointerEvents: 'none' }} />
-        <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1 }}>
+        <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1, px: { xs: 1, sm: 2 } }}>
           <Chip label="About Campus Connect" sx={{ bgcolor: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.9)', mb: 3, fontWeight: 600, border: '1px solid rgba(255,255,255,0.15)' }} />
           <Typography sx={{ fontSize: { xs: '2rem', md: '3rem' }, fontWeight: 900, color: 'white', lineHeight: 1.15, mb: 2, fontFamily: "'Syne',sans-serif", letterSpacing: '-0.03em' }}>
             Built for VTU Students,<br />by a VTU Student
@@ -70,8 +70,8 @@ export default function About() {
       </Box>
 
       {/* Stats */}
-      <Box sx={{ bgcolor: 'var(--bg-card,white)', py: 5, px: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
-        <Container>
+      <Box sx={{ bgcolor: 'var(--bg-card,white)', py: 5, px: { xs: 2, sm: 2 }, borderBottom: '1px solid', borderColor: 'divider' }}>
+        <Container sx={{ px: { xs: 1, sm: 2 } }}>
           <Grid container spacing={3} justifyContent="center">
             {STATS.map((s, i) => (
               <Grid item xs={6} sm={3} key={i}>
@@ -86,8 +86,8 @@ export default function About() {
       </Box>
 
       {/* Mission */}
-      <Box sx={{ py: { xs: 6, md: 10 }, px: 2 }}>
-        <Container maxWidth="md">
+      <Box sx={{ py: { xs: 6, md: 10 }, px: { xs: 2, sm: 2 } }}>
+        <Container maxWidth="md" sx={{ px: { xs: 1, sm: 2 } }}>
           <Typography sx={{ textAlign: 'center', fontWeight: 700, color: '#4F46E5', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.1em', mb: 2 }}>Our Mission</Typography>
           <Typography sx={{ textAlign: 'center', fontSize: { xs: '1.6rem', md: '2.25rem' }, fontWeight: 800, color: 'var(--text-1,#111827)', lineHeight: 1.25, mb: 3, fontFamily: "'Syne',sans-serif" }}>
             Making VTU academics stress-free and placement-ready
@@ -99,15 +99,15 @@ export default function About() {
       </Box>
 
       {/* All Features Grid */}
-      <Box sx={{ bgcolor: 'var(--bg-card,white)', py: { xs: 6, md: 10 }, px: 2 }}>
-        <Container>
+      <Box sx={{ bgcolor: 'var(--bg-card,white)', py: { xs: 6, md: 10 }, px: { xs: 2, sm: 2 } }}>
+        <Container sx={{ px: { xs: 1, sm: 2 } }}>
           <Typography sx={{ textAlign: 'center', fontSize: { xs: '1.6rem', md: '2rem' }, fontWeight: 800, color: 'var(--text-1,#111827)', mb: 2, fontFamily: "'Syne',sans-serif" }}>
             Everything You Need in One Place
           </Typography>
           <Typography sx={{ textAlign: 'center', color: 'text.secondary', mb: 6, maxWidth: 560, mx: 'auto' }}>
             16 powerful features built specifically for VTU students — all free.
           </Typography>
-          <Grid container spacing={2.5}>
+          <Grid container spacing={2.5} justifyContent="center">
             {FEATURES.map((f, i) => (
               <Grid item xs={12} sm={6} md={4} key={i}>
                 <Card elevation={0} sx={{ border: '1px solid', borderColor: 'divider', borderRadius: 3, p: 0.5, height: '100%', transition: 'all 0.2s', '&:hover': { boxShadow: '0 8px 32px rgba(79,70,229,0.1)', borderColor: '#C7D2FE', transform: 'translateY(-3px)' } }}>
@@ -124,8 +124,8 @@ export default function About() {
       </Box>
 
       {/* Team / Founder */}
-      <Box sx={{ py: { xs: 6, md: 10 }, px: 2 }}>
-        <Container maxWidth="md">
+      <Box sx={{ py: { xs: 6, md: 10 }, px: { xs: 2, sm: 2 } }}>
+        <Container maxWidth="md" sx={{ px: { xs: 1, sm: 2 } }}>
           <Typography sx={{ textAlign: 'center', fontWeight: 700, color: '#4F46E5', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.1em', mb: 2 }}>The Team</Typography>
           <Typography sx={{ textAlign: 'center', fontSize: { xs: '1.6rem', md: '2rem' }, fontWeight: 800, color: 'var(--text-1,#111827)', mb: 6, fontFamily: "'Syne',sans-serif" }}>
             Meet the Creator
@@ -167,12 +167,12 @@ export default function About() {
       </Box>
 
       {/* Why Trust Us */}
-      <Box sx={{ bgcolor: 'var(--bg-card,white)', py: { xs: 6, md: 8 }, px: 2 }}>
-        <Container maxWidth="md">
+      <Box sx={{ bgcolor: 'var(--bg-card,white)', py: { xs: 6, md: 8 }, px: { xs: 2, sm: 2 } }}>
+        <Container maxWidth="md" sx={{ px: { xs: 1, sm: 2 } }}>
           <Typography sx={{ textAlign: 'center', fontSize: { xs: '1.5rem', md: '1.9rem' }, fontWeight: 800, color: 'var(--text-1,#111827)', mb: 5, fontFamily: "'Syne',sans-serif" }}>
             Why 10,000+ VTU Students Trust Us
           </Typography>
-          <Grid container spacing={3}>
+          <Grid container spacing={3} justifyContent="center">
             {[
               { emoji: '🔒', title: 'Completely Free',       desc: 'Every feature is free. No hidden charges, no premium paywalls for core academic tools.' },
               { emoji: '🎯', title: 'VTU-Specific',          desc: 'Built for VTU 2021 & 2022 scheme. Not a generic tool — every feature is tailored for VTU.' },
